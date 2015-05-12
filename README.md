@@ -1,6 +1,7 @@
 # entwurf_vhdl_prozessor
 
 1. External Interface
+
   1.1. Generic Parameters
     1.1.1. The data width is generic with a minimum of 12 bit.
     1.1.2. The address width is generic with a minimum of 12 bit which implies a total of 2^(address width)   addressable memory cells.
@@ -80,3 +81,5 @@
     The IN instruction causes the input-device to send the content of its data register to the processor if the device is ready; if the device is not ready, the processor is blocked until the input-device is ready again. The OUT instruction causes the output-device to receive a data word from the processor and store it in its data register if the device is ready; if the device is not ready, the processor is blocked until the output-device is ready again.
   3.5. I/O-Devices
     3.5.1. General Structure All I/O-devices contain two registers, one register for storing a data word (size according to 1.1.1), and a one-bit registers storing the information if the data register is empty or not.
+    3.5.2. The external interface of the I/O-devices is composed of:
+      3.5.2.1. A Clock input (I/O-devices are triggered on the positive clock edge).
