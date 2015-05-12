@@ -2,7 +2,6 @@
 
 1. External Interface
   1.1. Generic Parameters
-
     1.1.1. The data width is generic with a minimum of 12 bit.
     1.1.2. The address width is generic with a minimum of 12 bit which implies a total of 2^(address width)   addressable memory cells.
   1.2. Ports
@@ -83,3 +82,26 @@
     3.5.1. General Structure All I/O-devices contain two registers, one register for storing a data word (size according to 1.1.1), and a one-bit registers storing the information if the data register is empty or not.
     3.5.2. The external interface of the I/O-devices is composed of:
       3.5.2.1. A Clock input (I/O-devices are triggered on the positive clock edge).
+			3.5.2.2. A Reset input (asynchronous, active low).
+			3.5.2.3. A control signal to indicate if the I/O-device is ready to send/receive data to/from the processor (active high).
+			3.5.2.4. A control signal to indicate access to the I/O-device (active high).
+			3.5.2.5. A control signal to distinguish between read- (if ‘0’) and write-access (if ‘1’) to the I/O-device.
+			3.5.2.6. A data bus from the processor (only output device, size according to 1.1.1).
+			3.5.2.7. A data bus to the outside (only output device; size according to 1.1.1).
+			3.5.2.8. A data ready signal to the outside (only output device).
+			3.5.2.9. A data request signal from the outside (only output device).
+			3.5.2.10. A data bus to the processor (only input device, size according to 1.1.1).
+			3.5.2.11. A data bus from the outside (only input device; size according to 1.1.1).
+			3.5.2.12. A data ready signal from the outside (only input device).
+			3.5.2.13. A data request signal to the outside (only input device).
+		3.5.3. Input device
+			The device includes a register for storing a data word from the outside bus to be sent to the processor.
+			If the internal register contains data, the DevRdy signal of this device has to be set (since the device is now ready to send this data to the processor); otherwise it has to be cleared.
+			If the AccEn input is set, the AccType input is set to ‘0’ and the internal register contains data, this data has to be made visible at the port DataOut; in all other cases DataOut has to be set to 0x0.
+			If the internal register is empty, the DataReq signal of this device has to be set; otherwise it has to be cleared.
+			If the DataRdy input is set and the internal register is empty, the data at the port DataIn has to be stored in the internal register; in all other content of the internal register must not change.
+		3.5.4. Output device
+			The device includes a register for storing a data word from the processor to be sent to the outside bus.
+			If the internal register is empty, the DevRdy signal of this device has to be set (since the device is now ready to receive data from the processor); otherwise it has to be cleared.
+			If the AccEn input is set, the AccType input is set to ‘1’ and the internal register is empty, the data at the port DataIn has to be stored in the internal register; in all other cases the content of the internal register must not change.
+			If the DataReq input is set and the internal register contains data, this data has to be made visible at the port DataOut and DataRdy has to be set; in all other cases DataOut has to be set to 0x0 and DataRdy has to be cleared.
