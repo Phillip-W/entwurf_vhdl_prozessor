@@ -1,8 +1,8 @@
 # entwurf_vhdl_prozessor
 
 1. External Interface
-
   1.1. Generic Parameters
+
     1.1.1. The data width is generic with a minimum of 12 bit.
     1.1.2. The address width is generic with a minimum of 12 bit which implies a total of 2^(address width)   addressable memory cells.
   1.2. Ports
