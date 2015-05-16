@@ -1,4 +1,5 @@
-USE ieee.std_logic_1164.all;
+LIBRARY IEEE;
+USE IEEE.std_logic_1164.ALL;
 ENTITY CPU IS
   GENERIC(
     data_width : positive; -- Parameter in package auslagern?  1.1.1
