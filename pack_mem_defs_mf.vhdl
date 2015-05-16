@@ -8,5 +8,6 @@ PACKAGE mem_defs_pack IS
   --Hier alle Datentypen, Subtyps definieren - falls nötig
   
   --Hier alle nötigen Funktionen angeben
+  function test return opcode_type;
   
 END mem_defs_pack;
