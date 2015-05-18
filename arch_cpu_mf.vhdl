@@ -1,0 +1,6 @@
+LIBRARY IEEE;
+USE IEEE.std_logic_1164.ALL;
+ARCHITECTURE behav OF CPU IS
+  BEGIN
+    
+END behav;
