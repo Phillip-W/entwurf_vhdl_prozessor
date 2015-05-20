@@ -5,7 +5,7 @@ for TB
     for  
         UUT: Entity_Speicher
           use
-             entity WORK.Entity_Speicher
+             entity Entity_Speicher
                          (function_S);
     end for;
 
