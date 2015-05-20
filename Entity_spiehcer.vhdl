@@ -1,14 +1,14 @@
 use subtype_package_all.all;
 
-entity Speicher is  //Entity für Speicher
+entity Entity_spiehcer is  //Entity für Speicher
    port(
         clk : in boolean;   //Clock
         addr: in mem_data;   // addr  datatyp ist von Subtype_package_all deklariert
         data_in: in mem_data;   //Data.input
         data_out: out mem_data);  //Data.output
-end Speicher;
+end Entity_spiehcer;
 
-architecture function_S of Speicher is        
+architecture function_S of Entity_spiehcer is        
 begin
     process( clk , addr , data_in)    //empfindliche Signal
     variable Mem: mem_type;           // typ mem_type ist von subtype_package_all deklariert
