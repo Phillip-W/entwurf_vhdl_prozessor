@@ -2,8 +2,9 @@
 ## General Information
 1. Vergebene Dateinamen in Textfile eintragen
 2. Alles Kommentieren!
-3. Alle Subtyps in Subtype-Package-File schreiben
+3. Alle Subtyps, Signale, etc. in Def-Package-File schreiben
 4. Dateinamen wie folgt: Typ_Name_Kürzel.vhdl	(**Typ**: pack, packbod, arch, en; **Name**: cpu,...; **Kürzel**: wp, mf, up, zl)
+5. Richtig auskommentieren!!! (Das geht mit '--' und nicht wie in C)
 
 ## CPU Spec
 1. External Interface
