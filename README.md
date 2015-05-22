@@ -7,6 +7,10 @@
 5. Richtig auskommentieren!!! (Das geht mit '--' und nicht wie in C)
 6. und verwendet nicht configuration und co. wenn ihr nicht wisst wie's geht - ich hab keine Lust euer Zeug zu überarbeiten.
 
+## Funktionales Modell (s.h. Vorlesung 3 Folie 12)
+1. wir brauchen kein clock und reset
+2. der Speicher ist direkt in der CPU als Variable / Array
+
 ## CPU Spec
 1. External Interface
 	1. Generic Parameters
