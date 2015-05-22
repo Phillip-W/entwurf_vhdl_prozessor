@@ -5,6 +5,7 @@
 3. Alle Subtyps, Signale, etc. in Def-Package-File schreiben
 4. Dateinamen wie folgt: Typ_Name_Kürzel.vhdl	(**Typ**: pack, packbod, arch, en; **Name**: cpu,...; **Kürzel**: wp, mf, up, zl)
 5. Richtig auskommentieren!!! (Das geht mit '--' und nicht wie in C)
+6. und verwendet nicht configuration und co. wenn ihr nicht wisst wie's geht - ich hab keine Lust euer Zeug zu überarbeiten.
 
 ## CPU Spec
 1. External Interface
