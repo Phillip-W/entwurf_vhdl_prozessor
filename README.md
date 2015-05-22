@@ -2,7 +2,14 @@
 ## General Information
 1. Vergebene Dateinamen in Textfile eintragen
 2. Alles Kommentieren!
-3. Alle Subtyps in Subtype-Package-File schreiben
+3. Alle Subtyps, Signale, etc. in Def-Package-File schreiben
+4. Dateinamen wie folgt: Typ_Name_Kürzel.vhdl	(**Typ**: pack, packbod, arch, en; **Name**: cpu,...; **Kürzel**: wp, mf, up, zl)
+5. Richtig auskommentieren!!! (Das geht mit '--' und nicht wie in C)
+6. und verwendet nicht configuration und co. wenn ihr nicht wisst wie's geht - ich hab keine Lust euer Zeug zu überarbeiten.
+
+## Funktionales Modell (s.h. Vorlesung 3 Folie 12)
+1. wir brauchen kein clock und reset
+2. der Speicher ist direkt in der CPU als Variable / Array
 
 ## CPU Spec
 1. External Interface
