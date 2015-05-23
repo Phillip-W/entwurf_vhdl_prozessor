@@ -7,7 +7,7 @@ ARCHITECTURE behav OF CPU IS
     Process 
       -- Speicher
       variable Memory: mem_type := init_memory; -- Speicher mit init_memory initialisieren
-      variable Reg   :reg_type;
+      variable Reg   :reg_type;			-- TEST
       variable Instr :data_type;
       variable OP    :opcode_type;
       variable x,y,z :reg_addr_type;
