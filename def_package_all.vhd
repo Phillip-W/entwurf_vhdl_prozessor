@@ -62,7 +62,9 @@ package def_package_all is
 	constant code_jnz		: opcode_type:=53;				--3.3.1.33
 	constant code_jnc  	: opcode_type:=54;				--3.3.1.34
 	constant code_jnn		: opcode_type:=55;				--3.3.1.35
-	constant code_jn0		: opcode_type:=56;				--3.3.1.36
-      
+	constant code_jn0		: opcode_type:=56;				--3.3.1.36     
+
+	function INC (constant PC: addr_type)		-- PC-"increaser" (2.1.3.4; 2.1.3.3
+		return addr_type; 
       
 end def_package_all;

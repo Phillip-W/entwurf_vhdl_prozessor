@@ -20,10 +20,7 @@ ARCHITECTURE behav OF CPU IS
         y:= (Instr / 2** reg_addr_width) mod 2** reg_addr_width;  -- Anweisung zerlegen
         z:= Instr mod 2** reg_addr_width;                         -- Anweisung zerlegen
 
-        if PC=address_width - 1 				  -- Überlauf unseres PC vermeiden
-          then PC :=0;			-- 2.1.3.4
-          else PC:=PC+1;		-- 2.1.3.3
-        end if;
+        PC:= INC(PC);
         
         case OP is                                                -- Anweisungen differenzieren und ausführen
 
@@ -32,10 +29,10 @@ ARCHITECTURE behav OF CPU IS
 					
 					-- die OPCode Operationen hier einfügen (s.h. Vorlesung ?? Seite 49ff. - Statements for Arithmetic and Logic Ops)
 
-					when code_not		=> Reg(x):= NOT Reg(y);		-- Verneinung 			(3.3.1.7)
-					when code_and		=> Reg(x):=y and Reg(z);	-- UND-Operation		(3.3.1.8)
-					when code_or		=> Reg(x):=Reg(y) or Reg(z);		-- OR-Operation			(3.3.1.9)
-					when code_xor		=> Reg(x):=Reg(y) xor Reg(z);	-- xor							(3.3.1.10)
+					when code_not		=> Reg(x):= "NOT" Reg(y);		-- Verneinung 			(3.3.1.7)
+					when code_and		=> Reg(x):=y "and" Reg(z);	-- UND-Operation		(3.3.1.8)
+					when code_or		=> Reg(x):=Reg(y) "or" Reg(z);		-- OR-Operation			(3.3.1.9)
+					when code_xor		=> Reg(x):=Reg(y) "xor" Reg(z);	-- xor							(3.3.1.10)
 					when code:rea		=> 
 
           when others =>             -- ungültig oder bisher nicht implementiert
