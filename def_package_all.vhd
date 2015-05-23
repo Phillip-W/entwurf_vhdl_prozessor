@@ -9,7 +9,7 @@ package def_package_all is
   constant address_width    :positive :=12;   --1.1.2
   constant opcode_width     :positive :=6;    --3.1.1
   
-  constant reg_addr_width   :positive :=2;
+  constant reg_addr_width   :positive :=2;    --2.1.2
   
   
   --Hier alle Datentypen, Subtyps definieren
@@ -23,10 +23,10 @@ package def_package_all is
     natural range 0 to 2**data_width-1;  
   type mem_type is 					-- unser "Speicher" (Array)
     array(addr_type) of data_type;  			
-  type reg_type is array(reg_addr_type) of data_type;	-- unsere "Register" (Array)
+  type reg_type is array(reg_addr_type) of data_type;	-- 2.1.2.1 unsere "Register" (Array)
   
   --Hier alle OPCodes definieren
-  constant code_nop  : opcode_type:=0;       --3.3.1.1
+  constant code_nop   : opcode_type:=0;       --3.3.1.1
   constant code_stop  : opcode_type:=1;       --3.3.1.2
   constant code_add   : opcode_type:=2;       --3.3.1.3
       

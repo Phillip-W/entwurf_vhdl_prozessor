@@ -7,11 +7,11 @@ ARCHITECTURE behav OF CPU IS
     Process 
       -- Speicher
       variable Memory: mem_type := init_memory; -- Speicher mit init_memory initialisieren
-      variable Reg   :reg_type;			-- bisher nicht verwendet (wird für die Operationen benötigt)
+      variable Reg   :reg_type := 0;		-- 2.1.2.2 bisher nicht verwendet (wird für die Operationen benötigt)
       variable Instr :data_type;		-- Aus dem Speicher geholte Anweisung
       variable OP    :opcode_type;		-- aus der Instr errechneter OPCode (ableich mit unserem def_pack)
       variable x,y,z :reg_addr_type;		-- Registeradressen zur Verarbeitung unserer Anweisungen
-      variable PC    :addr_type:=0;		-- unser Prozesscounter
+      variable PC    :addr_type:=0;		-- 2.1.3.1; 2.1.3.2 unser Prozesscounter
       
       begin
         Instr := Memory(PC); OP:= Instr / (2**reg_addr_width)**3; -- Anweisung lesen
@@ -20,8 +20,8 @@ ARCHITECTURE behav OF CPU IS
         z:= Instr mod 2** reg_addr_width;                         -- Anweisung zerlegen
 
         if PC=address_width - 1 				  -- Überlauf unseres PC vermeiden
-          then PC :=0;
-          else PC:=PC+1;
+          then PC :=0;			-- 2.1.3.4
+          else PC:=PC+1;		-- 2.1.3.3
         end if;
         
         case OP is                                                -- Anweisungen differenzieren und ausführen
