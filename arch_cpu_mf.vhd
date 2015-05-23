@@ -12,6 +12,7 @@ ARCHITECTURE behav OF CPU IS
       variable OP    :opcode_type;		-- aus der Instr errechneter OPCode (ableich mit unserem def_pack)
       variable x,y,z :reg_addr_type;		-- Registeradressen zur Verarbeitung unserer Anweisungen
       variable PC    :addr_type:=0;		-- 2.1.3.1; 2.1.3.2 unser Prozesscounter
+			variable Zero, Carry, Negative, Overflow: Boolean := FALSE;
       
       begin
         Instr := Memory(PC); OP:= Instr / (2**reg_addr_width)**3; -- Anweisung lesen
@@ -25,8 +26,18 @@ ARCHITECTURE behav OF CPU IS
         end if;
         
         case OP is                                                -- Anweisungen differenzieren und ausführen
-          when code_nop   => null;   -- keine Operation (3.3.1.1)    die OPCode Operationen hier einfügen
-          when code_stop  => wait;   -- stop Simulation (3.3.1.2)
+
+          when code_nop   => null;   			-- keine Operation 	(3.3.1.1)    
+          when code_stop  => wait;   			-- stop Simulation 	(3.3.1.2)
+					
+					-- die OPCode Operationen hier einfügen (s.h. Vorlesung ?? Seite 49ff. - Statements for Arithmetic and Logic Ops)
+
+					when code_not		=> Reg(x):= NOT Reg(y);		-- Verneinung 			(3.3.1.7)
+					when code_and		=> Reg(x):=y and Reg(z);	-- UND-Operation		(3.3.1.8)
+					when code_or		=> Reg(x):=Reg(y) or Reg(z);		-- OR-Operation			(3.3.1.9)
+					when code_xor		=> Reg(x):=Reg(y) xor Reg(z);	-- xor							(3.3.1.10)
+					when code:rea		=> 
+
           when others =>             -- ungültig oder bisher nicht implementiert
             assert FALSE
             report "ungültig"
