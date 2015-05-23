@@ -1,7 +1,7 @@
 LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
-Use work.def_package_all.all;
-Use work.mem_package_all.all;
+Use work.def_package_all.all;                   -- unsere Datentypen, etc.
+Use work.mem_package_all.all;                   -- unser Speicherinhalt / abzuarbeitendes Programm
 ARCHITECTURE behav OF CPU IS
   BEGIN
     Process 
