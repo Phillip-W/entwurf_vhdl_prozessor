@@ -1,4 +1,4 @@
-LIBRARY IEEE;
+LIBRARY IEEE; -- ABC
 USE IEEE.std_logic_1164.ALL;
 Use work.def_package_all.all;                   -- unsere Datentypen, etc.
 Use work.mem_package_all.all;                   -- unser Speicherinhalt / abzuarbeitendes Programm
