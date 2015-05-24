@@ -23,17 +23,38 @@ ARCHITECTURE behav OF CPU IS
         PC:= INC(PC);
         
         case OP is                                                -- Anweisungen differenzieren und ausführen
-
+  
+          -- Miscellaneous
           when code_nop   => null;   			-- keine Operation 	(3.3.1.1)    
           when code_stop  => wait;   			-- stop Simulation 	(3.3.1.2)
+            
 					
 					-- die OPCode Operationen hier einfügen (s.h. Vorlesung ?? Seite 49ff. - Statements for Arithmetic and Logic Ops)
 
-					when code_not		=> Reg(x):= "NOT" Reg(y);		-- Verneinung 			(3.3.1.7)
-					when code_and		=> Reg(x):=y "and" Reg(z);	-- UND-Operation		(3.3.1.8)
-					when code_or		=> Reg(x):=Reg(y) "or" Reg(z);		-- OR-Operation			(3.3.1.9)
-					when code_xor		=> Reg(x):=Reg(y) "xor" Reg(z);	-- xor							(3.3.1.10)
-					when code:rea		=> 
+
+
+          -- Arithmetic
+          
+          
+					-- Logical
+					when code_not		=> Reg(x):= "NOT"(Reg(y));		-- Verneinung 			(3.3.1.7)
+					when code_and		=> Reg(x):= (Reg(y))and(Reg(z));	-- UND-Operation		(3.3.1.8)
+					when code_or		 => Reg(x):= (Reg(y))or(Reg(z));		-- OR-Operation			(3.3.1.9)
+					when code_xor		=> Reg(x):= (Reg(y))xor(Reg(z));	-- xor							(3.3.1.10)
+					-- when code:rea		=>
+					
+					
+					-- Shift / Rotate
+					
+					
+					-- Memory Access
+					
+					
+					-- I/O
+					
+					
+					-- Jump
+					 
 
           when others =>             -- ungültig oder bisher nicht implementiert
             assert FALSE
@@ -43,3 +64,4 @@ ARCHITECTURE behav OF CPU IS
       wait;                                     --damit der Prozessor nicht den Speicher im endlos modus durcharbeitet
     end process;
 END behav;
+

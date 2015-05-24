@@ -70,5 +70,15 @@ package def_package_all is
 
 	function "NOT" (constant A:data_type)
 		return data_type;
+
+	function "AND" (constant A,B:data_type)
+		return data_type;
+
+	function "OR" (constant A,B:data_type)
+		return data_type;
+
+	function "XOR" (constant A,B:data_type)
+		return data_type;
       
 end def_package_all;
+

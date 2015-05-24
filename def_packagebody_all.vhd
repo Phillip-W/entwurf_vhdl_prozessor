@@ -11,5 +11,24 @@ package body def_package_all is
 		begin
 		return -A -1 +2**data_width;
 	end "NOT";
+
+	function "AND" (constant A,B:data_type)
+		return data_type is
+		begin
+		return -A -1 +2**data_width;
+	end "AND";
+
+	function "OR" (constant A,B:data_type)
+		return data_type is
+		begin
+		return -A -1 +2**data_width;
+	end "OR";
+	
+	function "XOR" (constant A,B:data_type)
+		return data_type is
+		begin
+		return -A -1 +2**data_width;
+	end "XOR";
       
 end def_package_all;
+
