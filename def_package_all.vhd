@@ -3,8 +3,11 @@ USE IEEE.std_logic_1164.ALL;
 
 
 package def_package_all is
-      
+
+-- ===============================================================================================================================================      
   --Hier alle Konstanten definieren
+-- ===============================================================================================================================================
+
   constant data_width       :positive :=12;   --1.1.1
   constant address_width    :positive :=12;   --1.1.2
   constant opcode_width     :positive :=6;    --3.1.1
@@ -12,8 +15,11 @@ package def_package_all is
   constant reg_addr_width   :positive :=2;    --2.1.2
 	constant addr_width				:positive :=12;		-- nicht ändern
   
-  
+
+-- ===============================================================================================================================================  
   --Hier alle Datentypen, Subtyps definieren
+-- ===============================================================================================================================================
+
   subtype addr_type IS												-- unsers Adressen zum ansprechen des Speichers, z.B. durch den PC
     natural range 0 to 2**address_width-1;
   subtype opcode_type IS											-- für unsere OPCode Deklarationen
@@ -26,8 +32,12 @@ package def_package_all is
     array(addr_type) of data_type;  			
   type reg_type is 														-- 2.1.2.1 unsere "Register" (Array)
 		array(reg_addr_type) of data_type;	
-  
+
+
+-- ===============================================================================================================================================  
   --Hier alle OPCodes definieren (vollständig)
+-- ===============================================================================================================================================
+
   constant code_nop   : opcode_type:=0;    	    --3.3.1.1
   constant code_stop  : opcode_type:=1;     	  --3.3.1.2
   constant code_add   : opcode_type:=2;       	--3.3.1.3
@@ -68,6 +78,11 @@ package def_package_all is
 	function INC (constant PC: addr_type)		-- PC-"increaser" (2.1.3.4; 2.1.3.3
 		return addr_type; 
 
+
+-- ===============================================================================================================================================
+ -- die Funktionen / Proceduren für unsere OPCodes
+-- ===============================================================================================================================================
+
 	function "NOT" (constant A:data_type)
 		return data_type;
 
@@ -79,6 +94,23 @@ package def_package_all is
 
 	function "XOR" (constant A,B:data_type)
 		return data_type;
+
+
+-- ===============================================================================================================================================
+ -- die Proceduren für unser IO
+-- ===============================================================================================================================================
+	
+	procedure print_tail (variable f:out text);
+
+	procedure write_PC_CMD (variable l:inout line; constant PC in data_type; constant OP: in opcode_type; constant x,y,z: in reg_addr_type);
+
+	procedure print_header (variable f: out text);
+
+	procedure write_param (variable l:inout line; constant param in data_type);
+
+	procedure write_NoParam (variable l: inout line);
+
+	-- procedure write_regs (variable l: inout line; constant r1, r2, r3 : in ??? )
       
 end def_package_all;
 
