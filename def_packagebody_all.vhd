@@ -63,9 +63,9 @@ package body def_package_all is
 
 	procedure write_PC_CMD (variable l:inout line; constant PC in data_type; constant OP: in opcode_type; constant x,y,z: in reg_addr_type) is
 		begin
-			write(l, hex_image (PC), left, 3);
+			write(l, hex_image (PC), left, 3);			-- hex_image function muss noch geschrieben werden
 			write(l, string'(" | "));
-			write(l, cmd_image (OP), left, 4);
+			write(l, cmd_image (OP), left, 4);			-- cmd_image function muss noch geschrieben werden
 			write(l, string'(" | "));
 			write(l, X, left , 1);
 			write(l, y, left , 1);
@@ -110,7 +110,7 @@ package body def_package_all is
 
 	-- procedure write_regs (variable l: inout line; constant r1, r2, r3 : in ??? ) is
 		-- begin
-			-- Das muss noch jemand schreiben
+			-- Das muss noch jemand schreiben						dafür brauchen wir auch noch die transformation von boolean zu Characters (T, F)
 	-- end write_regs;
       
 end def_package_all;
