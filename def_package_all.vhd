@@ -1,6 +1,6 @@
 LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
-
+use std.textio.all;				
 
 package def_package_all is
 
