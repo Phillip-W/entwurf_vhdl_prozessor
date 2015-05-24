@@ -10,6 +10,7 @@ package def_package_all is
   constant opcode_width     :positive :=6;    --3.1.1
   
   constant reg_addr_width   :positive :=2;    --2.1.2
+	constant addr_width				:positive :=12;		-- nicht ändern
   
   
   --Hier alle Datentypen, Subtyps definieren

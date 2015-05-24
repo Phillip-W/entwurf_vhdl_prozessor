@@ -1,4 +1,4 @@
-LIBRARY IEEE; -- ABC
+LIBRARY IEEE; 
 USE IEEE.std_logic_1164.ALL;
 Use work.def_package_all.all;                   -- unsere Datentypen, etc.
 Use work.mem_package_all.all;                   -- unser Speicherinhalt / abzuarbeitendes Programm
@@ -7,7 +7,7 @@ ARCHITECTURE behav OF CPU IS
     Process 
       -- Speicher
       variable Memory: mem_type := init_memory; -- Speicher mit init_memory initialisieren
-      variable Reg   :reg_type := 0;		-- 2.1.2.2 bisher nicht verwendet (wird für die Operationen benötigt)
+      variable Reg   :reg_type := (0 => 0, 1=> 0, others => 0);		-- 2.1.2.2 bisher nicht verwendet (wird für die Operationen benötigt)
       variable Instr :data_type;		-- Aus dem Speicher geholte Anweisung
       variable OP    :opcode_type;		-- aus der Instr errechneter OPCode (ableich mit unserem def_pack)
       variable x,y,z :reg_addr_type;		-- Registeradressen zur Verarbeitung unserer Anweisungen
