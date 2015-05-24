@@ -1,3 +1,5 @@
+LIBRARY IEEE;
+Use IEEE.numeric_std.ALL;
 package body def_package_all is
   
   function INC (constant PC: addr_type)		-- PC-"increaser" (2.1.3.4; 2.1.3.3)
@@ -14,20 +16,27 @@ package body def_package_all is
 
 	function "AND" (constant A,B:data_type)
 		return data_type is
+		variable r : data_type :=0;
 		begin
-		return -A -1 +2**data_width;
+			for i in 0 to data_width loop
+				if ((A/2**i) mod 2)+ ((B/2**i)mod 2)>1 then r:= r+2**i;
+				end if;
+			end loop;
+		return r;
 	end "AND";
 
-	function "OR" (constant A,B:data_type)
+	function "OR" (constant A,B:data_type) 
 		return data_type is
 		begin
-		return -A -1 +2**data_width;
+		return to_integer(to_unsigned(a, data_width) and to_unsigned(b,data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
+
 	end "OR";
 	
 	function "XOR" (constant A,B:data_type)
 		return data_type is
 		begin
-		return -A -1 +2**data_width;
+		return to_integer(to_unsigned(a, data_width) xor to_unsigned(b,data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
+
 	end "XOR";
       
 end def_package_all;
