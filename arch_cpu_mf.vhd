@@ -10,10 +10,10 @@ ARCHITECTURE behav OF CPU IS
 			variable l : line;
 			variable Memory: mem_type := init_memory; -- Speicher mit init_memory initialisieren
       variable Reg   :reg_type := (0 => 0, 1=> 0, others => 0);		-- 2.1.2.2 bisher nicht verwendet (wird für die Operationen benötigt)
-      variable Instr :data_type;		-- Aus dem Speicher geholte Anweisung
-      variable OP    :opcode_type;		-- aus der Instr errechneter OPCode (ableich mit unserem def_pack)
-      variable x,y,z :reg_addr_type;		-- Registeradressen zur Verarbeitung unserer Anweisungen
-      variable PC    :addr_type:=0;		-- 2.1.3.1; 2.1.3.2 unser Prozesscounter
+      variable Instr :data_type;		            -- Aus dem Speicher geholte Anweisung
+      variable OP    :opcode_type;		          -- aus der Instr errechneter OPCode (ableich mit unserem def_pack)
+      variable x,y,z :reg_addr_type;		        -- Registeradressen zur Verarbeitung unserer Anweisungen
+      variable PC    :addr_type:=0;		          -- 2.1.3.1; 2.1.3.2 unser Prozesscounter
 			variable Zero, Carry, Negative, Overflow: Boolean := FALSE;
 
 			begin
@@ -44,9 +44,9 @@ ARCHITECTURE behav OF CPU IS
 		        
 		        
 						-- Logical
-						when code_not		=> Reg(x):= "NOT"(Reg(y));		-- Verneinung 			(3.3.1.7)
+						when code_not		=> Reg(x):= "NOT"(Reg(y));		    -- Verneinung 			(3.3.1.7)
 						when code_and		=> Reg(x):= (Reg(y))and(Reg(z));	-- UND-Operation		(3.3.1.8)
-						when code_or		 => Reg(x):= (Reg(y))or(Reg(z));		-- OR-Operation			(3.3.1.9)
+						when code_or		=> Reg(x):= (Reg(y))or(Reg(z));	  -- OR-Operation			(3.3.1.9)
 						when code_xor		=> Reg(x):= (Reg(y))xor(Reg(z));	-- xor							(3.3.1.10)
 						-- when code:rea		=>
 					
