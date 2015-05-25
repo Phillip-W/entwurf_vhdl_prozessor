@@ -97,7 +97,7 @@ package def_package_all is
 
 
 -- ===============================================================================================================================================
- -- die Proceduren für unser IO
+ -- die Proceduren / Funktionen für unser IO
 -- ===============================================================================================================================================
 	
 	procedure print_tail (variable f:out text);
@@ -110,7 +110,11 @@ package def_package_all is
 
 	procedure write_NoParam (variable l: inout line);
 
-	-- procedure write_regs (variable l: inout line; constant r1, r2, r3 : in ??? )
+	procedure write_regs (variable l: inout line; constant r0, r1, r2, r3 : in data_type );
+  
+  procedure write_flags (variable l: inout line; constant Zero, Carry, Negative, Overflow : in data_type );
+  
+  -- unsere transformationsfunktionen (hex_image, cmd_image, ...) fehlen noch.
       
 end def_package_all;
 

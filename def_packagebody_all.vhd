@@ -18,13 +18,13 @@ package body def_package_all is
 -- ===============================================================================================================
 -- Funktionen für unsere OPCodes
 -- ===============================================================================================================
-	function "NOT" (constant A:data_type)
+	function "NOT" (constant A:data_type)       -- IO fehlt noch
 		return data_type is
 		begin
 		return -A -1 +2**data_width;
 	end "NOT";
 
-	function "AND" (constant A,B:data_type)
+	function "AND" (constant A,B:data_type)     -- IO fehlt noch
 		return data_type is
 		variable r : data_type :=0;
 		begin
@@ -35,14 +35,14 @@ package body def_package_all is
 		return r;
 	end "AND";
 
-	function "OR" (constant A,B:data_type) 
+	function "OR" (constant A,B:data_type)     -- IO fehlt noch
 		return data_type is
 		begin
 		return to_integer(to_unsigned(a, data_width) and to_unsigned(b,data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
 
 	end "OR";
 	
-	function "XOR" (constant A,B:data_type)
+	function "XOR" (constant A,B:data_type)   -- IO fehlt noch
 		return data_type is
 		begin
 		return to_integer(to_unsigned(a, data_width) xor to_unsigned(b,data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
@@ -51,7 +51,7 @@ package body def_package_all is
 
 
 -- ===============================================================================================================
--- Funktionen für unser IO
+-- Proceduren / Funktionen für unser IO
 -- ===============================================================================================================
 
 	procedure print_tail (variable f:out text) is
@@ -98,7 +98,7 @@ package body def_package_all is
 
 	procedure write_param (variable l:inout line; constant param in data_type) is
 		begin
-			write(l, param, left , 3);
+			write(l, param_image(param), left , 3);          -- dafür brauchen wir auch noch die transformation integers zu string
 			write(l, string'(" | "));
 	end write_param;
 
@@ -108,10 +108,29 @@ package body def_package_all is
 			write(l, string'(" | "));
 	end write_NoParam;
 
-	-- procedure write_regs (variable l: inout line; constant r1, r2, r3 : in ??? ) is
-		-- begin
-			-- Das muss noch jemand schreiben						dafür brauchen wir auch noch die transformation von boolean zu Characters (T, F)
-	-- end write_regs;
+	procedure write_regs (variable l: inout line; constant r0, r1, r2, r3 : in data_type ) is
+	 begin
+	    write(l, reg_image (r0), left, 3);			    -- dafür brauchen wir auch noch die transformation integers zu string  (param_image verwenden)
+		  write(l, string'(" | "));	
+      write(l, reg_image (r1), left, 3);			    
+			write(l, string'(" | "));	
+      write(l, reg_image (r2), left, 3);			    
+			write(l, string'(" | "));	
+      write(l, reg_image (r3), left, 3);			    
+			write(l, string'(" | "));						
+	end write_regs;
+  
+	procedure write_flags (variable l: inout line; constant Zero, Carry, Negative, Overflow : in data_type ) is
+		begin
+			write(l, flag_image (Zero), left, 3);			    -- dafür brauchen wir auch noch die transformation von boolean zu Characters/string (T, F)
+			write(l, string'(" | "));	
+      write(l, flag_image (Carry), left, 3);			    
+			write(l, string'(" | "));	
+      write(l, flag_image (Negative), left, 3);			    
+			write(l, string'(" | "));	
+      write(l, flag_image (Overflow), left, 3);			    
+			write(l, string'(" | "));						
+	end write_flags;
       
 end def_package_all;
 
