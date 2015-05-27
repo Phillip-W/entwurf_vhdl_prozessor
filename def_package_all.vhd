@@ -30,5 +30,13 @@ package def_package_all is
   constant code_stop  : opcode_type:=1;       --3.3.1.2
   constant code_add   : opcode_type:=2;       --3.3.1.3
       
-      
+   --Opcode Shift and rotate.
+  constant code_sll : opcode_type = 13;
+  constant code_srl : opcode_type = 14;
+  constant code_sra : opcode_type = 15;
+  constant code_rol : opcode_type = 16;
+  constant code_rolc : opcode_type = 17;
+  constant code_ror : opcode_type = 18;
+  constant code_rorc : opcode_type = 19;
+  
 end def_package_all;
