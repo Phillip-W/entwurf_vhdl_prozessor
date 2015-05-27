@@ -39,4 +39,19 @@ package def_package_all is
   constant code_ror : opcode_type = 18;
   constant code_rorc : opcode_type = 19;
   
+  
+  function "SLL" (constant A:data_type)
+	return data_type;
+  function "SRL" (constant A:data_type)
+	return data_type;
+  function "SRA" (constant A:data_type)
+	return data_type;
+  function "ROL" (constant A:data_type)
+	return data_type;
+  function "ROLC" (constant A:data_type)
+	return data_type;
+  function "ROR" (constant A:data_type)
+	return data_type;
+  function "RORC" (constant A:data_type)
+	return data_type;  
 end def_package_all;
