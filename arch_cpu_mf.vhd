@@ -12,7 +12,7 @@ ARCHITECTURE behav OF CPU IS
       variable Reg   :reg_type := (0 => 0, 1=> 0, others => 0);		-- 2.1.2.2 bisher nicht verwendet (wird für die Operationen benötigt)
       variable Instr :data_type;		            -- Aus dem Speicher geholte Anweisung
       variable OP    :opcode_type;		          -- aus der Instr errechneter OPCode (ableich mit unserem def_pack)
-      variable x,y,z :reg_addr_type;		        -- Registeradressen zur Verarbeitung unserer Anweisungen
+      variable a,x,y,z :reg_addr_type;		        -- Registeradressen zur Verarbeitung unserer Anweisungen
       variable PC    :addr_type:=0;		          -- 2.1.3.1; 2.1.3.2 unser Prozesscounter
 			variable Zero, Carry, Negative, Overflow: Boolean := FALSE;
 
@@ -23,6 +23,7 @@ ARCHITECTURE behav OF CPU IS
 		      x:=(Instr / (2**reg_addr_width)**2)mod 2**reg_addr_width; -- Anweisung zerlegen
 		      y:= (Instr / 2** reg_addr_width) mod 2** reg_addr_width;  -- Anweisung zerlegen
 		      z:= Instr mod 2** reg_addr_width;                         -- Anweisung zerlegen
+		      -- a muss noch initialisiert werden a:= 
 
 					write_PC_CMD(l, PC, Op, X, Y, Z);													-- vor INC(PC)!!!
 
@@ -41,8 +42,10 @@ ARCHITECTURE behav OF CPU IS
 -- ===============================================================================================================================================
 
 		        -- Arithmetic
-		        
-		        
+		        when code_add		=> 
+		        when code_addc		=> 
+			when code_sub		=> 
+			when code_subc		=> 
 						-- Logical
 						when code_not		=> Reg(x):= "NOT"(Reg(y));		    -- Verneinung 			(3.3.1.7)
 						when code_and		=> Reg(x):= (Reg(y))and(Reg(z));	-- UND-Operation		(3.3.1.8)
@@ -68,10 +71,9 @@ ARCHITECTURE behav OF CPU IS
 		          report "ungültig"
 		          severity error;
 		      end case;
-					write_regs (l, Reg, Zero, Carry, Negative, Overflow);
+					write_regs (l, x,y,z,a);
 					writeline(TraceFile,l);
 		    	--wait; (wegen loop nicht mehr gebraucht)           --damit der Prozessor nicht den Speicher im endlos modus durcharbeitet
 			end loop;
     end process;
 END behav;
-
