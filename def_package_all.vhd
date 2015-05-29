@@ -95,6 +95,9 @@ package def_package_all is
 	function "XOR" (constant A,B:data_type)
 		return data_type;
 
+	function CheckZeroFlag (constant Reg: data_type)
+		return boolean; 
+
 
 -- ===============================================================================================================================================
  -- die Proceduren / Funktionen für unser IO
@@ -102,19 +105,18 @@ package def_package_all is
 	
 	procedure print_tail (variable f:out text);
 
-	procedure write_PC_CMD (variable l:inout line; constant PC in data_type; constant OP: in opcode_type; constant x,y,z: in reg_addr_type);
+	procedure write_PC_CMD (variable l:inout line; constant PC: in data_type; constant OP: in opcode_type; constant x,y,z: in reg_addr_type);
 
 	procedure print_header (variable f: out text);
 
-	procedure write_param (variable l:inout line; constant param in data_type);
+	procedure write_param (variable l:inout line; constant param: in data_type);
 
 	procedure write_NoParam (variable l: inout line);
 
 	procedure write_regs (variable l: inout line; constant r0, r1, r2, r3 : in data_type );
   
-  procedure write_flags (variable l: inout line; constant Zero, Carry, Negative, Overflow : in data_type );
+	procedure write_flags (variable l: inout line; constant Zero, Carry, Negative, Overflow : in boolean );
   
   -- unsere transformationsfunktionen (hex_image, cmd_image, ...) fehlen noch.
       
 end def_package_all;
-
