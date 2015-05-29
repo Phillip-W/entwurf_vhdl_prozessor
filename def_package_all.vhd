@@ -98,6 +98,14 @@ package def_package_all is
 	function CheckZeroFlag (constant Reg: data_type)
 		return boolean; 
 
+	procedure ADD (constant O1, O2: in data_type; R: inout data_type; C, Z, O: out boolean);
+
+	procedure ADDC (constant O1, O2: in data_type; R: inout data_type;  C: inout boolean; Z, O: out boolean);
+
+	procedure SUB (constant O1, O2: in data_type; R: inout data_type; Z, N: out boolean);
+
+	procedure SUBC (constant O1, O2: in data_type; R: inout data_type; C: inout boolean; Z, O, N: out boolean);
+
 
 -- ===============================================================================================================================================
  -- die Proceduren / Funktionen für unser IO

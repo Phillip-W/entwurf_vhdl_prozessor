@@ -60,6 +60,74 @@ package body def_package_all is
 		return false; 
 		end if;
 	end CheckZeroFlag;
+	
+	procedure ADD (constant O1, O2: in data_type; R: inout data_type; C, Z, O: out boolean) is
+	variable ZR: natural;
+	begin
+		ZR:= O1 + O2;
+		if (ZR>=(2**data_width)) then
+			O:= true;
+			ZR:= ZR- 2**data_width;
+			C:=true;
+		end if;
+		R:= ZR;
+		
+		Z:= CheckZeroFlag(R);
+	end ADD;
+
+	procedure ADDC (constant O1, O2: in data_type; R: inout data_type; C: inout boolean; Z, O: out boolean) is
+	variable ZR: natural;
+	begin
+		ZR:=0;
+		if C then 
+			ZR:= 2**data_width;
+		end if;
+		ZR:= O1 + O2 + ZR;
+		if (ZR>=(2**data_width)) then
+			O:= true;
+			ZR:= ZR- 2**data_width;
+			C:=true;
+		else 
+			C:=false;
+		end if;
+		R:= ZR;
+		Z:= CheckZeroFlag(R);
+	end ADDC;
+
+	procedure SUB (constant O1, O2: in data_type; R: inout data_type; Z, N: out boolean) is
+	variable ZR: integer;
+	begin
+		ZR:= O1 - O2;
+		if (ZR<0) then
+			N:= true;
+			ZR:= ZR*(-1);
+		end if;
+		R:= ZR;
+		Z:= CheckZeroFlag(R);
+	end SUB;
+	
+	procedure SUBC (constant O1, O2: in data_type; R: inout data_type; C: inout boolean; Z, O, N: out boolean) is
+	variable ZR: integer;
+	begin	
+		ZR:=0;
+		if(C) then 
+			ZR:= 2**data_width;
+		end if;
+		ZR:= O1 - O2 - ZR;
+		if (ZR<0) then
+			N:= true;
+			if (ZR<= (-1)*(2**data_width)) then
+				ZR:= ZR+ 2**data_width;
+				C:= true;
+			else
+				C:=false;
+			end if;	
+		else
+			C:=false;
+		end if;
+		R:= ZR;
+		Z:= CheckZeroFlag(R);
+	end SUBC;
 
 -- ===============================================================================================================
 -- Proceduren / Funktionen für unser IO
