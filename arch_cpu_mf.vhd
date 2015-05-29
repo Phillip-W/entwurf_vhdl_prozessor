@@ -42,10 +42,10 @@ ARCHITECTURE behav OF CPU IS
 -- ===============================================================================================================================================
 
 		        -- Arithmetic
-		        when code_add		=> 
-		        when code_addc		=> 
-			when code_sub		=> 
-			when code_subc		=> 
+		        when code_add		=> ADD(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow);
+		        when code_addc		=> ADDC(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow);
+			when code_sub		=> SUB(Reg(y), Reg(z), Reg(x), Zero, Negative);
+			when code_subc		=> SUBC(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow, Negative);
 						-- Logical
 						when code_not		=> Reg(x):= "NOT"(Reg(y));		    -- Verneinung 			(3.3.1.7)
 						when code_and		=> Reg(x):= (Reg(y))and(Reg(z));	-- UND-Operation		(3.3.1.8)
