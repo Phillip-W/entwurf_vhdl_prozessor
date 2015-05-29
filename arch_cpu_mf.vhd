@@ -71,7 +71,7 @@ ARCHITECTURE behav OF CPU IS
 		          report "ungültig"
 		          severity error;
 		      end case;
-					write_regs (l, x,y,z,a);
+					write_regs (l, Reg(x), Reg(y), Reg(z), Reg(a));
 					writeline(TraceFile,l);
 		    	--wait; (wegen loop nicht mehr gebraucht)           --damit der Prozessor nicht den Speicher im endlos modus durcharbeitet
 			end loop;
