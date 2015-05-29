@@ -1,5 +1,7 @@
 LIBRARY IEEE;
+use std.standard.all;
 Use IEEE.numeric_std.ALL;
+
 package body def_package_all is
  
 
@@ -49,10 +51,21 @@ package body def_package_all is
 
 	end "XOR";
 
+	function CheckZeroFlag (constant Reg: data_type)
+		return boolean is
+		begin
+		if (Reg = 0) then
+		return true;
+		else 
+		return false; 
+		end if;
+	end CheckZeroFlag;
 
 -- ===============================================================================================================
 -- Proceduren / Funktionen für unser IO
 -- ===============================================================================================================
+
+
 
 	procedure print_tail (variable f:out text) is
 		variable l:line;
@@ -61,11 +74,11 @@ package body def_package_all is
 			writeline(f,l);
 	end print_tail;
 
-	procedure write_PC_CMD (variable l:inout line; constant PC in data_type; constant OP: in opcode_type; constant x,y,z: in reg_addr_type) is
+	procedure write_PC_CMD (variable l:inout line; constant PC: in data_type; constant OP: in opcode_type; constant x,y,z: in reg_addr_type) is
 		begin
-			write(l, hex_image (PC), left, 3);			-- hex_image function muss noch geschrieben werden
+			write(l, integer'image(PC), left, 3);			-- hex_image function muss noch geschrieben werden
 			write(l, string'(" | "));
-			write(l, cmd_image (OP), left, 4);			-- cmd_image function muss noch geschrieben werden
+			write(l, integer'image(OP), left, 4);			-- cmd_image function muss noch geschrieben werden
 			write(l, string'(" | "));
 			write(l, X, left , 1);
 			write(l, y, left , 1);
@@ -96,9 +109,9 @@ package body def_package_all is
 			writeline(f,l);
 	end print_header;
 
-	procedure write_param (variable l:inout line; constant param in data_type) is
+	procedure write_param (variable l:inout line; constant param: in data_type) is
 		begin
-			write(l, param_image(param), left , 3);          -- dafür brauchen wir auch noch die transformation integers zu string
+			write(l, integer'image(param), left , 3);          -- dafür brauchen wir auch noch die transformation integers zu string
 			write(l, string'(" | "));
 	end write_param;
 
@@ -110,27 +123,26 @@ package body def_package_all is
 
 	procedure write_regs (variable l: inout line; constant r0, r1, r2, r3 : in data_type ) is
 	 begin
-	    write(l, reg_image (r0), left, 3);			    -- dafür brauchen wir auch noch die transformation integers zu string  (param_image verwenden)
+	    write(l, integer'image(r0), left, 3);			    -- dafür brauchen wir auch noch die transformation integers zu string  (param_image verwenden)
 		  write(l, string'(" | "));	
-      write(l, reg_image (r1), left, 3);			    
+      write(l, integer'image (r1), left, 3);			    
 			write(l, string'(" | "));	
-      write(l, reg_image (r2), left, 3);			    
+      write(l, integer'image (r2), left, 3);			    
 			write(l, string'(" | "));	
-      write(l, reg_image (r3), left, 3);			    
+      write(l, integer'image (r3), left, 3);			    
 			write(l, string'(" | "));						
 	end write_regs;
   
-	procedure write_flags (variable l: inout line; constant Zero, Carry, Negative, Overflow : in data_type ) is
+	procedure write_flags (variable l: inout line; constant Zero, Carry, Negative, Overflow : in boolean ) is
 		begin
-			write(l, flag_image (Zero), left, 3);			    -- dafür brauchen wir auch noch die transformation von boolean zu Characters/string (T, F)
+			write(l, boolean'image(Zero), left, 3);			    -- dafür brauchen wir auch noch die transformation von boolean zu Characters/string (T, F)
 			write(l, string'(" | "));	
-      write(l, flag_image (Carry), left, 3);			    
+      write(l, boolean'image (Carry), left, 3);			    
 			write(l, string'(" | "));	
-      write(l, flag_image (Negative), left, 3);			    
+      write(l, boolean'image (Negative), left, 3);			    
 			write(l, string'(" | "));	
-      write(l, flag_image (Overflow), left, 3);			    
+      write(l, boolean'image (Overflow), left, 3);			    
 			write(l, string'(" | "));						
 	end write_flags;
       
 end def_package_all;
-
