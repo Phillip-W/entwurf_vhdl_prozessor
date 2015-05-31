@@ -83,15 +83,24 @@ BEGIN
  
  
 			-- Jump
- 			WHEN code_jmp => PC := jmp(x);
- 			WHEN code_jz => PC := jz(x, PC,zero);
- 			WHEN code_jc => PC := jc(x, PC, carry);
- 			WHEN code_jn => PC := jc(x, PC, negative);
- 			WHEN code_jo => PC := jc(x, PC, overflow);
- 			WHEN code_jnz => PC := jc(x, PC, zero);
- 			WHEN code_jnc => PC := jc(x, PC, carry);
- 			WHEN code_jnn => PC := jc(x, PC, negative);
- 			WHEN code_jno => PC := jc(x, PC, overflow);
+ 			WHEN code_jmp => PC := jmp(Memory(PC));
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jz => PC := jz(Memory(PC), PC,zero);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jc => PC := jc(Memory(PC), PC, carry);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jn => PC := jc(Memory(PC), PC, negative);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jo => PC := jc(Memory(PC), PC, overflow);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jnz => PC := jc(Memory(PC), PC, zero);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jnc => PC := jc(Memory(PC), PC, carry);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jnn => PC := jc(Memory(PC), PC, negative);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jno => PC := jc(Memory(PC), PC, overflow);
+ 				write_param(l, Memory(PC));
  			
 
 			WHEN OTHERS => -- ungültig oder bisher nicht implementiert
