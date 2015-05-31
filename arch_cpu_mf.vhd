@@ -52,21 +52,21 @@ BEGIN
 			WHEN code_and => Reg(x) := (Reg(y)) AND (Reg(z)); -- UND-Operation (3.3.1.8)
 			WHEN code_or => Reg(x) := (Reg(y)) OR (Reg(z)); -- OR-Operation (3.3.1.9)
 			WHEN code_xor => Reg(x) := (Reg(y)) XOR (Reg(z)); -- xor (3.3.1.10)
-			-- when code:rea =>
- 
- 
+			WHEN code_rea => REA(Reg(x), Reg(y));							-- rea (3.3.11)
+			WHEN code_reo => REO(Reg(x), Reg(y));							-- reo (3.3.12)
+			WHEN code_rex => REX(Reg(x), Reg(y));							-- rex (3.3.13) 
 			-- Shift / Rotate
- 			when code_sll        => XSLL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-			when code_srl        => XSRL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-			when code_sra        => XSRA(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-			when code_rol        => Carry := FALSE;
-					        ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-			when code_rolc       => Carry := TRUE;
-					        ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-			when code_ror        => Carry := FALSE;
-			                        RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow); 
-			when code_rorc       => Carry := TRUE;
-			                        RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+ 			-- when code_sll        => XSLL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			-- when code_srl        => XSRL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			-- when code_sra        => XSRA(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			-- when code_rol        => Carry := FALSE;
+			-- 		        ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			-- when code_rolc       => Carry := TRUE;
+			-- 		        ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			-- when code_ror        => Carry := FALSE;
+			--                         RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow); 
+			-- when code_rorc       => Carry := TRUE;
+			--                         RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
  
 			-- Memory Access
  
@@ -88,3 +88,4 @@ BEGIN
 	END LOOP;
 END PROCESS;
 END behav;
+
