@@ -162,55 +162,55 @@ PACKAGE BODY def_package_all IS
 	BEGIN
 		IF zero_flag = true THEN
 			return prosition;
-		END IF
+		END IF;
 	END jz;
 	
 	PROCEDURE jc(CONSTANT position: INOUT data_type; carry_flag: IN BOOLEAN) IS
 	BEGIN
 		IF carry_flag = true THEN
 			return prosition;
-		END IF
+		END IF;
 	END jc;
 	
 	PROCEDURE jn(CONSTANT position: INOUT data_type; negative_flag: IN BOOLEAN) IS
 	BEGIN
 		IF negative_flag = true THEN
 			return prosition;
-		END IF
+		END IF;
 	END jn;
 	
 	PROCEDURE jo(CONSTANT position: INOUT data_type; overflow_flag: IN BOOLEAN) IS
 	BEGIN
 		IF overflow_flag = true THEN
 			return prosition;
-		END IF
+		END IF;
 	END jo;
 	PROCEDURE jnz(CONSTANT position: INOUT data_type; zero_flag: IN BOOLEAN) IS
 	BEGIN
 		IF zero_flag = false THEN
 			return prosition;
-		END IF
+		END IF;
 	END jnz;
 	
 	PROCEDURE jnc(CONSTANT position: INOUT data_type; carry_flag: IN BOOLEAN) IS
 	BEGIN
 		IF carry_flag = false THEN
 			return prosition;
-		END IF
+		END IF;
 	END jnc;
 	
 	PROCEDURE jnn(CONSTANT position: INOUT data_type; negative_flag: IN BOOLEAN) IS
 	BEGIN
 		IF negative_flag = false THEN
 			return prosition;
-		END IF
+		END IF;
 	END jnn;
 	
 	PROCEDURE jno(CONSTANT position: INOUT data_type; overflow_flag: IN BOOLEAN) IS
 	BEGIN
 		IF overflow_flag = false THEN
 			return prosition;
-		END IF
+		END IF;
 	END jno;
 	
 	-- ===============================================================================================================
