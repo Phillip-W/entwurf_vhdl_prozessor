@@ -71,7 +71,8 @@ PACKAGE def_package_all IS
 	CONSTANT code_jnn : opcode_type := 55; --3.3.1.35
 	CONSTANT code_jn0 : opcode_type := 56; --3.3.1.36
 
-	FUNCTION INC (CONSTANT PC : addr_type) -- PC-"increaser" (2.1.3.4; 2.1.3.3 RETURN addr_type;
+	FUNCTION INC (CONSTANT PC : addr_type) -- PC-"increaser" (2.1.3.4; 2.1.3.3) 
+		RETURN addr_type;
 	-- ===============================================================================================================================================
 	-- die Funktionen / Proceduren für unsere OPCodes
 	-- ===============================================================================================================================================
@@ -94,13 +95,16 @@ PACKAGE def_package_all IS
 
 	PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O, N : OUT BOOLEAN);
 
-	FUNCTION "SLL" (CONSTANT A : data_type) RETURN data_type;
-	FUNCTION "SRL" (CONSTANT A : data_type) RETURN data_type;
-	FUNCTION "SRA" (CONSTANT A : data_type) RETURN data_type;
-	FUNCTION "ROL" (CONSTANT A : data_type) RETURN data_type;
-	FUNCTION "ROLC" (CONSTANT A : data_type) RETURN data_type;
-	FUNCTION "ROR" (CONSTANT A : data_type) RETURN data_type;
-	FUNCTION "RORC" (CONSTANT A : data_type) RETURN data_type;
+	Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+					
+	Procedure XSRA(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+				  
+	procedure ROLC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
+		       variable N,O: out boolean) ;
+		
+	procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
+		       variable N,O: out boolean);
+
 	-- ===============================================================================================================================================
 	-- die Proceduren / Funktionen für unser IO
 	-- ===============================================================================================================================================
