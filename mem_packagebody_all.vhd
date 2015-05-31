@@ -9,12 +9,12 @@ package body mem_package_all is
           (   0 => code_nop * (2**reg_addr_width)**3,
               1 => code_stop * (2**reg_addr_width)**3,
               13 => code_sll * (2**reg_addr_width)**3,
-			        14 => code_srl * (2**reg_addr_width)**3,
-			        15 => code_sra * (2**reg_addr_width)**3,
-			        16 => code_rol * (2**reg_addr_width)**3,
-			        17 => code_rolc * (2**reg_addr_width)**3,
-			        18 => code_ror * (2**reg_addr_width)**3,
-			        19 => code_rorc * (2**reg_addr_width)**3,
+	      14 => code_srl * (2**reg_addr_width)**3,
+      	      15 => code_sra * (2**reg_addr_width)**3,
+	      16 => code_rol * (2**reg_addr_width)**3,
+	      17 => code_rolc * (2**reg_addr_width)**3,
+	      18 => code_ror * (2**reg_addr_width)**3,
+	      19 => code_rorc * (2**reg_addr_width)**3,
               others => 0);
   end init_memory;        
 end mem_package_all;
