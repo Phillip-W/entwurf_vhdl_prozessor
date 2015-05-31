@@ -72,7 +72,9 @@ BEGIN
  
 			-- Memory Access
  			WHEN code_ldc => Reg(x):= Memory(PC);							-- ldc (3.3.21)
+ 				write_param(l, Memory(PC));
  			WHEN code_ldd => Reg(x):= Memory(Memory(PC));			-- ldc (3.3.22)
+ 				write_param(l, Memory(PC));
  			WHEN code_ldr => Reg(x):= Memory(Reg(Y));					-- ldc (3.3.23)
  			WHEN code_std => Memory(Memory(PC)):= Reg(x);			-- ldc (3.3.24)
  			WHEN code_str => Memory(Reg(Y)):=Reg(x);					-- ldc (3.3.25)
