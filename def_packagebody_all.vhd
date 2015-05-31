@@ -7,7 +7,8 @@ PACKAGE BODY def_package_all IS
 	-- Funktionen für die Kernfunktionalität unserer CPU
 	-- ===============================================================================================================
 
-	FUNCTION INC (CONSTANT PC : addr_type) -- PC-"increaser" (2.1.3.4; 2.1.3.3) RETURN addr_type IS
+	FUNCTION INC (CONSTANT PC : addr_type) -- PC-"increaser" (2.1.3.4; 2.1.3.3) 
+	RETURN addr_type IS
 	BEGIN
 		RETURN (PC + 1)MOD 2 ** addr_width; -- Überlauf unseres PC vermeiden
 	END INC;
@@ -15,12 +16,14 @@ PACKAGE BODY def_package_all IS
 	-- ===============================================================================================================
 	-- Funktionen für unsere OPCodes
 	-- ===============================================================================================================
-	FUNCTION "NOT" (CONSTANT A : data_type) -- IO fehlt noch RETURN data_type IS
+	FUNCTION "NOT" (CONSTANT A : data_type) -- IO fehlt noch 
+	RETURN data_type IS
 		BEGIN
 			RETURN - A - 1 + 2 ** data_width;
 	END "NOT";
 
-	FUNCTION "AND" (CONSTANT A, B : data_type) -- IO fehlt noch RETURN data_type IS
+	FUNCTION "AND" (CONSTANT A, B : data_type) -- IO fehlt noch 
+	RETURN data_type IS
 		VARIABLE r : data_type := 0;
 	BEGIN
 		FOR i IN 0 TO data_width LOOP
@@ -30,13 +33,15 @@ PACKAGE BODY def_package_all IS
 		END LOOP; RETURN r;
 	END "AND";
 
-	FUNCTION "OR" (CONSTANT A, B : data_type) -- IO fehlt noch RETURN data_type IS
+	FUNCTION "OR" (CONSTANT A, B : data_type) -- IO fehlt noch 
+	RETURN data_type IS
 		BEGIN
 			RETURN to_integer(to_unsigned(a, data_width) AND to_unsigned(b, data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
 
 	END "OR";
  
-	FUNCTION "XOR" (CONSTANT A, B : data_type) -- IO fehlt noch RETURN data_type IS
+	FUNCTION "XOR" (CONSTANT A, B : data_type) -- IO fehlt noch 
+	RETURN data_type IS
 		BEGIN
 			RETURN to_integer(to_unsigned(a, data_width) XOR to_unsigned(b, data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
 
@@ -130,9 +135,9 @@ PACKAGE BODY def_package_all IS
 	
 	PROCEDURE write_PC_CMD (VARIABLE l : INOUT line; CONSTANT PC : IN data_type; CONSTANT OP : IN opcode_type; CONSTANT x, y, z : IN reg_addr_type) IS
 	BEGIN
-		write(l, INTEGER'image(PC), left, 3); -- hex_image function muss noch geschrieben werden
+		write(l, INTEGER'image(PC), left, 3); 
 		write(l, STRING'(" | "));
-		write(l, INTEGER'image(OP), left, 4); -- cmd_image function muss noch geschrieben werden
+		write(l, INTEGER'image(OP), left, 4); -- INTEGER'image ist heir nicht ganz das Richtige, weil hier danach der Name des OPCodes und nicht die Nummer stehen soll
 		write(l, STRING'(" | "));
 		write(l, X, left, 1);
 		write(l, y, left, 1);
@@ -165,7 +170,7 @@ PACKAGE BODY def_package_all IS
 	
 	PROCEDURE write_param (VARIABLE l : INOUT line; CONSTANT param : IN data_type) IS
 	BEGIN
-		write(l, INTEGER'image(param), left, 3); -- dafür brauchen wir auch noch die transformation integers zu string
+		write(l, INTEGER'image(param), left, 3); 
 		write(l, STRING'(" | "));
 	END write_param;
 	
@@ -177,7 +182,7 @@ PACKAGE BODY def_package_all IS
 	
 	PROCEDURE write_regs (VARIABLE l : INOUT line; CONSTANT r0, r1, r2, r3 : IN data_type ) IS
 	BEGIN
-		write(l, INTEGER'image(r0), left, 3); -- dafür brauchen wir auch noch die transformation integers zu string (param_image verwenden)
+		write(l, INTEGER'image(r0), left, 3); 
 		write(l, STRING'(" | ")); 
 		write(l, INTEGER'IMAGE (r1), left, 3); 
 		write(l, STRING'(" | ")); 
@@ -189,7 +194,7 @@ PACKAGE BODY def_package_all IS
 	 
 	PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN ) IS
 	BEGIN
-		write(l, BOOLEAN'image(Zero), left, 3); -- dafür brauchen wir auch noch die transformation von boolean zu Characters/string (T, F)
+		write(l, BOOLEAN'image(Zero), left, 3); -- gute Idee, wenn du dir aber die Implementierung anschaust, siehst du, dass der nicht 'T' und 'F' macht, sondern 0 und 1
 		write(l, STRING'(" | ")); 
 		write(l, BOOLEAN'IMAGE (Carry), left, 3); 
 		write(l, STRING'(" | ")); 
