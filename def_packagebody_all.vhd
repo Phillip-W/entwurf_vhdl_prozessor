@@ -1,6 +1,9 @@
 LIBRARY IEEE;
-USE std.standard.ALL;
+USE std.standard.ALL; -- wofür?
 USE IEEE.numeric_std.ALL;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_unsigned.all;
+use IEEE.STD_LOGIC_1164.all;
 
 PACKAGE BODY def_package_all IS
 	-- ===============================================================================================================
