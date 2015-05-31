@@ -199,4 +199,4 @@ PACKAGE BODY def_package_all IS
 		write(l, STRING'(" | ")); 
 	END write_flags;
 	 
-	END def_package_all;
+END def_package_all;
