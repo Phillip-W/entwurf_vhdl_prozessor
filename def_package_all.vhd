@@ -103,6 +103,14 @@ PACKAGE def_package_all IS
 		
 	procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
 		       variable N,O: out boolean);
+		       
+        -- ========================================================================================================================
+        -- Function for Conversionpack of IO
+        -- =======================================================================================================================
+	
+	function hex_image ( variable d : data_type);    ----Conversion function for IO  hex_image
+	
+	
 	-- ===============================================================================================================================================
 	-- die Proceduren / Funktionen für unser IO
 	-- ===============================================================================================================================================
