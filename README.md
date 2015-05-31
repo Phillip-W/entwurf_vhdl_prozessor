@@ -17,17 +17,17 @@
 	1. Generic Parameters
     	1. The data width is generic with a minimum of 12 bit.	(data_width : positive)
     	2. The address width is generic with a minimum of 12 bit which implies a total of 2^(address_width : positive) addressable memory cells.
-  2. Ports
-    1. A clock input (processor is triggered on the positive clock edge).	(clk:bit)
-    2. A reset input (asynchronous, active low).	(res:bit)
-    3. A data bus from memory or I/O-devices to processor, size according to 1.1.1. (dbus_m_io : positive)
-    4. A data bus from processor to memory, size according to 1.1.1. 		(dbus_mem : positive)
-    5. An address bus from processor to memory, size according to 1.1.2.	(abus_mem : positive)
-    6. A 1-Bit control signal to switch between data from memory (if ‘0’) and I/O-devices (if ‘1’).	(c_m_io:bit)
-    7. A 1-Bit control signal to indicate write-access to the memory (active high).		(c_wa:bit)
-    8. A 1-Bit control signal to indicate access to the I/O-devices (active high).		(c_io:bit)
-    9. A 1-Bit control signal to distinguish between read- (if ‘0’) and write-access (if ‘1’) to the I/O-devices. 	(d_io _ bit)
-    10. A 1-Bit control signal to indicate if the addressed I/O-device is ready to send/receive data to/from the processor (active high). 	(i_sr:bit)
+  2. ~~Ports~~
+    1. ~~A clock input (processor is triggered on the positive clock edge).~~
+    2. ~~A reset input (asynchronous, active low).~~
+    3. ~~A data bus from memory or I/O-devices to processor, size according to 1.1.1.~~
+    4. ~~A data bus from processor to memory, size according to 1.1.1.~~
+    5. ~~An address bus from processor to memory, size according to 1.1.2.~~
+    6. ~~A 1-Bit control signal to switch between data from memory (if ‘0’) and I/O-devices (if ‘1’).~~
+    7. ~~A 1-Bit control signal to indicate write-access to the memory (active high).~~
+    8. ~~A 1-Bit control signal to indicate access to the I/O-devices (active high).~~
+    9. ~~A 1-Bit control signal to distinguish between read- (if ‘0’) and write-access (if ‘1’) to the I/O-devices.~~
+    10. ~~A 1-Bit control signal to indicate if the addressed I/O-device is ready to send/receive data to/from the processor (active high).~~
 
 2. Structural Description
   1. Internal Registers
@@ -42,7 +42,7 @@
       2. The initial value of the PC is 0x0.
       3. After an instruction has been fetched from the code memory, PC is incremented by one and thus contains the address of the next instruction to be fetched.
       4. After the PC reaches its maximum value (2^(address width) – 1), the next value is 0x0.
-  2. System Reset
+  2. ~~System Reset~~
     1. A low level on the reset input of the processor causes the system to go in a defined state (asynchronous reset, active low).
     2. Data registers and PC return to their initial states (according to points 2.1.2.2 and 2.1.3.2).
     3. The internal flags return to their initial state (according to points 3.2.4.2, 3.2.5.7, 3.2.6.3 and 3.2.7.4).
