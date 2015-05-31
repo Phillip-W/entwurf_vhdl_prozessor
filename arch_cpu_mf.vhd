@@ -9,12 +9,13 @@ BEGIN
 	FILE TraceFile : Text IS OUT "Trace";
 	VARIABLE l : line;
 	VARIABLE Memory : mem_type := init_memory; -- Speicher mit init_memory initialisieren
-	VARIABLE Reg : reg_type := (0 => 0, 1 => 0, OTHERS => 0); -- 2.1.2.2 bisher nicht verwendet (wird für die Operationen benötigt)
+	VARIABLE Reg : reg_type := (0 => 0, 1 => 0, OTHERS => 0); 
 	VARIABLE Instr : data_type; -- Aus dem Speicher geholte Anweisung
 	VARIABLE OP : opcode_type; -- aus der Instr errechneter OPCode (ableich mit unserem def_pack)
 	VARIABLE a, x, y, z : reg_addr_type; -- Registeradressen zur Verarbeitung unserer Anweisungen
 	VARIABLE PC : addr_type := 0; -- 2.1.3.1; 2.1.3.2 unser Prozesscounter
 	VARIABLE Zero, Carry, Negative, Overflow : BOOLEAN := FALSE;
+	VARIABLE param: data_type;
 
 	BEGIN
 		print_header(TraceFile);
@@ -54,7 +55,8 @@ BEGIN
 			WHEN code_xor => Reg(x) := (Reg(y)) XOR (Reg(z)); -- xor (3.3.1.10)
 			WHEN code_rea => REA(Reg(x), Reg(y));							-- rea (3.3.11)
 			WHEN code_reo => REO(Reg(x), Reg(y));							-- reo (3.3.12)
-			WHEN code_rex => REX(Reg(x), Reg(y));							-- rex (3.3.13) 
+			WHEN code_rex => REX(Reg(x), Reg(y));							-- rex (3.3.13)
+ 
 			-- Shift / Rotate
  			-- when code_sll        => XSLL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
 			-- when code_srl        => XSRL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
@@ -69,7 +71,11 @@ BEGIN
 			--                         RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
  
 			-- Memory Access
- 
+ 			WHEN code_ldc => Reg(x):= Memory(PC);							-- ldc (3.3.21)
+ 			WHEN code_ldd => Reg(x):= Memory(Memory(PC));			-- ldc (3.3.22)
+ 			WHEN code_ldr => Reg(x):= Memory(Reg(Y));					-- ldc (3.3.23)
+ 			WHEN code_std => Memory(Memory(PC)):= Reg(x);			-- ldc (3.3.24)
+ 			WHEN code_str => Memory(Reg(Y)):=Reg(x);					-- ldc (3.3.25)
  
 			-- I/O
  
