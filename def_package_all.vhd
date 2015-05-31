@@ -105,6 +105,21 @@ package def_package_all is
 	procedure SUB (constant O1, O2: in data_type; R: inout data_type; Z, N: out boolean);
 
 	procedure SUBC (constant O1, O2: in data_type; R: inout data_type; C: inout boolean; Z, O, N: out boolean);
+	
+	function "SLL" (constant A:data_type)
+	return data_type;
+  function "SRL" (constant A:data_type)
+	return data_type;
+  function "SRA" (constant A:data_type)
+	return data_type;
+  function "ROL" (constant A:data_type)
+	return data_type;
+  function "ROLC" (constant A:data_type)
+	return data_type;
+  function "ROR" (constant A:data_type)
+	return data_type;
+  function "RORC" (constant A:data_type)
+	return data_type;  
 
 
 -- ===============================================================================================================================================
