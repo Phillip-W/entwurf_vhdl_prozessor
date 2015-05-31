@@ -333,6 +333,24 @@ PACKAGE BODY def_package_all IS
         end RORC;
 				   
 	
+	
+	-- ===============================================================================================================
+	-- Conversionpack for IO
+	-- ===============================================================================================================
+	
+        function hex_image( variable d: data_type)                          ----------------hex_image
+	        return string is
+		constant hex_table : string (1 to 16) := "0123456789ABCDEF";
+		variable result : string(1 to 3);
+	    begin 
+		   result(3) := hex_table( d mod 16 + 1 );
+		   result(2) := hex_table( ( d / 16 ) mod 16 + 1 );
+		   result(1) := hex_table( d / 256 + 1 );
+		   return result;
+        end hex_image;	
+	
+	
+	
 	-- ===============================================================================================================
 	-- Proceduren / Funktionen für unser IO
 	-- ===============================================================================================================
