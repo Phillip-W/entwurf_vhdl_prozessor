@@ -153,63 +153,80 @@ PACKAGE BODY def_package_all IS
 	END SUBC;
 	
 	-- Jump procedures
-	PROCEDURE jmp(CONSTANT position: INOUT data_type) IS
+	FUNCTION jmp(CONSTANT position: INOUT data_type) IS
 	BEGIN
 		return position;
 	END jmp;
 	
-	PROCEDURE jz(CONSTANT position: INOUT data_type; zero_flag: IN BOOLEAN) IS
+	FUNCTION jz(CONSTANT position, pc_old: INOUT data_type; zero_flag: IN BOOLEAN) IS
 	BEGIN
 		IF zero_flag = true THEN
 			return prosition;
+		ELSE
+			return pc_old;
 		END IF;
 	END jz;
 	
-	PROCEDURE jc(CONSTANT position: INOUT data_type; carry_flag: IN BOOLEAN) IS
+	FUNCTION jc(CONSTANT position, pc_old: INOUT data_type; carry_flag: IN BOOLEAN) IS
 	BEGIN
 		IF carry_flag = true THEN
 			return prosition;
+		ELSE
+			return pc_old;
 		END IF;
 	END jc;
 	
-	PROCEDURE jn(CONSTANT position: INOUT data_type; negative_flag: IN BOOLEAN) IS
+	FUNCTION jn(CONSTANT position, pc_old: INOUT data_type; negative_flag: IN BOOLEAN) IS
 	BEGIN
 		IF negative_flag = true THEN
 			return prosition;
+		ELSE
+			return pc_old;
 		END IF;
 	END jn;
 	
-	PROCEDURE jo(CONSTANT position: INOUT data_type; overflow_flag: IN BOOLEAN) IS
+	FUNCTION jo(CONSTANT position, pc_old: INOUT data_type; overflow_flag: IN BOOLEAN) IS
 	BEGIN
 		IF overflow_flag = true THEN
 			return prosition;
+		ELSE
+			return pc_old;
 		END IF;
 	END jo;
-	PROCEDURE jnz(CONSTANT position: INOUT data_type; zero_flag: IN BOOLEAN) IS
+	
+	FUNCTION jnz(CONSTANT position, pc_old: INOUT data_type; zero_flag: IN BOOLEAN) IS
 	BEGIN
 		IF zero_flag = false THEN
 			return prosition;
+		ELSE
+			return pc_old;
 		END IF;
 	END jnz;
 	
-	PROCEDURE jnc(CONSTANT position: INOUT data_type; carry_flag: IN BOOLEAN) IS
+	FUNCTION jnc(CONSTANT position, pc_old: INOUT data_type; carry_flag: IN BOOLEAN) IS
 	BEGIN
 		IF carry_flag = false THEN
 			return prosition;
+		ELSE
+			return pc_old;
 		END IF;
 	END jnc;
 	
-	PROCEDURE jnn(CONSTANT position: INOUT data_type; negative_flag: IN BOOLEAN) IS
+	FUNCTION jnn(CONSTANT position, pc_old: INOUT data_type; negative_flag: IN BOOLEAN) IS
 	BEGIN
 		IF negative_flag = false THEN
 			return prosition;
+		ELSE
+			return pc_old;
 		END IF;
 	END jnn;
 	
-	PROCEDURE jno(CONSTANT position: INOUT data_type; overflow_flag: IN BOOLEAN) IS
+	FUNCTION jno(CONSTANT position, pc_old: INOUT data_type; overflow_flag: IN BOOLEAN) IS
 	BEGIN
 		IF overflow_flag = false THEN
 			return prosition;
+		ELSE
+			return pc_old;
 		END IF;
 	END jno;
 	

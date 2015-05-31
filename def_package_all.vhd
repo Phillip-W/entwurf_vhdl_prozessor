@@ -70,7 +70,7 @@ PACKAGE def_package_all IS
 	CONSTANT code_jnz : opcode_type := 53; --3.3.1.33
 	CONSTANT code_jnc : opcode_type := 54; --3.3.1.34
 	CONSTANT code_jnn : opcode_type := 55; --3.3.1.35
-	CONSTANT code_jn0 : opcode_type := 56; --3.3.1.36
+	CONSTANT code_jno : opcode_type := 56; --3.3.1.36
 
 	FUNCTION INC (CONSTANT PC : addr_type) -- PC-"increaser" (2.1.3.4; 2.1.3.3) 
 		RETURN addr_type;
@@ -111,7 +111,18 @@ PACKAGE def_package_all IS
 		
 	-- procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
 		       -- variable N,O: out boolean);
-
+	
+	-- JUMP Funktionen
+	FUNCTION jmp (CONSTANT position: INOUT data_type) RETURN data_type;
+	FUNCTION jz(CONSTANT position, pc_old: INOUT data_type; zero_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jc(CONSTANT position, pc_old: INOUT data_type; carry_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jn(CONSTANT position, pc_old: INOUT data_type; negative_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jo(CONSTANT position, pc_old: INOUT data_type; overflow_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jnz(CONSTANT position, pc_old: INOUT data_type; zero_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jnc(CONSTANT position, pc_old: INOUT data_type; carry_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jnn(CONSTANT position, pc_old: INOUT data_type; negative_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jno(CONSTANT position, pc_old: INOUT data_type; overflow_flag: IN BOOLEAN) RETURN data_type;
+	
 	-- ===============================================================================================================================================
 	-- die Proceduren / Funktionen für unser IO
 	-- ===============================================================================================================================================
