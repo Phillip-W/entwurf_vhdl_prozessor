@@ -30,6 +30,7 @@ PACKAGE def_package_all IS
 	ARRAY(addr_type) OF data_type;
 	TYPE reg_type IS -- 2.1.2.1 unsere "Register" (Array)
 	ARRAY(reg_addr_type) OF data_type;
+
 	-- ===============================================================================================================================================
 	--Hier alle OPCodes definieren (vollständig)
 	-- ===============================================================================================================================================
@@ -115,6 +116,11 @@ PACKAGE def_package_all IS
 	-- die Proceduren / Funktionen für unser IO
 	-- ===============================================================================================================================================
 	
+
+	FUNCTION PrintOpcode(code : opcode_type) return String;	
+
+	FUNCTION PrintBoolean(booleanvalue : boolean) return Character;	
+	
 	PROCEDURE print_tail (VARIABLE f : OUT text);
 	
 	PROCEDURE write_PC_CMD (VARIABLE l : INOUT line; CONSTANT PC : IN data_type; CONSTANT OP : IN opcode_type; CONSTANT x, y, z : IN reg_addr_type);
@@ -132,4 +138,3 @@ PACKAGE def_package_all IS
 	-- unsere transformationsfunktionen (hex_image, cmd_image, ...) fehlen noch.
 
 END def_package_all;
-
