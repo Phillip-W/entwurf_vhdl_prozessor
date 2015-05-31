@@ -95,13 +95,15 @@ PACKAGE def_package_all IS
 
 	PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O, N : OUT BOOLEAN);
 
-	-- FUNCTION "SLL" (CONSTANT A : data_type) RETURN data_type;
-	-- FUNCTION "SRL" (CONSTANT A : data_type) RETURN data_type;
-	-- FUNCTION "SRA" (CONSTANT A : data_type) RETURN data_type;
-	-- FUNCTION "ROL" (CONSTANT A : data_type) RETURN data_type;
-	-- FUNCTION "ROLC" (CONSTANT A : data_type) RETURN data_type;
-	-- FUNCTION "ROR" (CONSTANT A : data_type) RETURN data_type;
-	-- FUNCTION "RORC" (CONSTANT A : data_type) RETURN data_type;
+	Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+					
+	Procedure XSRA(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+				  
+	procedure ROLC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
+		       variable N,O: out boolean) ;
+		
+	procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
+		       variable N,O: out boolean);
 
 	-- ===============================================================================================================================================
 	-- die Proceduren / Funktionen für unser IO
