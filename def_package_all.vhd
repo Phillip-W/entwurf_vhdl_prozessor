@@ -117,6 +117,7 @@ PACKAGE def_package_all IS
 	-- ===============================================================================================================================================
 	
 
+	FUNCTION PrintOpcode(code : opcode_type) return String;	
 
 	FUNCTION PrintBoolean(booleanvalue : boolean) return Character;	
 	
@@ -137,4 +138,3 @@ PACKAGE def_package_all IS
 	-- unsere transformationsfunktionen (hex_image, cmd_image, ...) fehlen noch.
 
 END def_package_all;
-
