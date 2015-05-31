@@ -156,7 +156,49 @@ PACKAGE BODY def_package_all IS
 	-- Proceduren / Funktionen für unser IO
 	-- ===============================================================================================================
 	
-	
+	FUNCTION PrintOpcode(code : opcode_type) return String is
+	BEGIN
+		Case code is
+			when 0 => return"NOP";
+			when 1 => return"STOP";
+			when 2 => return"ADD";
+			when 3 => return"ADDC";
+			when 4 => return"SUB";
+			when 5 => return"SUBC";
+			when 6 => return"NOT";
+			when 7 => return"AND";
+			when 8 => return"OR";
+			when 9 => return"XOR";
+			when 10 => return"REA";
+			when 11 => return"REO";
+			when 12 => return"REX";
+			when 13 => return"SLL";
+			when 14 => return"SRL";
+			when 15 => return"SRA";
+			when 16 => return"ROL";
+			when 17 => return"ROLC";
+			when 18 => return"ROR";
+			when 19 => return"RORC";
+			when 32 => return"LDC";
+			when 33 => return"LDD";
+			when 34 => return"LDR";
+			when 35 => return"STD";
+			when 36 => return"STR";
+			when 37 => return"IN";
+			when 38 => return"OUT";
+			when 48 => return"JMP";
+			when 49 => return"JZ"; 
+			when 50 => return"JC";
+			when 51 => return"JN";
+			when 52 => return"JO";
+			when 53 => return"JNZ";
+			when 54 => return"JNC";
+			when 55 => return"JNN";
+			when 56 => return"JNO";
+			when others =>
+	end case;
+	end PrintOpcode;
+
 
 	FUNCTION PrintBoolean(booleanvalue : boolean) return Character is
 	BEGIN
@@ -178,7 +220,7 @@ PACKAGE BODY def_package_all IS
 	BEGIN
 		write(l, INTEGER'image(PC), left, 3); 
 		write(l, STRING'(" | "));
-		write(l, OP'SIMPLE_NAME, left, 4); -- INTEGER'image ist heir nicht ganz das Richtige, weil hier danach der Name des OPCodes und nicht die Nummer stehen soll
+		write(l, PrintOpcode(OP), left, 4); -- INTEGER'image ist heir nicht ganz das Richtige, weil hier danach der Name des OPCodes und nicht die Nummer stehen soll
 		write(l, STRING'(" | "));
 		write(l, X, left, 1);
 		write(l, y, left, 1);
@@ -246,4 +288,3 @@ PACKAGE BODY def_package_all IS
 	END write_flags;
 	 
 END def_package_all;
-
