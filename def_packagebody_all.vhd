@@ -1,216 +1,202 @@
 LIBRARY IEEE;
-use std.standard.all;
-Use IEEE.numeric_std.ALL;
+USE std.standard.ALL;
+USE IEEE.numeric_std.ALL;
 
-package body def_package_all is
+PACKAGE BODY def_package_all IS
+	-- ===============================================================================================================
+	-- Funktionen für die Kernfunktionalität unserer CPU
+	-- ===============================================================================================================
+
+	FUNCTION INC (CONSTANT PC : addr_type) -- PC-"increaser" (2.1.3.4; 2.1.3.3) RETURN addr_type IS
+	BEGIN
+		RETURN (PC + 1)MOD 2 ** addr_width; -- Überlauf unseres PC vermeiden
+	END INC;
+
+	-- ===============================================================================================================
+	-- Funktionen für unsere OPCodes
+	-- ===============================================================================================================
+	FUNCTION "NOT" (CONSTANT A : data_type) -- IO fehlt noch RETURN data_type IS
+		BEGIN
+			RETURN - A - 1 + 2 ** data_width;
+	END "NOT";
+
+	FUNCTION "AND" (CONSTANT A, B : data_type) -- IO fehlt noch RETURN data_type IS
+		VARIABLE r : data_type := 0;
+	BEGIN
+		FOR i IN 0 TO data_width LOOP
+			IF ((A/2 ** i) MOD 2) + ((B/2 ** i)MOD 2) > 1 THEN
+				r := r + 2 ** i;
+			END IF;
+		END LOOP; RETURN r;
+	END "AND";
+
+	FUNCTION "OR" (CONSTANT A, B : data_type) -- IO fehlt noch RETURN data_type IS
+		BEGIN
+			RETURN to_integer(to_unsigned(a, data_width) AND to_unsigned(b, data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
+
+	END "OR";
  
+	FUNCTION "XOR" (CONSTANT A, B : data_type) -- IO fehlt noch RETURN data_type IS
+		BEGIN
+			RETURN to_integer(to_unsigned(a, data_width) XOR to_unsigned(b, data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
 
--- ===============================================================================================================
--- Funktionen für die Kernfunktionalität unserer CPU
--- ===============================================================================================================
+	END "XOR";
+
+	FUNCTION CheckZeroFlag (CONSTANT Reg : data_type) RETURN BOOLEAN IS
+	BEGIN
+		IF (Reg = 0) THEN RETURN true;
+		ELSE RETURN false;
+		END IF;
+	END CheckZeroFlag;
  
-  function INC (constant PC: addr_type)		     -- PC-"increaser" (2.1.3.4; 2.1.3.3)
-		return addr_type is
-		begin
-			return (PC+1)mod 2**addr_width;				   -- Überlauf unseres PC vermeiden
-    end INC; 
+	PROCEDURE ADD (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O : OUT BOOLEAN) IS 
+		VARIABLE ZR : NATURAL;
+		BEGIN
+		ZR := O1 + O2;
+		IF (ZR >= (2 ** data_width)) THEN
+			O := true;
+			ZR := ZR - 2 ** data_width;
+			C := true;
+		END IF;
+		R := ZR;
+	 
+		Z := CheckZeroFlag(R);
+	END ADD;
 
-
-
--- ===============================================================================================================
--- Funktionen für unsere OPCodes
--- ===============================================================================================================
-	function "NOT" (constant A:data_type)       -- IO fehlt noch
-		return data_type is
-		begin
-		return -A -1 +2**data_width;
-	end "NOT";
-
-	function "AND" (constant A,B:data_type)     -- IO fehlt noch
-		return data_type is
-		variable r : data_type :=0;
-		begin
-			for i in 0 to data_width loop
-				if ((A/2**i) mod 2)+ ((B/2**i)mod 2)>1 then r:= r+2**i;
-				end if;
-			end loop;
-		return r;
-	end "AND";
-
-	function "OR" (constant A,B:data_type)     -- IO fehlt noch
-		return data_type is
-		begin
-		return to_integer(to_unsigned(a, data_width) and to_unsigned(b,data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
-
-	end "OR";
+	PROCEDURE ADDC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O : OUT BOOLEAN) IS
+	VARIABLE ZR : NATURAL;
+	BEGIN
+		ZR := 0;
+		IF C THEN
+			ZR := 2 ** data_width;
+		END IF;
+		ZR := O1 + O2 + ZR;
+		IF (ZR >= (2 ** data_width)) THEN
+			O := true;
+			ZR := ZR - 2 ** data_width;
+			C := true;
+		ELSE
+			C := false;
+		END IF;
+		R := ZR;
+		Z := CheckZeroFlag(R);
+	END ADDC;
 	
-	function "XOR" (constant A,B:data_type)   -- IO fehlt noch
-		return data_type is
-		begin
-		return to_integer(to_unsigned(a, data_width) xor to_unsigned(b,data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
-
-	end "XOR";
-
-	function CheckZeroFlag (constant Reg: data_type)
-		return boolean is
-		begin
-		if (Reg = 0) then
-		return true;
-		else 
-		return false; 
-		end if;
-	end CheckZeroFlag;
+	PROCEDURE SUB (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; Z, N : OUT BOOLEAN) IS
+	VARIABLE ZR : INTEGER;
+	BEGIN
+		ZR := O1 - O2;
+		IF (ZR < 0) THEN
+			N := true;
+			ZR := ZR * ( - 1);
+		END IF;
+		R := ZR;
+		Z := CheckZeroFlag(R);
+	END SUB;
+	 
+	PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O, N : OUT BOOLEAN) IS
+	VARIABLE ZR : INTEGER;
+	BEGIN
+		ZR := 0;
+		IF (C) THEN
+			ZR := 2 ** data_width;
+		END IF;
+		ZR := O1 - O2 - ZR;
+		IF (ZR < 0) THEN
+			N := true;
+			IF (ZR <= ( - 1) * (2 ** data_width)) THEN
+				ZR := ZR + 2 ** data_width;
+				C := true;
+			ELSE
+				C := false;
+			END IF; 
+		ELSE
+			C := false;
+		END IF;
+		R := ZR;
+		Z := CheckZeroFlag(R);
+	END SUBC;
 	
-	procedure ADD (constant O1, O2: in data_type; R: inout data_type; C, Z, O: out boolean) is
-	variable ZR: natural;
-	begin
-		ZR:= O1 + O2;
-		if (ZR>=(2**data_width)) then
-			O:= true;
-			ZR:= ZR- 2**data_width;
-			C:=true;
-		end if;
-		R:= ZR;
-		
-		Z:= CheckZeroFlag(R);
-	end ADD;
-
-	procedure ADDC (constant O1, O2: in data_type; R: inout data_type; C: inout boolean; Z, O: out boolean) is
-	variable ZR: natural;
-	begin
-		ZR:=0;
-		if C then 
-			ZR:= 2**data_width;
-		end if;
-		ZR:= O1 + O2 + ZR;
-		if (ZR>=(2**data_width)) then
-			O:= true;
-			ZR:= ZR- 2**data_width;
-			C:=true;
-		else 
-			C:=false;
-		end if;
-		R:= ZR;
-		Z:= CheckZeroFlag(R);
-	end ADDC;
-
-	procedure SUB (constant O1, O2: in data_type; R: inout data_type; Z, N: out boolean) is
-	variable ZR: integer;
-	begin
-		ZR:= O1 - O2;
-		if (ZR<0) then
-			N:= true;
-			ZR:= ZR*(-1);
-		end if;
-		R:= ZR;
-		Z:= CheckZeroFlag(R);
-	end SUB;
+	-- ===============================================================================================================
+	-- Proceduren / Funktionen für unser IO
+	-- ===============================================================================================================
 	
-	procedure SUBC (constant O1, O2: in data_type; R: inout data_type; C: inout boolean; Z, O, N: out boolean) is
-	variable ZR: integer;
-	begin	
-		ZR:=0;
-		if(C) then 
-			ZR:= 2**data_width;
-		end if;
-		ZR:= O1 - O2 - ZR;
-		if (ZR<0) then
-			N:= true;
-			if (ZR<= (-1)*(2**data_width)) then
-				ZR:= ZR+ 2**data_width;
-				C:= true;
-			else
-				C:=false;
-			end if;	
-		else
-			C:=false;
-		end if;
-		R:= ZR;
-		Z:= CheckZeroFlag(R);
-	end SUBC;
-
--- ===============================================================================================================
--- Proceduren / Funktionen für unser IO
--- ===============================================================================================================
-
-
-
-	procedure print_tail (variable f:out text) is
-		variable l:line;
-		begin
-			write(l, string'("----------------------------------------------------------------"));
-			writeline(f,l);
-	end print_tail;
-
-	procedure write_PC_CMD (variable l:inout line; constant PC: in data_type; constant OP: in opcode_type; constant x,y,z: in reg_addr_type) is
-		begin
-			write(l, integer'image(PC), left, 3);			-- hex_image function muss noch geschrieben werden
-			write(l, string'(" | "));
-			write(l, integer'image(OP), left, 4);			-- cmd_image function muss noch geschrieben werden
-			write(l, string'(" | "));
-			write(l, X, left , 1);
-			write(l, y, left , 1);
-			write(l, z, left , 1); 
-			write(l, string'(" | "));
-	end write_PC_CMD;
-
-	procedure print_header (variable f: out text) is
-		variable l:line;
-		begin
-			write(l, string'("PC"), left, 3);
-			write(l, string'(" | "));
-			write(l, string'("Cmd"), left, 4);
-			write(l, string'(" | "));
-			write(l, string'("XYZ"), left, 3);
-			write(l, string'(" | "));
-			write(l, string'("P"), left, 3);
-			write(l, string'(" | "));
-			write(l, string'("R0"), left, 3);
-			write(l, string'(" | "));
-			write(l, string'("R1"), left, 3);
-			write(l, string'(" | "));
-			write(l, string'("R2"), left, 3);
-			write(l, string'(" | "));
-			write(l, string'("R3"), left, 3);
-			write(l, string'(" | "));
-			write(l, string'("ZCNO"), left, 4);
-			writeline(f,l);
-	end print_header;
-
-	procedure write_param (variable l:inout line; constant param: in data_type) is
-		begin
-			write(l, integer'image(param), left , 3);          -- dafür brauchen wir auch noch die transformation integers zu string
-			write(l, string'(" | "));
-	end write_param;
-
-	procedure write_NoParam (variable l: inout line) is
-		begin
-			write(l, string'("---"));
-			write(l, string'(" | "));
-	end write_NoParam;
-
-	procedure write_regs (variable l: inout line; constant r0, r1, r2, r3 : in data_type ) is
-	 begin
-	    write(l, integer'image(r0), left, 3);			    -- dafür brauchen wir auch noch die transformation integers zu string  (param_image verwenden)
-		  write(l, string'(" | "));	
-      write(l, integer'image (r1), left, 3);			    
-			write(l, string'(" | "));	
-      write(l, integer'image (r2), left, 3);			    
-			write(l, string'(" | "));	
-      write(l, integer'image (r3), left, 3);			    
-			write(l, string'(" | "));						
-	end write_regs;
-  
-	procedure write_flags (variable l: inout line; constant Zero, Carry, Negative, Overflow : in boolean ) is
-		begin
-			write(l, boolean'image(Zero), left, 3);			    -- dafür brauchen wir auch noch die transformation von boolean zu Characters/string (T, F)
-			write(l, string'(" | "));	
-      write(l, boolean'image (Carry), left, 3);			    
-			write(l, string'(" | "));	
-      write(l, boolean'image (Negative), left, 3);			    
-			write(l, string'(" | "));	
-      write(l, boolean'image (Overflow), left, 3);			    
-			write(l, string'(" | "));						
-	end write_flags;
-      
-end def_package_all;
+	PROCEDURE print_tail (VARIABLE f : OUT text) IS
+	VARIABLE l : line;
+	BEGIN
+		write(l, STRING'("----------------------------------------------------------------"));
+		writeline(f, l);
+	END print_tail;
+	
+	PROCEDURE write_PC_CMD (VARIABLE l : INOUT line; CONSTANT PC : IN data_type; CONSTANT OP : IN opcode_type; CONSTANT x, y, z : IN reg_addr_type) IS
+	BEGIN
+		write(l, INTEGER'image(PC), left, 3); -- hex_image function muss noch geschrieben werden
+		write(l, STRING'(" | "));
+		write(l, INTEGER'image(OP), left, 4); -- cmd_image function muss noch geschrieben werden
+		write(l, STRING'(" | "));
+		write(l, X, left, 1);
+		write(l, y, left, 1);
+		write(l, z, left, 1);
+		write(l, STRING'(" | "));
+	END write_PC_CMD;
+	
+	PROCEDURE print_header (VARIABLE f : OUT text) IS
+	VARIABLE l : line;
+	BEGIN
+		write(l, STRING'("PC"), left, 3);
+		write(l, STRING'(" | "));
+		write(l, STRING'("Cmd"), left, 4);
+		write(l, STRING'(" | "));
+		write(l, STRING'("XYZ"), left, 3);
+		write(l, STRING'(" | "));
+		write(l, STRING'("P"), left, 3);
+		write(l, STRING'(" | "));
+		write(l, STRING'("R0"), left, 3);
+		write(l, STRING'(" | "));
+		write(l, STRING'("R1"), left, 3);
+		write(l, STRING'(" | "));
+		write(l, STRING'("R2"), left, 3);
+		write(l, STRING'(" | "));
+		write(l, STRING'("R3"), left, 3);
+		write(l, STRING'(" | "));
+		write(l, STRING'("ZCNO"), left, 4);
+		writeline(f, l);
+	END print_header;
+	
+	PROCEDURE write_param (VARIABLE l : INOUT line; CONSTANT param : IN data_type) IS
+	BEGIN
+		write(l, INTEGER'image(param), left, 3); -- dafür brauchen wir auch noch die transformation integers zu string
+		write(l, STRING'(" | "));
+	END write_param;
+	
+	PROCEDURE write_NoParam (VARIABLE l : INOUT line) IS
+	BEGIN
+		write(l, STRING'("---"));
+		write(l, STRING'(" | "));
+	END write_NoParam;
+	
+	PROCEDURE write_regs (VARIABLE l : INOUT line; CONSTANT r0, r1, r2, r3 : IN data_type ) IS
+	BEGIN
+		write(l, INTEGER'image(r0), left, 3); -- dafür brauchen wir auch noch die transformation integers zu string (param_image verwenden)
+		write(l, STRING'(" | ")); 
+		write(l, INTEGER'IMAGE (r1), left, 3); 
+		write(l, STRING'(" | ")); 
+		write(l, INTEGER'IMAGE (r2), left, 3); 
+		write(l, STRING'(" | ")); 
+		write(l, INTEGER'IMAGE (r3), left, 3); 
+		write(l, STRING'(" | ")); 
+	END write_regs;
+	 
+	PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN ) IS
+	BEGIN
+		write(l, BOOLEAN'image(Zero), left, 3); -- dafür brauchen wir auch noch die transformation von boolean zu Characters/string (T, F)
+		write(l, STRING'(" | ")); 
+		write(l, BOOLEAN'IMAGE (Carry), left, 3); 
+		write(l, STRING'(" | ")); 
+		write(l, BOOLEAN'IMAGE (Negative), left, 3); 
+		write(l, STRING'(" | ")); 
+		write(l, BOOLEAN'IMAGE (Overflow), left, 3); 
+		write(l, STRING'(" | ")); 
+	END write_flags;
+	 
+	END def_package_all;
