@@ -1,6 +1,6 @@
 LIBRARY IEEE;
-USE std.standard.ALL;
 USE IEEE.numeric_std.ALL;
+use IEEE.STD_LOGIC_1164.all;
 
 PACKAGE BODY def_package_all IS
 	-- ===============================================================================================================
@@ -46,6 +46,36 @@ PACKAGE BODY def_package_all IS
 			RETURN to_integer(to_unsigned(a, data_width) XOR to_unsigned(b, data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
 
 	END "XOR";
+
+  PROCEDURE rea (CONSTANT Y : IN data_type; VARIABLE X: INOUT data_type ) IS
+		VARIABLE Z, A: std_logic_vector(data_width-1 downto 0);
+		BEGIN
+			Z:= std_logic_vector(to_unsigned(Y, data_width));
+			A:= std_logic_vector(to_unsigned(X, data_width));
+			FOR I IN 0 TO DATA_WIDTH-2 LOOP Z(i+1):=Z(i) AND Z(i+1); end loop;
+			A(0):= Z(data_width-1);
+			X:= to_integer(unsigned(A));
+	END rea;
+
+  PROCEDURE reo (CONSTANT Y : IN data_type; VARIABLE X: INOUT data_type ) IS
+		VARIABLE Z, A: std_logic_vector(data_width-1 downto 0);
+		BEGIN
+			Z:= std_logic_vector(to_unsigned(Y, data_width));
+			A:= std_logic_vector(to_unsigned(X, data_width));
+			FOR I IN 0 TO DATA_WIDTH-2 LOOP Z(i+1):=Z(i) OR Z(i+1); end loop;
+			A(0):= Z(data_width-1);
+			X:= to_integer(unsigned(A));
+	END reo;
+
+  PROCEDURE rex (CONSTANT Y : IN data_type; VARIABLE X: INOUT data_type ) IS
+		VARIABLE Z, A: std_logic_vector(data_width-1 downto 0);
+		BEGIN
+			Z:= std_logic_vector(to_unsigned(Y, data_width));
+			A:= std_logic_vector(to_unsigned(X, data_width));
+			FOR I IN 0 TO DATA_WIDTH-2 LOOP Z(i+1):=Z(i) XOR Z(i+1); end loop;
+			A(0):= Z(data_width-1);
+			X:= to_integer(unsigned(A));
+	END rex;
 
 	FUNCTION CheckZeroFlag (CONSTANT Reg : data_type) RETURN BOOLEAN IS
 	BEGIN
@@ -205,3 +235,4 @@ PACKAGE BODY def_package_all IS
 	END write_flags;
 	 
 END def_package_all;
+

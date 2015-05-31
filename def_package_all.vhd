@@ -84,6 +84,12 @@ PACKAGE def_package_all IS
 	FUNCTION "OR" (CONSTANT A, B : data_type) RETURN data_type;
 
 	FUNCTION "XOR" (CONSTANT A, B : data_type) RETURN data_type;
+	
+	PROCEDURE rea (CONSTANT Y : IN data_type; VARIABLE X: INOUT data_type);
+
+	PROCEDURE reo (CONSTANT Y : IN data_type; VARIABLE X: INOUT data_type);
+
+	PROCEDURE rex (CONSTANT Y : IN data_type; VARIABLE X: INOUT data_type);
 
 	FUNCTION CheckZeroFlag (CONSTANT Reg : data_type) RETURN BOOLEAN;
 
@@ -95,15 +101,15 @@ PACKAGE def_package_all IS
 
 	PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O, N : OUT BOOLEAN);
 
-	Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+	-- Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
 					
-	Procedure XSRA(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+	-- Procedure XSRA(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
 				  
-	procedure ROLC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
-		       variable N,O: out boolean) ;
+	-- procedure ROLC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
+		       -- variable N,O: out boolean) ;
 		
-	procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
-		       variable N,O: out boolean);
+	-- procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
+		       -- variable N,O: out boolean);
 
 	-- ===============================================================================================================================================
 	-- die Proceduren / Funktionen für unser IO
@@ -126,3 +132,4 @@ PACKAGE def_package_all IS
 	-- unsere transformationsfunktionen (hex_image, cmd_image, ...) fehlen noch.
 
 END def_package_all;
+
