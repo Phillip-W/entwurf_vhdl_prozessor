@@ -82,14 +82,14 @@ BEGIN
  
 			-- Jump
  			WHEN code_jmp => PC := jmp(x);
- 			WHEN code_jz => PC := jz(x,zero);
- 			WHEN code_jc => PC := jc(x, carry);
- 			WHEN code_jn => PC := jc(x, negative);
- 			WHEN code_jo => PC := jc(x, overflow);
- 			WHEN code_jnz => PC := jc(x, zero);
- 			WHEN code_jnc => PC := jc(x, carry);
- 			WHEN code_jnn => PC := jc(x, negative);
- 			WHEN code_jno => PC := jc(x, overflow);
+ 			WHEN code_jz => PC := jz(x, PC,zero);
+ 			WHEN code_jc => PC := jc(x, PC, carry);
+ 			WHEN code_jn => PC := jc(x, PC, negative);
+ 			WHEN code_jo => PC := jc(x, PC, overflow);
+ 			WHEN code_jnz => PC := jc(x, PC, zero);
+ 			WHEN code_jnc => PC := jc(x, PC, carry);
+ 			WHEN code_jnn => PC := jc(x, PC, negative);
+ 			WHEN code_jno => PC := jc(x, PC, overflow);
  			
 
 			WHEN OTHERS => -- ungültig oder bisher nicht implementiert
