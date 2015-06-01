@@ -72,7 +72,9 @@ BEGIN
  
 			-- Memory Access
  			WHEN code_ldc => Reg(x):= Memory(PC);							-- ldc (3.3.21)
+ 				write_param(l, Memory(PC));
  			WHEN code_ldd => Reg(x):= Memory(Memory(PC));			-- ldc (3.3.22)
+ 				write_param(l, Memory(PC));
  			WHEN code_ldr => Reg(x):= Memory(Reg(Y));					-- ldc (3.3.23)
  			WHEN code_std => Memory(Memory(PC)):= Reg(x);			-- ldc (3.3.24)
  			WHEN code_str => Memory(Reg(Y)):=Reg(x);					-- ldc (3.3.25)
@@ -81,7 +83,25 @@ BEGIN
  
  
 			-- Jump
- 
+ 			WHEN code_jmp => PC := jmp(Memory(PC));
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jz => PC := jz(Memory(PC), PC,zero);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jc => PC := jc(Memory(PC), PC, carry);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jn => PC := jc(Memory(PC), PC, negative);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jo => PC := jc(Memory(PC), PC, overflow);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jnz => PC := jc(Memory(PC), PC, zero);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jnc => PC := jc(Memory(PC), PC, carry);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jnn => PC := jc(Memory(PC), PC, negative);
+ 				write_param(l, Memory(PC));
+ 			WHEN code_jno => PC := jc(Memory(PC), PC, overflow);
+ 				write_param(l, Memory(PC));
+ 			
 
 			WHEN OTHERS => -- ungültig oder bisher nicht implementiert
 				ASSERT FALSE

@@ -152,6 +152,84 @@ PACKAGE BODY def_package_all IS
 		Z := CheckZeroFlag(R);
 	END SUBC;
 	
+	-- Jump procedures
+	FUNCTION jmp(CONSTANT position: INOUT data_type) IS
+	BEGIN
+		return position;
+	END jmp;
+	
+	FUNCTION jz(CONSTANT position, pc_old: INOUT data_type; zero_flag: IN BOOLEAN) IS
+	BEGIN
+		IF zero_flag = true THEN
+			return prosition;
+		ELSE
+			return pc_old;
+		END IF;
+	END jz;
+	
+	FUNCTION jc(CONSTANT position, pc_old: INOUT data_type; carry_flag: IN BOOLEAN) IS
+	BEGIN
+		IF carry_flag = true THEN
+			return prosition;
+		ELSE
+			return pc_old;
+		END IF;
+	END jc;
+	
+	FUNCTION jn(CONSTANT position, pc_old: INOUT data_type; negative_flag: IN BOOLEAN) IS
+	BEGIN
+		IF negative_flag = true THEN
+			return prosition;
+		ELSE
+			return pc_old;
+		END IF;
+	END jn;
+	
+	FUNCTION jo(CONSTANT position, pc_old: INOUT data_type; overflow_flag: IN BOOLEAN) IS
+	BEGIN
+		IF overflow_flag = true THEN
+			return prosition;
+		ELSE
+			return pc_old;
+		END IF;
+	END jo;
+	
+	FUNCTION jnz(CONSTANT position, pc_old: INOUT data_type; zero_flag: IN BOOLEAN) IS
+	BEGIN
+		IF zero_flag = false THEN
+			return prosition;
+		ELSE
+			return pc_old;
+		END IF;
+	END jnz;
+	
+	FUNCTION jnc(CONSTANT position, pc_old: INOUT data_type; carry_flag: IN BOOLEAN) IS
+	BEGIN
+		IF carry_flag = false THEN
+			return prosition;
+		ELSE
+			return pc_old;
+		END IF;
+	END jnc;
+	
+	FUNCTION jnn(CONSTANT position, pc_old: INOUT data_type; negative_flag: IN BOOLEAN) IS
+	BEGIN
+		IF negative_flag = false THEN
+			return prosition;
+		ELSE
+			return pc_old;
+		END IF;
+	END jnn;
+	
+	FUNCTION jno(CONSTANT position, pc_old: INOUT data_type; overflow_flag: IN BOOLEAN) IS
+	BEGIN
+		IF overflow_flag = false THEN
+			return prosition;
+		ELSE
+			return pc_old;
+		END IF;
+	END jno;
+	
 	-- ===============================================================================================================
 	-- Proceduren / Funktionen für unser IO
 	-- ===============================================================================================================
