@@ -45,17 +45,28 @@ BEGIN
 
 				-- Arithmetic
 			WHEN code_add => ADD(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow);
+				write_NoParam(l);
 			WHEN code_addc => ADDC(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow);
+				write_NoParam(l);
 			WHEN code_sub => SUB(Reg(y), Reg(z), Reg(x), Zero, Negative);
+				write_NoParam(l);
 			WHEN code_subc => SUBC(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow, Negative);
+				write_NoParam(l);
 				-- Logical
 			WHEN code_not => Reg(x) := "NOT"(Reg(y)); -- Verneinung (3.3.1.7)
+				write_NoParam(l);
 			WHEN code_and => Reg(x) := (Reg(y)) AND (Reg(z)); -- UND-Operation (3.3.1.8)
+				write_NoParam(l);
 			WHEN code_or => Reg(x) := (Reg(y)) OR (Reg(z)); -- OR-Operation (3.3.1.9)
+				write_NoParam(l);
 			WHEN code_xor => Reg(x) := (Reg(y)) XOR (Reg(z)); -- xor (3.3.1.10)
+				write_NoParam(l);
 			WHEN code_rea => REA(Reg(x), Reg(y));							-- rea (3.3.11)
+				write_NoParam(l);
 			WHEN code_reo => REO(Reg(x), Reg(y));							-- reo (3.3.12)
+				write_NoParam(l);
 			WHEN code_rex => REX(Reg(x), Reg(y));							-- rex (3.3.13)
+				write_NoParam(l);
  
 			-- Shift / Rotate
  			-- when code_sll        => XSLL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
@@ -76,8 +87,11 @@ BEGIN
  			WHEN code_ldd => Reg(x):= Memory(Memory(PC));			-- ldc (3.3.22)
  				write_param(l, Memory(PC));
  			WHEN code_ldr => Reg(x):= Memory(Reg(Y));					-- ldc (3.3.23)
+				write_NoParam(l);
  			WHEN code_std => Memory(Memory(PC)):= Reg(x);			-- ldc (3.3.24)
+				write_param(l, Memory(PC));
  			WHEN code_str => Memory(Reg(Y)):=Reg(x);					-- ldc (3.3.25)
+				write_NoParam(l);
  
 			-- I/O
  
@@ -110,7 +124,6 @@ BEGIN
 		END CASE;
 		write_regs (l, Reg(x), Reg(y), Reg(z), Reg(a));
 		writeline(TraceFile, l);
-		--wait; (wegen loop nicht mehr gebraucht) --damit der Prozessor nicht den Speicher im endlos modus durcharbeitet
 	END LOOP;
 END PROCESS;
 END behav;
