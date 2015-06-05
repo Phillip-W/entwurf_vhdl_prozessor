@@ -159,5 +159,12 @@ PACKAGE def_package_all IS
 	Procedure writeIOoutput (Variable f: OUT Text; l : inout line; constant x: in data_type); 
 	
 	PROCEDURE print_dump (CONSTANT memory: IN mem_type; VARIABLE dump_file: OUT text);
-
+	
+	
+	--===============================================================================================================================================
+	-- Assembler
+	--===============================================================================================================================================
+	
+	Function InputDecode (constant v: in String)
+		return data_type;
 END def_package_all;
