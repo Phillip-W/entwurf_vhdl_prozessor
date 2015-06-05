@@ -105,6 +105,16 @@ package def_package_all is
 	procedure SUB (constant O1, O2: in data_type; R: inout data_type; Z, N: out boolean);
 
 	procedure SUBC (constant O1, O2: in data_type; R: inout data_type; C: inout boolean; Z, O, N: out boolean);
+	
+	Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+				  
+	procedure XSRL(constant A: in data_type; variable R: out data_type; variable Z,C,N,O: out boolean);
+					
+	Procedure XSRA(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+				  
+	procedure ROLC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean; variable N,O: out boolean) ;
+		
+	procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean; variable N,O: out boolean);
 
 
 -- ===============================================================================================================================================
