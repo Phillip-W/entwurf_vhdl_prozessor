@@ -146,6 +146,8 @@ PACKAGE def_package_all IS
 	
 	PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN );
 	
+	PROCEDURE print_dump (CONSTANT memory: IN mem_type; VARIABLE dump_file: OUT text);
+	
 	-- unsere transformationsfunktionen (hex_image, cmd_image, ...) fehlen noch.
 
 END def_package_all;
