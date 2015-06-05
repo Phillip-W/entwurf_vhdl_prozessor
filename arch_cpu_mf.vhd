@@ -55,7 +55,18 @@ ARCHITECTURE behav OF CPU IS
 					
 					
 						-- Shift / Rotate
-					
+			 when code_sll        => XSLL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			 when code_srl        => XSRL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			 when code_sra        => XSRA(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			 when code_rol        => Carry := FALSE;
+					         ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			 when code_rolc       => Carry := TURE;
+					         ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			 when code_ror        => Carry := FALSE;
+					         RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow); 
+		        when code_rorc       => Carry := TURE;
+					         RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+						-- Memory Access
 					
 						-- Memory Access
 					
