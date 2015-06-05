@@ -146,6 +146,8 @@ PACKAGE def_package_all IS
 	
 	PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN );
 	
+	Procedure readIOinput (Variable f: out Text; l : inout line; constant x: in data_type);
+	
 	Procedure writeIOoutput (Variable f: OUT Text; l : inout line; constant x: in data_type); 
 
 END def_package_all;
