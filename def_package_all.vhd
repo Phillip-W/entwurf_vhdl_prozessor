@@ -3,6 +3,12 @@ USE IEEE.std_logic_1164.ALL;
 USE std.textio.ALL;
 
 PACKAGE def_package_all IS
+	-- ===============================================================================================================================================
+	--Files
+	-- ===============================================================================================================================================
+
+	FILE IOOutputFile: Text IS OUT "IOOutput";
+	FILE IOInputFile: Text IS IN "IOInput";
 
 	-- ===============================================================================================================================================
 	--Hier alle Konstanten definieren
@@ -111,7 +117,7 @@ PACKAGE def_package_all IS
 		
 	-- procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
 		       -- variable N,O: out boolean);
-	Prcoedure ReadIn (Reg: out data_type);
+	Procedure ReadIn (Reg: out data_type);
 	Procedure WriteOut(constant Reg: in data_type); 
 	
 	-- JUMP Funktionen
@@ -148,7 +154,7 @@ PACKAGE def_package_all IS
 	
 	PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN );
 	
-	Procedure readIOinput (Variable f: out Text; l : inout line; constant x: in data_type);
+	Procedure readIOinput (Variable f: IN Text; l : inout line; x: out data_type);
 	
 	Procedure writeIOoutput (Variable f: OUT Text; l : inout line; constant x: in data_type); 
 	
