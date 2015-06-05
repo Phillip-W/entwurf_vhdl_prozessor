@@ -7,6 +7,7 @@ ARCHITECTURE behav OF CPU IS
 BEGIN
 	PROCESS
 	FILE TraceFile: Text IS OUT "Trace";
+	FILE DumpFile: Text IS OUT "Dump";
 	FILE IOOutputFile: Text IS OUT "IOOutput";
 	FILE IOInputFile: Text IS IN "IOInput";
 	VARIABLE l : line;
@@ -38,8 +39,14 @@ BEGIN
 			-- Miscellaneous
 			WHEN code_nop => NULL; -- keine Operation (3.3.1.1) 
 				write_NoParam(l);
-			WHEN code_stop => WAIT; -- stop Simulation (3.3.1.2)
-				write_NoParam(l);
+			WHEN code_stop => write_NoParam(l); -- stop Simulation (3.3.1.2)
+			  write_regs (l, Reg(x), Reg(y), Reg(z), Reg(a));
+		    writeline(TraceFile, l);
+				print_dump(Memory, DumpFile);
+				WAIT;
+ 
+				-- ===============================================================================================================================================
+				-- 
  
 				-- ===============================================================================================================================================
 				-- die OPCode Operationen hier einfügen (s.h. Vorlesung ?? Seite 49ff. - Statements for Arithmetic and Logic Ops)
