@@ -400,4 +400,31 @@ PACKAGE BODY def_package_all IS
 		writeline(f, l);
 	END writeIOoutput;
 	 
+	PROCEDURE print_dump (CONSTANT memory: IN mem_type; VARIABLE dump_file: OUT text) IS
+    VARIABLE dump_line: line;
+    VARIABLE success: boolean;
+    VARIABLE temp: data_type;
+    VARIABLE counter: addr_type := 0;
+  BEGIN
+    -- write header
+    write(dump_line, String'("Memory Inhalt:"));
+    writeline(dump_file, dump_line);
+		
+		writing: LOOP
+      EXIT WHEN counter >= 2 ** address_width - 1; -- Exit Loop if end of Memory is reached;
+      -- write memory line per line
+		  write(dump_line, String'("Adresse: "));
+		  write(dump_line, INTEGER'IMAGE(counter), right, 4);
+		  write(dump_line, String'(" |  Inahlt: "));
+		  IF memory(counter) /= 0 THEN  -- IF register is Empty return String not "0"
+		    write(dump_line, INTEGER'IMAGE(memory(counter)), right, 4);
+		  ELSE
+		    write(dump_line, String'("empty"));
+		  END IF;
+		  writeline(dump_file, dump_line);
+		  -- increase Counter
+		  counter := counter + 1;
+		END LOOP;
+  END PROCEDURE;
+  
 END def_package_all;
