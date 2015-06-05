@@ -39,7 +39,10 @@ BEGIN
 				write_NoParam(l);
 			WHEN code_stop => write_NoParam(l); -- stop Simulation (3.3.1.2)
 			  write_regs (l, Reg(x), Reg(y), Reg(z), Reg(a));
-		    writeline(TraceFile, l);
+				write_flags(l, Zero, Carry, Negative, Overflow);
+				writeline(TraceFile, l);
+				print_tail(l);
+				writeline(TraceFile, l);
 				print_dump(Memory, DumpFile);
 				WAIT;
  
@@ -132,7 +135,11 @@ BEGIN
 					SEVERITY error;
 		END CASE;
 		write_regs (l, Reg(x), Reg(y), Reg(z), Reg(a));
+		write_flags(l, Zero, Carry, Negative, Overflow);
 		writeline(TraceFile, l);
+		print_tail(l);
+		writeline(TraceFile, l);
+		
 	END LOOP;
 END PROCESS;
 END behav;
