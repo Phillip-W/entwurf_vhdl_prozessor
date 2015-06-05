@@ -113,15 +113,15 @@ PACKAGE def_package_all IS
 		       -- variable N,O: out boolean);
 	
 	-- JUMP Funktionen
-	FUNCTION jmp (CONSTANT position: INOUT data_type) RETURN data_type;
-	FUNCTION jz(CONSTANT position, pc_old: INOUT data_type; zero_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jc(CONSTANT position, pc_old: INOUT data_type; carry_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jn(CONSTANT position, pc_old: INOUT data_type; negative_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jo(CONSTANT position, pc_old: INOUT data_type; overflow_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jnz(CONSTANT position, pc_old: INOUT data_type; zero_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jnc(CONSTANT position, pc_old: INOUT data_type; carry_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jnn(CONSTANT position, pc_old: INOUT data_type; negative_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jno(CONSTANT position, pc_old: INOUT data_type; overflow_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jmp (CONSTANT position: IN data_type) RETURN data_type;
+	FUNCTION jz(CONSTANT position, pc_old: IN data_type; zero_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jc(CONSTANT position, pc_old: IN data_type; carry_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jn(CONSTANT position, pc_old: IN data_type; negative_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jo(CONSTANT position, pc_old: IN data_type; overflow_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jnz(CONSTANT position, pc_old: IN data_type; zero_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jnc(CONSTANT position, pc_old: IN data_type; carry_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jnn(CONSTANT position, pc_old: IN data_type; negative_flag: IN BOOLEAN) RETURN data_type;
+	FUNCTION jno(CONSTANT position, pc_old: IN data_type; overflow_flag: IN BOOLEAN) RETURN data_type;
 	
 	-- ===============================================================================================================================================
 	-- die Proceduren / Funktionen für unser IO
