@@ -8,8 +8,6 @@ BEGIN
 	PROCESS
 	FILE TraceFile: Text IS OUT "Trace";
 	FILE DumpFile: Text IS OUT "Dump";
-	FILE IOOutputFile: Text IS OUT "IOOutput";
-	FILE IOInputFile: Text IS IN "IOInput";
 	VARIABLE l : line;
 	VARIABLE Memory : mem_type := init_memory; -- Speicher mit init_memory initialisieren
 	VARIABLE Reg : reg_type := (0 => 0, 1 => 0, OTHERS => 0); 
@@ -138,4 +136,3 @@ BEGIN
 	END LOOP;
 END PROCESS;
 END behav;
-
