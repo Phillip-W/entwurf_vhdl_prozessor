@@ -153,11 +153,17 @@ PACKAGE BODY def_package_all IS
 	END SUBC;
 	
 		
-	Prcoedure ReadIn (Reg: out datatype) is 
+	Prcoedure ReadIn (Reg: out data_type) is 
 	variable il: line;
 	begin 
 	readIOinput(IOInputFile, il, Reg);
 	end ReadIn;
+	
+	Procedure WriteOut (Reg: in data_type) is
+	variable ol: line; 
+	begin
+	writeIOoutput (IOOutputFile, ol, Reg);
+	end WriteOut;
 	
 	-- Jump procedures
 	FUNCTION jmp(CONSTANT position: IN data_type)
