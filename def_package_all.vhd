@@ -165,6 +165,6 @@ PACKAGE def_package_all IS
 	-- Assembler
 	--===============================================================================================================================================
 	
-	Function InputDecode (constant v: in String)
-		return data_type;
+	Procedure InputDecode (constant l: in line);
+	
 END def_package_all;
