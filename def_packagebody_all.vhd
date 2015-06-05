@@ -419,4 +419,36 @@ PACKAGE BODY def_package_all IS
 		END LOOP writing;
   END PROCEDURE;
   
+--===============================================================================================================================================
+-- Assembler
+--===============================================================================================================================================
+	
+  Procedure InputDecode (constant l: in line) IS
+  	variable lenght : Integer:=LENGTH'l;
+  	variable i: integer:=1;
+  	VARIABLE OP: String;
+  	
+  Begin
+  	while l(i) /= " " AND i <= length loop
+  		i = i+1;
+  	end LOOP;
+  	IF l(1 to i) = ... OR ... THEN			-- operanten erkennung
+  		IF l(1 to i) = ... THEN			-- OP-Code erkennung 
+  		ELSIF ...
+  		--read_register(l, i, register_counter
+  		--i, output);
+  		--read_register;
+  		--read_register;
+  	ELSIF l(1 to i) = ... THEN
+  		...
+  	ELSE
+  		ASSERT FALSE
+		REPORT "ungültig"
+		SEVERITY error;
+	END IF;
+  	
+  	
+  	
+  End Procedure;
+  
 END def_package_all;
