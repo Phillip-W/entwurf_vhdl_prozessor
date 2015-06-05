@@ -146,6 +146,6 @@ PACKAGE def_package_all IS
 	
 	PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN );
 	
-	-- unsere transformationsfunktionen (hex_image, cmd_image, ...) fehlen noch.
+	Procedure writeIOoutput (Variable f: OUT Text; l : inout line; constant x: in data_type); 
 
 END def_package_all;
