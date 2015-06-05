@@ -159,7 +159,7 @@ PACKAGE BODY def_package_all IS
 	readIOinput(IOInputFile, il, Reg);
 	end ReadIn;
 	
-	Procedure WriteOut (Reg: in data_type) is
+	Procedure WriteOut (constant Reg: in data_type) is
 	variable ol: line; 
 	begin
 	writeIOoutput (IOOutputFile, ol, Reg);
