@@ -312,7 +312,7 @@ PACKAGE BODY def_package_all IS
 	PROCEDURE print_tail (VARIABLE f : OUT text) IS
 	VARIABLE l : line;
 	BEGIN
-		write(l, STRING'("----------------------------------------------------------------"));
+		write(l, STRING'("------------------------------------------------------"));
 		writeline(f, l);
 	END print_tail;
 	
