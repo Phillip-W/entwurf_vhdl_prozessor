@@ -152,6 +152,106 @@ PACKAGE BODY def_package_all IS
 		Z := CheckZeroFlag(R);
 	END SUBC;
 	
+		
+	Procedure ReadIn (Reg: out data_type) is 
+	variable il: line;
+	begin 
+	readIOinput(IOInputFile, il, Reg);
+	end ReadIn;
+	
+	Procedure WriteOut (constant Reg: in data_type) is
+	variable ol: line; 
+	begin
+	writeIOoutput (IOOutputFile, ol, Reg);
+	end WriteOut;
+	
+	-- Jump procedures
+	FUNCTION jmp(CONSTANT position: IN data_type)
+	RETURN data_type IS
+	BEGIN
+		return position;
+	END jmp;
+	
+	FUNCTION jz(CONSTANT position, pc_old: IN data_type; zero_flag: IN BOOLEAN)
+	RETURN data_type IS
+	BEGIN
+		IF zero_flag = true THEN
+			return position;
+		ELSE
+			return pc_old;
+		END IF;
+	END jz;
+	
+	FUNCTION jc(CONSTANT position, pc_old: IN data_type; carry_flag: IN BOOLEAN)
+	RETURN data_type IS
+	BEGIN
+		IF carry_flag = true THEN
+			return position;
+		ELSE
+			return pc_old;
+		END IF;
+	END jc;
+	
+	FUNCTION jn(CONSTANT position, pc_old: IN data_type; negative_flag: IN BOOLEAN)
+	RETURN data_type IS
+	BEGIN
+		IF negative_flag = true THEN
+			return position;
+		ELSE
+			return pc_old;
+		END IF;
+	END jn;
+	
+	FUNCTION jo(CONSTANT position, pc_old: IN data_type; overflow_flag: IN BOOLEAN)
+	RETURN data_type IS
+	BEGIN
+		IF overflow_flag = true THEN
+			return position;
+		ELSE
+			return pc_old;
+		END IF;
+	END jo;
+	
+	FUNCTION jnz(CONSTANT position, pc_old: IN data_type; zero_flag: IN BOOLEAN)
+	RETURN data_type IS
+	BEGIN
+		IF zero_flag = false THEN
+			return position;
+		ELSE
+			return pc_old;
+		END IF;
+	END jnz;
+	
+	FUNCTION jnc(CONSTANT position, pc_old: IN data_type; carry_flag: IN BOOLEAN)
+	RETURN data_type IS
+	BEGIN
+		IF carry_flag = false THEN
+			return position;
+		ELSE
+			return pc_old;
+		END IF;
+	END jnc;
+	
+	FUNCTION jnn(CONSTANT position, pc_old: IN data_type; negative_flag: IN BOOLEAN)
+	RETURN data_type IS
+	BEGIN
+		IF negative_flag = false THEN
+			return position;
+		ELSE
+			return pc_old;
+		END IF;
+	END jnn;
+	
+	FUNCTION jno(CONSTANT position, pc_old: IN data_type; overflow_flag: IN BOOLEAN)
+	RETURN data_type IS
+	BEGIN
+		IF overflow_flag = false THEN
+			return position;
+		ELSE
+			return pc_old;
+		END IF;
+	END jno;
+	
 	-- ===============================================================================================================
 	-- Proceduren / Funktionen für unser IO
 	-- ===============================================================================================================
@@ -286,5 +386,18 @@ PACKAGE BODY def_package_all IS
 		write(l, PrintBoolean(Overflow), left, 3); 
 		write(l, STRING'(" | ")); 
 	END write_flags;
+	
+	Procedure readIOinput (Variable f: IN Text; l : inout line;  x: out data_type) is
+	variable success : boolean;
+	begin 
+		readline(f, l);
+		read(l, x, success);
+	end readIOinput;
+	
+	Procedure writeIOoutput (Variable f: OUT Text; l : inout line; constant x: in data_type) is
+	BEGIN
+		write(l, integer'image(x));
+		writeline(f, l);
+	END writeIOoutput;
 	 
 END def_package_all;
