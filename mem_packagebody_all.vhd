@@ -24,8 +24,8 @@ package body mem_package_all is
 	                i := 2**addr_width -1;
 		i := i + 1;
 	      end if;
-          end loop;
-        end loop;
-  end init_memory;
+	      end loop;
+	 end loop;
+	end init_memory;
 				    
 end mem_package_all;
