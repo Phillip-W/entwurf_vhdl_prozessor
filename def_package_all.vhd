@@ -101,8 +101,12 @@ PACKAGE def_package_all IS
 	PROCEDURE SUB (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; Z, N : OUT BOOLEAN);
 
 	PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O, N : OUT BOOLEAN);
+	
+	-----rotation and shift
 
 	Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+	
+	procedure XSRL(constant A: in data_type; variable R: out data_type; variable Z,C,N,O: out boolean);
 					
 	Procedure XSRA(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
 				  
