@@ -1,5 +1,6 @@
 LIBRARY IEEE;
 USE IEEE.numeric_std.ALL;
+use std_logic_unsigned.all;
 use IEEE.STD_LOGIC_1164.all;
 
 PACKAGE BODY def_package_all IS
@@ -151,6 +152,250 @@ PACKAGE BODY def_package_all IS
 		R := ZR;
 		Z := CheckZeroFlag(R);
 	END SUBC;
+	
+	----rotation and shift
+	
+	procedure XSLL (constant A: in data_type;
+					variable R: out data_type;
+					variable Z,C,N,O: out boolean) is
+		variable A_s : integer;
+		constant a_length : integer := A'length - 1;
+		variable D: std_logic_vector(A_length downto 1) := conv_std_logic_vector(to_unsigned(A,A_Length),A_Length);
+		variable T: std_logic_vector(A_length downto 1) := (others=>"0");
+		begin
+		    T(A_length downto 1) = D(A_length-1 downto 0);
+           
+		    R:= conv_integer(T);
+			
+            if D(A_length) = 1 then 
+               C = TRUE;
+            else
+               C = FALSE;
+			end if;
+			
+			if R mod 2**data_width = 0 then
+			   Z = TRUE;
+			else
+			   Z = FALSE;
+			end if;
+			
+			if R < 0 then
+			   N = TRUE;
+			else
+			   N = FALSE;
+			end if;
+			
+			if (R < -2**(data_width-1)) or (R >= 2**(data_width-1)) then
+			   O := TRUE;
+			else
+			   O := FALSE;
+			end if;
+	end XSLL;
+			
+
+	
+	procedure XSRL(constant A: in data_type;
+				  variable R: out data_type;
+				  variable Z,C,N,O: out boolean) is
+		constant A_Length : Integer := A'Length -1;
+		variable A_copy : std_logic_vector(A_Length downto 0) := conv_std_logic_vector(to_unsigned(A,A_Length),A_Length);
+		variable ergebnis : std_logic_vector (A_Length downto 0) := (others=>'0');
+		begin
+            ergebnis(A_Length-1 downto 0) := A_copy(A_Length downto 1);
+			R=conv_integer(ergebnis);
+			
+			if A_copy(0) = 1 then
+			   C = TRUE;
+			else
+			   C = FALSE;
+			end if;
+			
+			if R mod 2**data_width = 0 then
+			   Z = TRUE;
+			else
+			   Z = FALSE;
+			end if;
+			
+			if R < 0 then
+			   N = TRUE;
+			else
+			   N = FALSE;
+			end if;
+			
+			if (R < -2**(data_width-1)) or (R >= 2**(data_width-1)) then
+			   O := TRUE;
+			else
+			   O := FALSE;
+			end if;
+    end XSRL;
+	
+	procedure XSRA(constant A: in data_type;
+				  variable R: out data_type;
+				  variable Z,C,N,O: out boolean) is  --
+		constant A_Length : Integer := A'Length-1;
+		variable A_copy : std_logic_vector(A_Length downto 0) := conv_std_logic_vector(to_unsigned(A,A_Length),A_Length);
+		variable ergebnis: std_logic_vector(A_Length downto 0);
+		begin
+              ergebnis(A_Length-1 downto 0):=A_copy(A_Length downto 1);
+              ergebnis(A_Length) := (others => A_copy(A_Length);
+              R :=conv_integer(ergebnis);
+			
+			if A_copy(0) = 1 then
+			   C = TRUE;
+			else
+			   C = FALSE;
+			end if;
+			
+			if R mod 2**data_width = 0 then
+			   Z = TRUE;
+			else
+			   Z = FALSE;
+			end if;
+			
+			if R < 0 then
+			   N = TRUE;
+			else
+			   N = FALSE;
+			end if;
+			
+			if (R < -2**(data_width-1)) or (R >= 2**(data_width-1)) then
+			   O := TRUE;
+			else
+			   O := FALSE;
+			end if;
+	end XSRA;
+	
+	
+	procedure ROLC(constant A: in data_type;
+	               variable R: out data_type;
+				   variable Z: out boolean;
+				   variable C: inout boolean;
+				   variable N,O: out boolean) is --
+				   constant A_Length : Integer := A'Length-1;
+				   variable A_s，CI, CD: Integer ;
+				   variable A_copy : std_logic_vector(A_Length downto 0) := conv_std_logic_vector(to_unsigned(A,A_Length),A_Length);
+				   variable T: std_logic_vector(A_Length downto 0) := A_copy;
+				   begin
+				        T(A_Length downto 1) := A_copy(A_Length-1 downto 0);
+		                T(0) := A_copy(A_Length);
+						
+						if A >= 2**(data_width-1) then
+						   A_s = A - 2**(data_width);
+						else 
+						   A_s:=A;
+						end if;
+						
+						if C = FALSE then
+						
+						R := conv_integer(T);
+						C := FALSE;
+						
+						else
+						
+						CI = '1';
+						
+						variable A_copy_s std_logic_vector(A_Length downto 0) := conv_std_logic_vector(to_unsigned(A_s,A_Length),A_Length);
+						variable A_copy_s_1 : std_logic_vector(A_Length+1 downto 0) := CI & A_copy_s;
+						variable T_s: std_logic_vector(A_Length+1 downto 0) := A_copy_s_1;
+
+                        T_s(A_Length+1 downto 1) := A_copy_s_1(A_Length downto 0);
+                        T_s(0) := CI;
+						CD = T_s(A_Length+1);
+                            if CD = 1 then
+                              C = TRUE;
+                            else
+                              C = FALSE;
+                            end if;
+
+                        T_s(A_Length downto 0) := (others => '0');
+                        R := conv_integer(T_s);
+
+                        end if;
+						
+						if R mod 2**data_width = 0 then
+			               Z = TRUE;
+			            else
+			               Z = FALSE;
+			            end if;
+			
+			            if R < 0 then
+			               N = TRUE;
+			            else
+			               N = FALSE;
+			            end if;
+			
+			            if (R < -2**(data_width-1)) or (R >= 2**(data_width-1)) then
+			               O := TRUE;
+			            else
+			               O := FALSE;
+			            end if;
+        end ROLC;
+
+		
+	procedure RORC(constant A: in data_type;
+	               variable R: out data_type;
+				   variable Z: out boolean;
+				   variable C: inout boolean;
+				   variable N,O: out boolean) is --
+				   constant A_Length : Integer := A'Length-1;
+				   variable A_s，CI, CD: Integer ;
+				   variable A_copy : std_logic_vector(A_Length downto 0) := conv_std_logic_vector(to_unsigned(A,A_Length),A_Length);
+				   variable T: std_logic_vector(A_Length downto 0) := A_copy;
+		           begin
+		                  T(A_Length-1 downto 0) := A_copy(A_Length down to 1);
+		                  T(A_Length) := A_copy(0);
+						if A >= 2**(data_width-1) then
+						   A_s = A - 2**(data_width);
+						else 
+						   A_s:=A;
+						end if;  
+				   
+				        if C = FALSE then
+						
+						R := conv_integer(T);
+						C := FALSE;
+						
+						else
+						
+						CI = '1';
+						
+						variable A_copy_s std_logic_vector(A_Length downto 0) := conv_std_logic_vector(to_unsigned(A_s,A_Length),A_Length);
+						variable A_copy_s_1 : std_logic_vector(A_Length+1 downto 0) := CI & A_copy_s;
+						variable T_s: std_logic_vector(A_Length+1 downto 0) := A_copy_s_1;
+
+                        T_s(A_Length downto 0) := A_copy_s_1(A_Length downto 1);
+                        T_s(A_Length) := A_copy_s_1(0);
+						CD = T_s(A_Length+1);
+                            if CD = 1 then
+                              C = TRUE;
+                            else
+                              C = FALSE;
+                            end if;
+
+                        T_s(A_Length downto 0) := (others => '0');
+                        R := conv_integer(T_s);
+
+                        end if;
+				   
+				        if R mod 2**data_width = 0 then
+			               Z = TRUE;
+			            else
+			               Z = FALSE;
+			            end if;
+			
+			            if R < 0 then
+			               N = TRUE;
+			            else
+			               N = FALSE;
+			            end if;
+			
+			            if (R < -2**(data_width-1)) or (R >= 2**(data_width-1)) then
+			               O := TRUE;
+			            else
+			               O := FALSE;
+			            end if;
+        end RORC;
+	
 	
 	-- Jump procedures
 	FUNCTION jmp(CONSTANT position: IN data_type)
