@@ -6,7 +6,9 @@ USE std.textio.ALL; -- für unser IO
 ARCHITECTURE behav OF CPU IS
 BEGIN
 	PROCESS
-	FILE TraceFile : Text IS OUT "Trace";
+	FILE TraceFile: Text IS OUT "Trace";
+	FILE IOOutputFile: Text IS OUT "IOOutput";
+	FILE IOInputFile: Text IS IN "IOInput";
 	VARIABLE l : line;
 	VARIABLE Memory : mem_type := init_memory; -- Speicher mit init_memory initialisieren
 	VARIABLE Reg : reg_type := (0 => 0, 1 => 0, OTHERS => 0); 
@@ -94,8 +96,10 @@ BEGIN
 				write_NoParam(l);
  
 			-- I/O
- 
- 
+ 			WHEN code_in => ReadIn(Reg(x));
+ 					write_NoParam(l);
+ 			WHEN code_out => WriteOut(Reg(x));
+ 					write_NoParam(l);
 			-- Jump
  			WHEN code_jmp => PC := jmp(Memory(PC));
  				write_param(l, Memory(PC));

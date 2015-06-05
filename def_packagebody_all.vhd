@@ -152,6 +152,19 @@ PACKAGE BODY def_package_all IS
 		Z := CheckZeroFlag(R);
 	END SUBC;
 	
+		
+	Procedure ReadIn (Reg: out data_type) is 
+	variable il: line;
+	begin 
+	readIOinput(IOInputFile, il, Reg);
+	end ReadIn;
+	
+	Procedure WriteOut (constant Reg: in data_type) is
+	variable ol: line; 
+	begin
+	writeIOoutput (IOOutputFile, ol, Reg);
+	end WriteOut;
+	
 	-- Jump procedures
 	FUNCTION jmp(CONSTANT position: IN data_type)
 	RETURN data_type IS
@@ -373,5 +386,18 @@ PACKAGE BODY def_package_all IS
 		write(l, PrintBoolean(Overflow), left, 3); 
 		write(l, STRING'(" | ")); 
 	END write_flags;
+	
+	Procedure readIOinput (Variable f: out Text; l : inout line;  x: out data_type) is
+	var success : boolean;
+	begin 
+		readline(f, l);
+		read(l, x, success);
+	end readIOinput;
+	
+	Procedure writeIOoutput (Variable f: OUT Text; l : inout line; constant x: in data_type) is
+	BEGIN
+		write(l, integer'image(x));
+		writeline(f, l);
+	END writeIOoutput;
 	 
 END def_package_all;

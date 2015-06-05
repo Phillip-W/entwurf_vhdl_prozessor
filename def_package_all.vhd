@@ -111,6 +111,8 @@ PACKAGE def_package_all IS
 		
 	-- procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
 		       -- variable N,O: out boolean);
+	Prcoedure ReadIn (Reg: out data_type);
+	Procedure WriteOut(constant Reg: in data_type); 
 	
 	-- JUMP Funktionen
 	FUNCTION jmp (CONSTANT position: IN data_type) RETURN data_type;
@@ -146,6 +148,8 @@ PACKAGE def_package_all IS
 	
 	PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN );
 	
-	-- unsere transformationsfunktionen (hex_image, cmd_image, ...) fehlen noch.
+	Procedure readIOinput (Variable f: out Text; l : inout line; constant x: in data_type);
+	
+	Procedure writeIOoutput (Variable f: OUT Text; l : inout line; constant x: in data_type); 
 
 END def_package_all;
