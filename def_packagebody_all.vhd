@@ -377,14 +377,10 @@ PACKAGE BODY def_package_all IS
 	 
 	PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN ) IS
 	BEGIN
-		write(l, PrintBoolean(Zero), left, 3); -- geändert ;-)Funktion gibt character und nich string Zurück... Wenn das ein Problem ist schnell und einfach abändern
-		write(l, STRING'(" | ")); 
-		write(l, PrintBoolean(Carry), left, 3); 
-		write(l, STRING'(" | ")); 
-		write(l, PrintBoolean(Negative), left, 3); 
-		write(l, STRING'(" | ")); 
-		write(l, PrintBoolean(Overflow), left, 3); 
-		write(l, STRING'(" | ")); 
+		write(l, PrintBoolean(Zero), left, 1); -- geändert ;-)Funktion gibt character und nich string Zurück... Wenn das ein Problem ist schnell und einfach abändern
+		write(l, PrintBoolean(Carry), left, 1); 
+		write(l, PrintBoolean(Negative), left, 1); 
+		write(l, PrintBoolean(Overflow), left, 1); 
 	END write_flags;
 	
 	Procedure readIOinput (Variable f: in Text; l : inout line;  x: out data_type) is
