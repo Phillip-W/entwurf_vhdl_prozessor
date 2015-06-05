@@ -153,7 +153,7 @@ PACKAGE BODY def_package_all IS
 	END SUBC;
 	
 		
-	Prcoedure ReadIn (Reg: out data_type) is 
+	Procedure ReadIn (Reg: out data_type) is 
 	variable il: line;
 	begin 
 	readIOinput(IOInputFile, il, Reg);
