@@ -373,5 +373,11 @@ PACKAGE BODY def_package_all IS
 		write(l, PrintBoolean(Overflow), left, 3); 
 		write(l, STRING'(" | ")); 
 	END write_flags;
+	
+	Procedure writeIOoutput (Variable f: OUT Text; l : inout line; constant x: in data_type) is
+	BEGIN
+		write(l, integer'image(x));
+		writeline(f, l);
+	END writeIOoutput;
 	 
 END def_package_all;
