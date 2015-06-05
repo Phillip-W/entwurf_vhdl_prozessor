@@ -151,5 +151,7 @@ PACKAGE def_package_all IS
 	Procedure readIOinput (Variable f: out Text; l : inout line; constant x: in data_type);
 	
 	Procedure writeIOoutput (Variable f: OUT Text; l : inout line; constant x: in data_type); 
+	
+	PROCEDURE print_dump (CONSTANT memory: IN mem_type; VARIABLE dump_file: OUT text);
 
 END def_package_all;
