@@ -413,18 +413,14 @@ PACKAGE BODY def_package_all IS
 		writing: LOOP
       EXIT WHEN counter >= 2 ** address_width - 1; -- Exit Loop if end of Memory is reached;
       -- write memory line per line
-		  write(dump_line, String'("Adresse: "));
-		  write(dump_line, INTEGER'IMAGE(counter), right, 4);
-		  write(dump_line, String'(" |  Inahlt: "));
-		  IF memory(counter) /= 0 THEN  -- IF register is Empty return String not "0"
-		    write(dump_line, INTEGER'IMAGE(memory(counter)), right, 4);
-		  ELSE
-		    write(dump_line, String'("empty"));
-		  END IF;
-		  writeline(dump_file, dump_line);
-		  -- increase Counter
-		  counter := counter + 1;
-		END LOOP;
+			write(dump_line, String'("Adresse: "));
+			write(dump_line, INTEGER'IMAGE(counter), right, 4);
+			write(dump_line, String'(" |  Inahlt: "));
+			write(dump_line, INTEGER'IMAGE(memory(counter)), right, 4);
+			writeline(dump_file, dump_line);
+			-- increase Counter
+			counter := counter + 1;
+		END LOOP writing;
   END PROCEDURE;
   
 END def_package_all;
