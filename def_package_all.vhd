@@ -111,7 +111,9 @@ PACKAGE def_package_all IS
 		
 	-- procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
 		       -- variable N,O: out boolean);
-	Prcoedure ReadIn (Constant Reg: in datatype );
+	Prcoedure ReadIn (Reg: out data_type);
+	Procedure WriteOut(constant Reg: in data_type); 
+	
 	-- JUMP Funktionen
 	FUNCTION jmp (CONSTANT position: IN data_type) RETURN data_type;
 	FUNCTION jz(CONSTANT position, pc_old: IN data_type; zero_flag: IN BOOLEAN) RETURN data_type;
