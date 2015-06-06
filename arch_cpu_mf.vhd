@@ -79,17 +79,17 @@ BEGIN
 				write_NoParam(l);
  
 			-- Shift / Rotate
- 			-- when code_sll        => XSLL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-			-- when code_srl        => XSRL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-			-- when code_sra        => XSRA(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-			-- when code_rol        => Carry := FALSE;
-			-- 		        ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-			-- when code_rolc       => Carry := TRUE;
-			-- 		        ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-			-- when code_ror        => Carry := FALSE;
-			--                         RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow); 
-			-- when code_rorc       => Carry := TRUE;
-			--                         RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+ 			WHEN code_sll        => XSLL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			WHEN code_srl        => XSRL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			WHEN code_sra        => XSRA(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+		        WHEN code_rol        => Carry := FALSE;
+			 		        ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			WHEN code_rolc       => Carry := TRUE;
+			 		        ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+			WHEN code_ror        => Carry := FALSE;
+			                        RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow); 
+			WHEN code_rorc       => Carry := TRUE;
+			                        RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
  
 			-- Memory Access
  			WHEN code_ldc => Reg(x):= Memory(PC);							-- ldc (3.3.21)
