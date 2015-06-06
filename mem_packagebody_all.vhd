@@ -24,7 +24,6 @@ package body mem_package_all is
                        exit outest when
                             i := 2 ** addr_width - 1;
                      end if;
-                end if;
                 end loop;
              end loop;
         end init_memory;
