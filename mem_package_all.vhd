@@ -4,6 +4,6 @@ Use work.def_package_all.all;
 
 package mem_package_all is
       file MemoryFile   :   Text is in "Memory";
-	   	procedure init_memory (variable Memoryfile  : in text;
-			                       variable Memory: out mem_type );
+      procedure init_memory (variable Memoryfile  : in text; 
+                             variable Memory: out mem_type );
 end mem_package_all;
