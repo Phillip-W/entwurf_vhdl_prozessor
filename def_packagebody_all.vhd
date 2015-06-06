@@ -158,10 +158,10 @@ PACKAGE BODY def_package_all IS
 	
 	procedure XSLL (constant A: in data_type;
 			variable R: out data_type;
-			variable Z,C,N,O: out boolean) is
+			variable Z,CO,N,O: out boolean) is
 		variable A_s : integer;
 		constant a_length : integer := A'length - 1;
-		variable D: std_logic_vector(A_length downto 1) := conv_std_logic_vector(to_unsigned(A,A_Length),A_Length);
+		variable D: std_logic_vector(A_length downto 1) := conv_std_logic_vector(to_unsigned(A,A_Length),A_Length); -- nimm zum konvertieren folgendes her: std_logic_vector(to_unsigned(A, data_width)) und to_integer(unsigned(T)); --conv_integer(T)
 		variable T: std_logic_vector(A_length downto 1) := (others=>"0");
 		begin
 		    T(A_length downto 1) = D(A_length-1 downto 0);
