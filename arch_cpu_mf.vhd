@@ -2,7 +2,7 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE work.def_package_all.ALL; -- unsere Datentypen, etc.
 USE work.mem_package_all.ALL; -- unser Speicherinhalt / abzuarbeitendes Programm
-USE std.textio.ALL; -- für unser IO
+USE std.textio.ALL; -- fÃÂ¼r unser IO
 ARCHITECTURE behav OF CPU IS
 BEGIN
 	PROCESS
@@ -17,9 +17,11 @@ BEGIN
 	VARIABLE PC : addr_type := 0; -- 2.1.3.1; 2.1.3.2 unser Prozesscounter
 	VARIABLE Zero, Carry, Negative, Overflow : BOOLEAN := FALSE;
 	VARIABLE param : data_type;
+	Variable OPC: data_type:= 0;
+	Variable Parm: BOOLEAN:=FALSE;		-- gibt an, ob Parameter erwartet werden
 
 	BEGIN
-		init_memory(Memoryfile, Memory); -- Speicher mit init_memory initialisieren
+		init_memory(Parm, OPC, Memoryfile, Memory); -- Speicher mit init_memory initialisieren
 		print_header(TraceFile);
 		print_tail(TraceFile);
 		LOOP
@@ -34,7 +36,7 @@ BEGIN
 
 		PC := INC(PC);
 
-		CASE OP IS -- Anweisungen differenzieren und ausführen
+		CASE OP IS -- Anweisungen differenzieren und ausfÃÂ¼hren
 
 			-- Miscellaneous
 			WHEN code_nop => NULL; -- keine Operation (3.3.1.1)
@@ -51,7 +53,7 @@ BEGIN
 				--
 
 				-- ===============================================================================================================================================
-				-- die OPCode Operationen hier einfügen (s.h. Vorlesung ?? Seite 49ff. - Statements for Arithmetic and Logic Ops)
+				-- die OPCode Operationen hier einfÃÂ¼gen (s.h. Vorlesung ?? Seite 49ff. - Statements for Arithmetic and Logic Ops)
 				-- ===============================================================================================================================================
 
 				-- Arithmetic
@@ -130,9 +132,9 @@ BEGIN
 				write_param(l, Memory(PC));
  
 
-			WHEN OTHERS => -- ungültig oder bisher nicht implementiert
+			WHEN OTHERS => -- ungÃÂ¼ltig oder bisher nicht implementiert
 				ASSERT FALSE
-				REPORT "ungültig"
+				REPORT "kein OPCode"
 					SEVERITY error;
 		END CASE;
 		write_regs (l, Reg(x), Reg(y), Reg(z), Reg(a));
