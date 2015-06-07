@@ -423,32 +423,77 @@ PACKAGE BODY def_package_all IS
 -- Assembler
 --===============================================================================================================================================
 	
-  Procedure InputDecode (constant l: in line) IS
-  	variable lenght : Integer:=LENGTH'l;
-  	variable i: integer:=1;
-  	VARIABLE OP: String;
-  	
-  Begin
-  	while l(i) /= " " AND i <= length loop
-  		i = i+1;
-  	end LOOP;
-  	IF l(1 to i) = ... OR ... THEN			-- operanten erkennung
-  		IF l(1 to i) = ... THEN			-- OP-Code erkennung 
-  		ELSIF ...
-  		--read_register(l, i, register_counter
-  		--i, output);
-  		--read_register;
-  		--read_register;
-  	ELSIF l(1 to i) = ... THEN
-  		...
-  	ELSE
-  		ASSERT FALSE
-		REPORT "ungültig"
-		SEVERITY error;
+PROCEDURE InputDecode (CONSTANT l : IN line) IS
+VARIABLE lenght : INTEGER := LENGTH'l;
+VARIABLE i : INTEGER := 1;
+VARIABLE OP : STRING;
+ 
+BEGIN
+	WHILE l(i) /= " " AND i <= length LOOP
+		i = i + 1;
+END LOOP;
+i = i - 1; -- sonst liest er bis zum Leerzeichenund findet natürlich keine Übereinstimmung
+IF l(1 TO i) = "NOP" OR "STOP" THEN -- operanten erkennung (kein Register und kein Parameter)
+	IF l(1 TO i) = "NOP" THEN -- OP-Code erkennung (NOP)
+		OP := code_nop * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "STOP" THEN -- OP-Code erkennung (STOP)
+		OP := code_stop * (2 ** reg_addr_width) ** 3;
 	END IF;
-  	
-  	
-  	
-  End Procedure;
+	IF l(1 TO i) = "ADD" OR "ADDC" OR "SUB" OR "SUBC" OR "NOT" OR "AND" OR "OR" OR "XOR" OR "REA" OR "REO" OR "REX" OR "SLL" OR "SRL" OR "SRA" OR "ROL" OR "ROLC" OR "ROR" OR "RORC" THEN
+		IF l(1 TO i) = "ADD" THEN -- OP-Code erkennung (ADD)
+			OP := code_add * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "ADDC" THEN
+			OP := code_addc * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "SUB" THEN
+			OP := code_sub * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "SUBC" THEN
+			OP := code_subc * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "NOT" THEN
+			OP := code_not * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "AND" THEN
+			OP := code_and * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "OR" THEN
+			OP := code_or * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "XOR" THEN
+			OP := code_xor * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "REA" THEN
+			OP := code_rea * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "REO" THEN
+			OP := code_reo * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "REX" THEN
+			OP := code_rex * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "SLL" THEN
+			OP := code_sll * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "SRL" THEN
+			OP := code_srl * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "SRA" THEN
+			OP := code_sra * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "ROL" THEN
+			OP := code_rol * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "ROLC" THEN
+			OP := code_rolc * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "ROR" THEN
+			OP := code_ror * (2 ** reg_addr_width) ** 3;
+		ELSIF l(1 TO i) = "RORC" THEN
+			OP := code_rorc * (2 ** reg_addr_width) ** 3;
+		END IF;
+		--read_register(l, i, register_counter
+		--i, output);
+		--read_register;
+		--read_register;
+		--ELSIF l(1 to i) = ... THEN
+		 ...
+	ELSE
+		ASSERT FALSE
+		REPORT "ungültig"
+			SEVERITY error;
+	END IF; 
+ 
+END PROCEDURE;
+
+PROCEDURE read_register (CONSTANT l : IN line; CONSTANT i : INOUT INTEGER; CONSTANT register_counter; CONSTANT OP : INOUT addr_type) IS
+BEGIN
+	OP = OP + (INTEGER'value(l(i + register_counter * (1 + register_counter))) * (2 ** reg_addr_width) ** (3 - register_counter)); -- schau mal ob das so logisch ist. Sollte aber passen, damit wir direkt die Parameter übereben können
+END PROCEDURE;
   
 END def_package_all;
