@@ -395,7 +395,7 @@ END PROCEDURE;
  
 PROCEDURE InputDecode (VARIABLE l : IN line; Par: inout Boolean; OP: inout data_type) IS
 	VARIABLE llength : natural := l'length;
-	VARIABLE i,j : NATURAL RANGE 0 TO 20 := 1;
+	VARIABLE i,j : NATURAL := 1;
 	VARIABLE RegCounter: Natural :=0; 	-- gibt an wie viele Register gelesen werden müssen
 	
  
