@@ -1,26 +1,27 @@
 LIBRARY IEEE;
 USE IEEE.numeric_std.ALL;
 USE IEEE.STD_LOGIC_1164.ALL;
+USE std.textio.ALL;
 
 PACKAGE BODY def_package_all IS
 	-- ===============================================================================================================
-	-- Funktionen für die Kernfunktionalität unserer CPU
+	-- Funktionen fÃÂ¼r die KernfunktionalitÃÂ¤t unserer CPU
 	-- ===============================================================================================================
 
-	FUNCTION INC (CONSTANT PC : addr_type) -- PC-"increaser" (2.1.3.4; 2.1.3.3) RETURN addr_type IS
+	FUNCTION INC (CONSTANT PC : addr_type) RETURN addr_type IS  -- PC-"increaser" (2.1.3.4; 2.1.3.3) 
 	BEGIN
-		RETURN (PC + 1)MOD 2 ** addr_width; -- Überlauf unseres PC vermeiden
+		RETURN (PC + 1)MOD 2 ** addr_width; -- ÃÂberlauf unseres PC vermeiden
 	END INC;
 
 	-- ===============================================================================================================
-	-- Funktionen für unsere OPCodes
+	-- Funktionen fÃÂ¼r unsere OPCodes
 	-- ===============================================================================================================
-	FUNCTION "NOT" (CONSTANT A : data_type) -- IO fehlt noch RETURN data_type IS
+	FUNCTION "NOT" (CONSTANT A : data_type) RETURN data_type IS  -- IO fehlt noch 
 		BEGIN
 			RETURN - A - 1 + 2 ** data_width;
 	END "NOT";
 
-	FUNCTION "AND" (CONSTANT A, B : data_type) -- IO fehlt noch RETURN data_type IS
+	FUNCTION "AND" (CONSTANT A, B : data_type) RETURN data_type IS  -- IO fehlt noch 
 		VARIABLE r : data_type := 0;
 	BEGIN
 		FOR i IN 0 TO data_width LOOP
@@ -30,13 +31,13 @@ PACKAGE BODY def_package_all IS
 		END LOOP; RETURN r;
 	END "AND";
 
-	FUNCTION "OR" (CONSTANT A, B : data_type) -- IO fehlt noch RETURN data_type IS
+	FUNCTION "OR" (CONSTANT A, B : data_type) RETURN data_type IS  -- IO fehlt noch 
 		BEGIN
 			RETURN to_integer(to_unsigned(a, data_width) AND to_unsigned(b, data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
 
 	END "OR";
 
-	FUNCTION "XOR" (CONSTANT A, B : data_type) -- IO fehlt noch RETURN data_type IS
+	FUNCTION "XOR" (CONSTANT A, B : data_type) RETURN data_type IS  -- IO fehlt noch 
 		BEGIN
 			RETURN to_integer(to_unsigned(a, data_width) XOR to_unsigned(b, data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
 
@@ -226,7 +227,7 @@ BEGIN
 END jno;
  
 -- ===============================================================================================================
--- Proceduren / Funktionen für unser IO
+-- Proceduren / Funktionen fÃÂ¼r unser IO
 -- ===============================================================================================================
  
 FUNCTION PrintOpcode(code : opcode_type) RETURN STRING IS
@@ -346,7 +347,7 @@ END write_regs;
  
 PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN ) IS
 BEGIN
-	write(l, PrintBoolean(Zero), left, 1); -- geändert;-)Funktion gibt character und nich string Zurück... Wenn das ein Problem ist schnell und einfach abändern
+	write(l, PrintBoolean(Zero), left, 1); -- geÃÂ¤ndert;-)Funktion gibt character und nich string ZurÃÂ¼ck... Wenn das ein Problem ist schnell und einfach abÃÂ¤ndern
 	write(l, PrintBoolean(Carry), left, 1);
 	write(l, PrintBoolean(Negative), left, 1);
 	write(l, PrintBoolean(Overflow), left, 1);
@@ -392,77 +393,89 @@ END PROCEDURE;
 -- Assembler
 --===============================================================================================================================================
  
-PROCEDURE InputDecode (CONSTANT l : IN line) IS
-VARIABLE lenght : INTEGER := LENGTH'l;
-VARIABLE i : INTEGER := 1;
-VARIABLE OP : STRING;
+PROCEDURE InputDecode (VARIABLE l : IN line; Par: inout Boolean; OP: inout data_type) IS
+	VARIABLE llength : natural := l'length;
+	VARIABLE i,j : NATURAL RANGE 0 TO 20 := 1;
+	VARIABLE RegCounter: Natural :=0; 	-- gibt an wie viele Register gelesen werden müssen
+	
  
 BEGIN
-	WHILE l(i) /= " " AND i <= length LOOP
-		i = i + 1;
-END LOOP;
-i = i - 1; -- sonst liest er bis zum Leerzeichenund findet natürlich keine Übereinstimmung
-IF l(1 TO i) = "NOP" OR "STOP" THEN -- operanten erkennung (kein Register und kein Parameter)
-	IF l(1 TO i) = "NOP" THEN -- OP-Code erkennung (NOP)
+	whitespace: WHILE l(i)/=' ' LOOP
+		i := i+1;
+		exit whitespace when
+			i=llength+1;
+	END LOOP whitespace;
+	
+	i := i - 1; -- sonst liest er bis zum Leerzeiche nund findet natürlich keine Übereinstimmung
+	IF l(1 TO i) = "NOP" THEN -- OP-CODE Erkennung (NOP)
 		OP := code_nop * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 0; Par:= FALSE;
 	ELSIF l(1 TO i) = "STOP" THEN -- OP-Code erkennung (STOP)
-		OP := code_stop * (2 ** reg_addr_width) ** 3;
-	END IF;
-	IF l(1 TO i) = "ADD" OR "ADDC" OR "SUB" OR "SUBC" OR "NOT" OR "AND" OR "OR" OR "XOR" OR "REA" OR "REO" OR "REX" OR "SLL" OR "SRL" OR "SRA" OR "ROL" OR "ROLC" OR "ROR" OR "RORC" THEN
-		IF l(1 TO i) = "ADD" THEN -- OP-Code erkennung (ADD)
-			OP := code_add * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "ADDC" THEN
-			OP := code_addc * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "SUB" THEN
-			OP := code_sub * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "SUBC" THEN
-			OP := code_subc * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "NOT" THEN
-			OP := code_not * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "AND" THEN
-			OP := code_and * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "OR" THEN
-			OP := code_or * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "XOR" THEN
-			OP := code_xor * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "REA" THEN
-			OP := code_rea * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "REO" THEN
-			OP := code_reo * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "REX" THEN
-			OP := code_rex * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "SLL" THEN
-			OP := code_sll * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "SRL" THEN
-			OP := code_srl * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "SRA" THEN
-			OP := code_sra * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "ROL" THEN
-			OP := code_rol * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "ROLC" THEN
-			OP := code_rolc * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "ROR" THEN
-			OP := code_ror * (2 ** reg_addr_width) ** 3;
-		ELSIF l(1 TO i) = "RORC" THEN
-			OP := code_rorc * (2 ** reg_addr_width) ** 3;
-		END IF;
-		--read_register(l, i, register_counter
-		--i, output);
-		--read_register;
-		--read_register;
-		--ELSIF l(1 to i) = ... THEN
-		 ...
+		OP := code_stop * (2 ** reg_addr_width) ** 3;	
+		RegCounter:= 0; Par:= FALSE;
+	ELSIF l(1 TO i) = "ADD" THEN -- OP-Code erkennung (ADD)
+		OP := code_add * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 3;
+	ELSIF l(1 TO i) = "ADDC" THEN
+		OP := code_addc * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 3;
+	ELSIF l(1 TO i) = "SUB" THEN
+		OP := code_sub * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "SUBC" THEN
+		OP := code_subc * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "NOT" THEN
+		OP := code_not * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "AND" THEN
+		OP := code_and * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "OR" THEN
+		OP := code_or * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "XOR" THEN
+		OP := code_xor * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "REA" THEN
+		OP := code_rea * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "REO" THEN
+		OP := code_reo * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "REX" THEN
+		OP := code_rex * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "SLL" THEN
+		OP := code_sll * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "SRL" THEN
+		OP := code_srl * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "SRA" THEN
+		OP := code_sra * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "ROL" THEN
+		OP := code_rol * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "ROLC" THEN
+		OP := code_rolc * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "ROR" THEN
+		OP := code_ror * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "RORC" THEN
+		OP := code_rorc * (2 ** reg_addr_width) ** 3;
 	ELSE
 		ASSERT FALSE
 		REPORT "ungültig"
 			SEVERITY error;
 	END IF; 
- 
+	
+	readReg: WHILE RegCounter/=0 LOOP
+		RegCounter:= RegCounter-1;
+		OP:= OP+(to_int(l(i+2*j))*(2 ** reg_addr_width) ** RegCounter);
+		j:=j+1;
+	END LOOP readReg;
+	
 END PROCEDURE;
+Function to_int (a: in Character) return Integer IS
+	variable b: integer;
+Begin
+	if a='0' then b:=0;
+	elsif a='1' then b:=1;
+	elsif a='2' then b:=2;
+	elsif a='3' then b:=3;
+	else ASSERT FALSE
+		REPORT "ungültiges Register"
+			SEVERITY error;
+	end if;
+	return b;
+END to_int;
 
-PROCEDURE read_register (CONSTANT l : IN line; CONSTANT i : INOUT INTEGER; CONSTANT register_counter; CONSTANT OP : INOUT addr_type) IS
-BEGIN
-	OP = OP + (INTEGER'value(l(i + register_counter * (1 + register_counter))) * (2 ** reg_addr_width) ** (3 - register_counter)); -- schau mal ob das so logisch ist. Sollte aber passen, damit wir direkt die Parameter übereben können
-END PROCEDURE;
- 
 END def_package_all;
