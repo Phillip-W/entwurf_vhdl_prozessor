@@ -1,9 +1,12 @@
 LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
-Use work.def_package_all.all;
+USE work.def_package_all.ALL;
+USE std.textio.ALL;
 
-package mem_package_all is
-      file MemoryFile : Text is in "Memory";
-      procedure init_memory ( variable Memoryfile : in text;
-                              variable Memory : out mem_type);
-end mem_package_all;
+PACKAGE mem_package_all IS
+	FILE MemoryFile : Text IS IN "Memory.txt";
+	PROCEDURE init_memory (
+		VARIABLE Memoryfile : IN text;
+		VARIABLE Memory : OUT mem_type
+	);
+END mem_package_all;
