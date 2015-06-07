@@ -7,7 +7,6 @@ ARCHITECTURE behav OF CPU IS
 BEGIN
 	PROCESS
 	FILE TraceFile : Text IS OUT "Trace.txt";
-	FILE DumpFile : Text IS OUT "Dump.txt";
 	VARIABLE l : line;
 	VARIABLE Memory : mem_type;
 	VARIABLE Reg : reg_type := (0 => 0, 1 => 0, OTHERS => 0);
@@ -96,13 +95,13 @@ BEGIN
 
 				-- Memory Access
 			WHEN code_ldc => Reg(x) := Memory(PC); -- ldc (3.3.21)
-				write_param(l, Memory(PC));
+				write_param(l, Memory(PC));PC := INC(PC);
 			WHEN code_ldd => Reg(x) := Memory(Memory(PC)); -- ldc (3.3.22)
-				write_param(l, Memory(PC));
+				write_param(l, Memory(PC));PC := INC(PC);
 			WHEN code_ldr => Reg(x) := Memory(Reg(Y)); -- ldc (3.3.23)
 				write_NoParam(l);
 			WHEN code_std => Memory(Memory(PC)) := Reg(x); -- ldc (3.3.24)
-				write_param(l, Memory(PC));
+				write_param(l, Memory(PC));PC := INC(PC);
 			WHEN code_str => Memory(Reg(Y)) := Reg(x); -- ldc (3.3.25)
 				write_NoParam(l);
 
