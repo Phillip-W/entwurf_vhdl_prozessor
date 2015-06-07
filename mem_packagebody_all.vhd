@@ -14,7 +14,7 @@ package body mem_package_all is
                inputDecode(ml, dml);
 
                success := TRUE ;
-		 read values in each line
+		-- read values in each line
 		while success LOOP
 			read(dml, v, success);
 			if success then
