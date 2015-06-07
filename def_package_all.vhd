@@ -19,14 +19,14 @@ PACKAGE def_package_all IS
 	CONSTANT opcode_width : POSITIVE := 6; --3.1.1
 
 	CONSTANT reg_addr_width : POSITIVE := 2; --2.1.2
-	CONSTANT addr_width : POSITIVE := 12; -- nicht ändern
+	CONSTANT addr_width : POSITIVE := 12; -- nicht ÃÂ¤ndern
 	-- ===============================================================================================================================================
 	--Hier alle Datentypen, Subtyps definieren
 	-- ===============================================================================================================================================
 
 	SUBTYPE addr_type IS -- unsers Adressen zum ansprechen des Speichers, z.B. durch den PC
 	NATURAL RANGE 0 TO 2 ** address_width - 1;
-	SUBTYPE opcode_type IS -- für unsere OPCode Deklarationen
+	SUBTYPE opcode_type IS -- fÃÂ¼r unsere OPCode Deklarationen
 	NATURAL RANGE 0 TO 2 ** opcode_width - 1;
 	SUBTYPE reg_addr_type IS -- zum Ansprechen unserer Register
 	NATURAL RANGE 0 TO 2 ** reg_addr_width - 1;
@@ -37,8 +37,11 @@ PACKAGE def_package_all IS
 	TYPE reg_type IS -- 2.1.2.1 unsere "Register" (Array)
 	ARRAY(reg_addr_type) OF data_type;
 
+	
+	
+
 	-- ===============================================================================================================================================
-	--Hier alle OPCodes definieren (vollständig)
+	--Hier alle OPCodes definieren (vollstÃÂ¤ndig)
 	-- ===============================================================================================================================================
 
 	CONSTANT code_nop : opcode_type := 0; --3.3.1.1
@@ -78,20 +81,20 @@ PACKAGE def_package_all IS
 	CONSTANT code_jnn : opcode_type := 55; --3.3.1.35
 	CONSTANT code_jno : opcode_type := 56; --3.3.1.36
 
-	FUNCTION INC (CONSTANT PC : addr_type) -- PC-"increaser" (2.1.3.4; 2.1.3.3) RETURN addr_type;
+	FUNCTION INC (CONSTANT PC : addr_type) RETURN addr_type;  -- PC-"increaser" (2.1.3.4; 2.1.3.3) 
 	-- ===============================================================================================================================================
-	-- die Funktionen / Proceduren für unsere OPCodes
+	-- die Funktionen / Proceduren fÃÂ¼r unsere OPCodes
 	-- ===============================================================================================================================================
 
 	FUNCTION "NOT" (CONSTANT A : data_type) RETURN data_type;
 
-		FUNCTION "AND" (CONSTANT A, B : data_type) RETURN data_type;
+	FUNCTION "AND" (CONSTANT A, B : data_type) RETURN data_type;
 
-		FUNCTION "OR" (CONSTANT A, B : data_type) RETURN data_type;
+	FUNCTION "OR" (CONSTANT A, B : data_type) RETURN data_type;
 
-		FUNCTION "XOR" (CONSTANT A, B : data_type) RETURN data_type;
+	FUNCTION "XOR" (CONSTANT A, B : data_type) RETURN data_type;
  
-		PROCEDURE rea (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type);
+	PROCEDURE rea (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type);
 
 	PROCEDURE reo (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type);
 
@@ -131,7 +134,7 @@ FUNCTION jnn(CONSTANT position, pc_old : IN data_type; negative_flag : IN BOOLEA
 FUNCTION jno(CONSTANT position, pc_old : IN data_type; overflow_flag : IN BOOLEAN) RETURN data_type;
  
 -- ===============================================================================================================================================
--- die Proceduren / Funktionen für unser IO
+-- die Proceduren / Funktionen fÃÂ¼r unser IO
 -- ===============================================================================================================================================
  
 
@@ -163,7 +166,9 @@ PROCEDURE print_dump (CONSTANT memory : IN mem_type; VARIABLE dump_file : OUT te
 -- Assembler
 --===============================================================================================================================================
  
-PROCEDURE InputDecode (VARIABLE l : IN line);
-PROCEDURE read_register (CONSTANT l : IN line; CONSTANT i : INOUT INTEGER; CONSTANT register_counter : IN INTEGER; CONSTANT OP : INOUT addr_type);
+PROCEDURE InputDecode (VARIABLE l : IN line; Par: inout Boolean; OP: inout data_type);
+Function to_int (a: in Character) return Integer;
+-- PROCEDURE read_register (VARIABLE l : IN line; CONSTANT i_in : IN INTEGER; VARIABLE i_out: OUT INTEGER; VARIABLE reg: OUT String);
+-- PROCEDURE read_param (VARIABLE l : IN line; CONSTANT i_in : IN INTEGER; VARIABLE param: OUT String);
 
 END def_package_all;
