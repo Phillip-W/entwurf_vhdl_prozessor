@@ -9,6 +9,7 @@ PACKAGE def_package_all IS
 
 	FILE IOOutputFile : Text IS OUT "IOOutput.txt";
 	FILE IOInputFile : Text IS IN "IOInput.txt";
+	FILE DumpFile : Text IS OUT "Dump.txt";
 
 	-- ===============================================================================================================================================
 	--Hier alle Konstanten definieren
@@ -166,7 +167,7 @@ PROCEDURE print_dump (CONSTANT memory : IN mem_type; VARIABLE dump_file : OUT te
 -- Assembler
 --===============================================================================================================================================
  
-PROCEDURE InputDecode (VARIABLE l : IN line; Par: inout Boolean; OP: inout data_type);
+PROCEDURE InputDecode (VARIABLE l : IN line; Par: inout Boolean; OP: inout data_type; variable Mem : inout mem_type; variable ad: inout addr_type);
 Function to_int (a: in Character) return Integer;
 -- PROCEDURE read_register (VARIABLE l : IN line; CONSTANT i_in : IN INTEGER; VARIABLE i_out: OUT INTEGER; VARIABLE reg: OUT String);
 -- PROCEDURE read_param (VARIABLE l : IN line; CONSTANT i_in : IN INTEGER; VARIABLE param: OUT String);
