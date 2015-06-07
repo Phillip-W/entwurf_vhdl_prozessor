@@ -393,9 +393,10 @@ END PROCEDURE;
 -- Assembler
 --===============================================================================================================================================
  
-PROCEDURE InputDecode (VARIABLE l : IN line; Par: inout Boolean; OP: inout data_type) IS
+PROCEDURE InputDecode (VARIABLE l : IN line; Par: inout Boolean; OP: inout data_type; variable Mem : inout mem_type; variable ad: inout addr_type) IS
 	VARIABLE llength : natural := l'length;
-	VARIABLE i,j : NATURAL := 1;
+	VARIABLE i,j : NATURAL  := 1;
+	VARIABLE h: NATURAL :=2;
 	VARIABLE RegCounter: Natural :=0; 	-- gibt an wie viele Register gelesen werden müssen
 	
  
@@ -451,6 +452,9 @@ BEGIN
 		OP := code_ror * (2 ** reg_addr_width) ** 3;
 	ELSIF l(1 TO i) = "RORC" THEN
 		OP := code_rorc * (2 ** reg_addr_width) ** 3;
+	ELSIF l(1 TO i) = "LDC" THEN
+		OP := code_ldc * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 1; Par:= TRUE;
 	ELSE
 		ASSERT FALSE
 		REPORT "ungültig"
@@ -459,9 +463,15 @@ BEGIN
 	
 	readReg: WHILE RegCounter/=0 LOOP
 		RegCounter:= RegCounter-1;
-		OP:= OP+(to_int(l(i+2*j))*(2 ** reg_addr_width) ** RegCounter);
+		OP:= OP+(to_int(l(i+2*j))*(2 ** reg_addr_width) ** h);
 		j:=j+1;
+		exit readReg when h=0;
+		h:=h-1;
 	END LOOP readReg;
+
+	Parameter: if Par then
+		mem(ad+1):=integer'value(l(i+2*j to llength));
+	END IF Parameter;
 	
 END PROCEDURE;
 Function to_int (a: in Character) return Integer IS
