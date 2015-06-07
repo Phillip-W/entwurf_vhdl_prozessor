@@ -394,7 +394,7 @@ END PROCEDURE;
 --===============================================================================================================================================
  
 PROCEDURE InputDecode (VARIABLE l : IN line; VARIABLE output_line : OUT line) IS
---	VARIABLE lenght : INTEGER := LENGTH'l;
+--	VARIABLE length : INTEGER := l'LENGTH;
 	VARIABLE i : INTEGER := 1;
 	VARIABLE output_loc: line;
 	VARIABLE OP : String(1 to 5);
@@ -402,7 +402,7 @@ PROCEDURE InputDecode (VARIABLE l : IN line; VARIABLE output_line : OUT line) IS
 	VARIABLE param: String(1 to 13);
  
 BEGIN
-	WHILE l(i) /= " " AND i <= length'l LOOP
+	WHILE l(i) /= " " AND i <= l'length LOOP
 		i = i + 1;
 	END LOOP;
 
