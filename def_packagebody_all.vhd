@@ -416,45 +416,106 @@ BEGIN
 		RegCounter:= 0; Par:= FALSE;
 	ELSIF l(1 TO i) = "ADD" THEN -- OP-Code erkennung (ADD)
 		OP := code_add * (2 ** reg_addr_width) ** 3;
-		RegCounter:= 3;
+		RegCounter:= 3; Par:= FALSE;
 	ELSIF l(1 TO i) = "ADDC" THEN
 		OP := code_addc * (2 ** reg_addr_width) ** 3;
-		RegCounter:= 3;
+		RegCounter:= 3; Par:= FALSE;
 	ELSIF l(1 TO i) = "SUB" THEN
 		OP := code_sub * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 3; Par:= FALSE;
 	ELSIF l(1 TO i) = "SUBC" THEN
 		OP := code_subc * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 3; Par:= FALSE;
 	ELSIF l(1 TO i) = "NOT" THEN
 		OP := code_not * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "AND" THEN
 		OP := code_and * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 3; Par:= FALSE;
 	ELSIF l(1 TO i) = "OR" THEN
 		OP := code_or * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 3; Par:= FALSE;
 	ELSIF l(1 TO i) = "XOR" THEN
 		OP := code_xor * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 3; Par:= FALSE;
 	ELSIF l(1 TO i) = "REA" THEN
 		OP := code_rea * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "REO" THEN
 		OP := code_reo * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "REX" THEN
 		OP := code_rex * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "SLL" THEN
 		OP := code_sll * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "SRL" THEN
 		OP := code_srl * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "SRA" THEN
 		OP := code_sra * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "ROL" THEN
 		OP := code_rol * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "ROLC" THEN
 		OP := code_rolc * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "ROR" THEN
 		OP := code_ror * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "RORC" THEN
 		OP := code_rorc * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
 	ELSIF l(1 TO i) = "LDC" THEN
 		OP := code_ldc * (2 ** reg_addr_width) ** 3;
 		RegCounter:= 1; Par:= TRUE;
+	ELSIF l(1 TO i) = "LDD" THEN
+		OP := code_ldd * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 1; Par:= TRUE;
+	ELSIF l(1 TO i) = "LDR" THEN
+		OP := code_ldr * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
+	ELSIF l(1 TO i) = "STD" THEN
+		OP := code_std * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 1; Par:= TRUE;
+	ELSIF l(1 TO i) = "STR" THEN
+		OP := code_str * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 2; Par:= FALSE;
+	ELSIF l(1 TO i) = "IN" THEN
+		OP := code_in * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 1; Par:= FALSE;
+	ELSIF l(1 TO i) = "OUT" THEN
+		OP := code_out * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 1; Par:= FALSE;
+	ELSIF l(1 TO i) = "JMP" THEN
+		OP := code_jmp * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 0; Par:= TRUE;
+	ELSIF l(1 TO i) = "JZ" THEN
+		OP := code_jz * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 0; Par:= TRUE;
+	ELSIF l(1 TO i) = "JC" THEN
+		OP := code_jc * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 0; Par:= TRUE;
+	ELSIF l(1 TO i) = "JN" THEN
+		OP := code_ldc * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 0; Par:= TRUE;
+	ELSIF l(1 TO i) = "JO" THEN
+		OP := code_jo * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 0; Par:= TRUE;
+	ELSIF l(1 TO i) = "JNZ" THEN
+		OP := code_jnz * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 0; Par:= TRUE;
+	ELSIF l(1 TO i) = "JNC" THEN
+		OP := code_jnc * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 0; Par:= TRUE;
+	ELSIF l(1 TO i) = "JNN" THEN
+		OP := code_jnn * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 0; Par:= TRUE;
+	ELSIF l(1 TO i) = "JNO" THEN
+		OP := code_jno * (2 ** reg_addr_width) ** 3;
+		RegCounter:= 0; Par:= TRUE;
 	ELSE
 		ASSERT FALSE
 		REPORT "ungültig"
