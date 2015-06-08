@@ -33,7 +33,7 @@ PACKAGE BODY def_package_all IS
 
 	FUNCTION "OR" (CONSTANT A, B : data_type) RETURN data_type IS  -- IO fehlt noch 
 		BEGIN
-			RETURN to_integer(to_unsigned(a, data_width) AND to_unsigned(b, data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
+			RETURN to_integer(to_unsigned(a, data_width) OR to_unsigned(b, data_width)); -- hab lange nach einer eleganteren Methode gesucht, mir wollte aber keine einfallen
 
 	END "OR";
 
@@ -43,7 +43,7 @@ PACKAGE BODY def_package_all IS
 
 	END "XOR";
 
-	PROCEDURE rea (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type ) IS
+	PROCEDURE rea (VARIABLE X : INOUT data_type; CONSTANT Y : IN data_type) IS
 VARIABLE Z, A : std_logic_vector(data_width - 1 DOWNTO 0);
 BEGIN
 	Z := std_logic_vector(to_unsigned(Y, data_width));
@@ -54,7 +54,7 @@ BEGIN
 	X := to_integer(unsigned(A));
 END rea;
 
-PROCEDURE reo (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type ) IS
+PROCEDURE reo (VARIABLE X : INOUT data_type; CONSTANT Y : IN data_type) IS
 VARIABLE Z, A : std_logic_vector(data_width - 1 DOWNTO 0);
 BEGIN
 	Z := std_logic_vector(to_unsigned(Y, data_width));
@@ -65,7 +65,7 @@ BEGIN
 	X := to_integer(unsigned(A));
 END reo;
 
-PROCEDURE rex (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type ) IS
+PROCEDURE rex (VARIABLE X : INOUT data_type; CONSTANT Y : IN data_type) IS
 VARIABLE Z, A : std_logic_vector(data_width - 1 DOWNTO 0);
 BEGIN
 	Z := std_logic_vector(to_unsigned(Y, data_width));
@@ -282,7 +282,7 @@ END PrintBoolean;
 PROCEDURE print_tail (VARIABLE f : OUT text) IS
 VARIABLE l : line;
 BEGIN
-	write(l, STRING'("------------------------------------------------------"));
+	write(l, STRING'("----------------------------------------------------------"));
 	writeline(f, l);
 END print_tail;
  
@@ -309,13 +309,13 @@ BEGIN
 	write(l, STRING'(" | "));
 	write(l, STRING'("P"), left, 3);
 	write(l, STRING'(" | "));
-	write(l, STRING'("R0"), left, 3);
+	write(l, STRING'("R0"), left, 4);
 	write(l, STRING'(" | "));
-	write(l, STRING'("R1"), left, 3);
+	write(l, STRING'("R1"), left, 4);
 	write(l, STRING'(" | "));
-	write(l, STRING'("R2"), left, 3);
+	write(l, STRING'("R2"), left, 4);
 	write(l, STRING'(" | "));
-	write(l, STRING'("R3"), left, 3);
+	write(l, STRING'("R3"), left, 4);
 	write(l, STRING'(" | "));
 	write(l, STRING'("ZCNO"), left, 4);
 	writeline(f, l);
@@ -335,13 +335,13 @@ END write_NoParam;
  
 PROCEDURE write_regs (VARIABLE l : INOUT line; CONSTANT r0, r1, r2, r3 : IN data_type ) IS
 BEGIN
-	write(l, INTEGER'IMAGE(r0), left, 3);
+	write(l, INTEGER'IMAGE(r0), left, 4);
 	write(l, STRING'(" | "));
-	write(l, INTEGER'IMAGE (r1), left, 3);
+	write(l, INTEGER'IMAGE (r1), left, 4);
 	write(l, STRING'(" | "));
-	write(l, INTEGER'IMAGE (r2), left, 3);
+	write(l, INTEGER'IMAGE (r2), left, 4);
 	write(l, STRING'(" | "));
-	write(l, INTEGER'IMAGE (r3), left, 3);
+	write(l, INTEGER'IMAGE (r3), left, 4);
 	write(l, STRING'(" | "));
 END write_regs;
  
