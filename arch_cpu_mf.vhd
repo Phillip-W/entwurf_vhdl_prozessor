@@ -41,7 +41,7 @@ BEGIN
 			WHEN code_nop => NULL; -- keine Operation (3.3.1.1)
 				write_NoParam(l);
 			WHEN code_stop => write_NoParam(l); -- stop Simulation (3.3.1.2)
-				write_regs (l, Reg(x), Reg(y), Reg(z), Reg(a));
+				write_regs (l, Reg(0), Reg(1), Reg(2), Reg(3));
 				write_flags(l, Zero, Carry, Negative, Overflow);
 				writeline(TraceFile, l);
 				print_tail(TraceFile);
@@ -66,25 +66,25 @@ BEGIN
 				write_NoParam(l);
 				-- Logical
 			WHEN code_not => Reg(x) := "NOT"(Reg(y)); -- Verneinung (3.3.1.7)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(0)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
 				write_NoParam(l);
 			WHEN code_and => Reg(x) := (Reg(y)) AND (Reg(z)); -- UND-Operation (3.3.1.8)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(0)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
 				write_NoParam(l);
 			WHEN code_or => Reg(x) := (Reg(y)) OR (Reg(z)); -- OR-Operation (3.3.1.9)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(0)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
 				write_NoParam(l);
 			WHEN code_xor => Reg(x) := (Reg(y)) XOR (Reg(z)); -- xor (3.3.1.10)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(0)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
 				write_NoParam(l);
 			WHEN code_rea => REA(Reg(x), Reg(y)); -- rea (3.3.11)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(0)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
 				write_NoParam(l);
 			WHEN code_reo => REO(Reg(x), Reg(y)); -- reo (3.3.12)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(0)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
 				write_NoParam(l);
 			WHEN code_rex => REX(Reg(x), Reg(y)); -- rex (3.3.13)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(0)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
 				write_NoParam(l);
 
 				-- Shift / Rotate
@@ -102,13 +102,13 @@ BEGIN
 
 				-- Memory Access
 			WHEN code_ldc => Reg(x) := Memory(PC); -- ldc (3.3.21)
-				Zero := CheckZeroFlag(Reg(x)); Negative:=(to_unsigned(Reg(x), data_width)(0)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
 				write_param(l, Memory(PC));PC := INC(PC);
 			WHEN code_ldd => Reg(x) := Memory(Memory(PC)); -- ldc (3.3.22)
-				Zero := CheckZeroFlag(Reg(x)); Negative:=(to_unsigned(Reg(x), data_width)(0)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
 				write_param(l, Memory(PC));PC := INC(PC);
 			WHEN code_ldr => Reg(x) := Memory(Reg(Y)); -- ldc (3.3.23)
-				Zero := CheckZeroFlag(Reg(x)); Negative:=(to_unsigned(Reg(x), data_width)(0)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
 				write_NoParam(l);
 			WHEN code_std => Memory(Memory(PC)) := Reg(x); -- ldc (3.3.24)
 				write_param(l, Memory(PC));PC := INC(PC);
@@ -146,7 +146,7 @@ BEGIN
 				REPORT "kein OPCode"
 					SEVERITY error;
 		END CASE;
-		write_regs (l, Reg(x), Reg(y), Reg(z), Reg(a));
+		write_regs (l, Reg(0), Reg(1), Reg(2), Reg(3));
 		write_flags(l, Zero, Carry, Negative, Overflow);
 		writeline(TraceFile, l);
  
