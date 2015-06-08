@@ -7,8 +7,8 @@ PACKAGE def_package_all IS
 	--Files
 	-- ===============================================================================================================================================
 
-	FILE IOOutputFile: Text IS OUT "IOOutput";
-	FILE IOInputFile: Text IS IN "IOInput";
+	FILE IOOutputFile : Text IS OUT "IOOutput.txt";
+	FILE IOInputFile : Text IS IN "IOInput.txt";
 
 	-- ===============================================================================================================================================
 	--Hier alle Konstanten definieren
@@ -19,14 +19,14 @@ PACKAGE def_package_all IS
 	CONSTANT opcode_width : POSITIVE := 6; --3.1.1
 
 	CONSTANT reg_addr_width : POSITIVE := 2; --2.1.2
-	CONSTANT addr_width : POSITIVE := 12; -- nicht ändern
+	CONSTANT addr_width : POSITIVE := 12; -- nicht Ã¤ndern
 	-- ===============================================================================================================================================
 	--Hier alle Datentypen, Subtyps definieren
 	-- ===============================================================================================================================================
 
 	SUBTYPE addr_type IS -- unsers Adressen zum ansprechen des Speichers, z.B. durch den PC
 	NATURAL RANGE 0 TO 2 ** address_width - 1;
-	SUBTYPE opcode_type IS -- für unsere OPCode Deklarationen
+	SUBTYPE opcode_type IS -- fÃ¼r unsere OPCode Deklarationen
 	NATURAL RANGE 0 TO 2 ** opcode_width - 1;
 	SUBTYPE reg_addr_type IS -- zum Ansprechen unserer Register
 	NATURAL RANGE 0 TO 2 ** reg_addr_width - 1;
@@ -38,7 +38,7 @@ PACKAGE def_package_all IS
 	ARRAY(reg_addr_type) OF data_type;
 
 	-- ===============================================================================================================================================
-	--Hier alle OPCodes definieren (vollständig)
+	--Hier alle OPCodes definieren (vollstÃ¤ndig)
 	-- ===============================================================================================================================================
 
 	CONSTANT code_nop : opcode_type := 0; --3.3.1.1
@@ -78,10 +78,9 @@ PACKAGE def_package_all IS
 	CONSTANT code_jnn : opcode_type := 55; --3.3.1.35
 	CONSTANT code_jno : opcode_type := 56; --3.3.1.36
 
-	FUNCTION INC (CONSTANT PC : addr_type) -- PC-"increaser" (2.1.3.4; 2.1.3.3) 
-		RETURN addr_type;
+	FUNCTION INC (CONSTANT PC : addr_type) RETURN addr_type;  -- PC-"increaser" (2.1.3.4; 2.1.3.3) 
 	-- ===============================================================================================================================================
-	-- die Funktionen / Proceduren für unsere OPCodes
+	-- die Funktionen / Proceduren fÃ¼r unsere OPCodes
 	-- ===============================================================================================================================================
 
 	FUNCTION "NOT" (CONSTANT A : data_type) RETURN data_type;
@@ -91,73 +90,81 @@ PACKAGE def_package_all IS
 	FUNCTION "OR" (CONSTANT A, B : data_type) RETURN data_type;
 
 	FUNCTION "XOR" (CONSTANT A, B : data_type) RETURN data_type;
-	
-	PROCEDURE rea (CONSTANT Y : IN data_type; VARIABLE X: INOUT data_type);
+ 
+	PROCEDURE rea (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type);
 
-	PROCEDURE reo (CONSTANT Y : IN data_type; VARIABLE X: INOUT data_type);
+	PROCEDURE reo (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type);
 
-	PROCEDURE rex (CONSTANT Y : IN data_type; VARIABLE X: INOUT data_type);
+PROCEDURE rex (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type);
 
-	FUNCTION CheckZeroFlag (CONSTANT Reg : data_type) RETURN BOOLEAN;
+FUNCTION CheckZeroFlag (CONSTANT Reg : data_type) RETURN BOOLEAN;
 
-	PROCEDURE ADD (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O : OUT BOOLEAN);
+PROCEDURE ADD (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O : OUT BOOLEAN);
 
-	PROCEDURE ADDC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O : OUT BOOLEAN);
+PROCEDURE ADDC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O : OUT BOOLEAN);
 
-	PROCEDURE SUB (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; Z, N : OUT BOOLEAN);
+PROCEDURE SUB (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; Z, N : OUT BOOLEAN);
 
-	PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O, N : OUT BOOLEAN);
+PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O, N : OUT BOOLEAN);
 
-	-- Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
-					
-	-- Procedure XSRA(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
-				  
-	-- procedure ROLC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
-		       -- variable N,O: out boolean) ;
-		
-	-- procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
-		       -- variable N,O: out boolean);
-	Procedure ReadIn (Reg: out data_type);
-	Procedure WriteOut(constant Reg: in data_type); 
-	
-	-- JUMP Funktionen
-	FUNCTION jmp (CONSTANT position: IN data_type) RETURN data_type;
-	FUNCTION jz(CONSTANT position, pc_old: IN data_type; zero_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jc(CONSTANT position, pc_old: IN data_type; carry_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jn(CONSTANT position, pc_old: IN data_type; negative_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jo(CONSTANT position, pc_old: IN data_type; overflow_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jnz(CONSTANT position, pc_old: IN data_type; zero_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jnc(CONSTANT position, pc_old: IN data_type; carry_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jnn(CONSTANT position, pc_old: IN data_type; negative_flag: IN BOOLEAN) RETURN data_type;
-	FUNCTION jno(CONSTANT position, pc_old: IN data_type; overflow_flag: IN BOOLEAN) RETURN data_type;
-	
-	-- ===============================================================================================================================================
-	-- die Proceduren / Funktionen für unser IO
-	-- ===============================================================================================================================================
-	
+-- Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+ 
+-- Procedure XSRA(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+ 
+-- procedure ROLC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
+-- variable N,O: out boolean);
+ 
+-- procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
+-- variable N,O: out boolean);
+PROCEDURE ReadIn (Reg : OUT data_type);
+PROCEDURE WriteOut(CONSTANT Reg : IN data_type);
+ 
+-- JUMP Funktionen
+FUNCTION jmp (CONSTANT position : IN data_type) RETURN data_type;
+FUNCTION jz(CONSTANT position, pc_old : IN data_type; zero_flag : IN BOOLEAN) RETURN data_type;
+FUNCTION jc(CONSTANT position, pc_old : IN data_type; carry_flag : IN BOOLEAN) RETURN data_type;
+FUNCTION jn(CONSTANT position, pc_old : IN data_type; negative_flag : IN BOOLEAN) RETURN data_type;
+FUNCTION jo(CONSTANT position, pc_old : IN data_type; overflow_flag : IN BOOLEAN) RETURN data_type;
+FUNCTION jnz(CONSTANT position, pc_old : IN data_type; zero_flag : IN BOOLEAN) RETURN data_type;
+FUNCTION jnc(CONSTANT position, pc_old : IN data_type; carry_flag : IN BOOLEAN) RETURN data_type;
+FUNCTION jnn(CONSTANT position, pc_old : IN data_type; negative_flag : IN BOOLEAN) RETURN data_type;
+FUNCTION jno(CONSTANT position, pc_old : IN data_type; overflow_flag : IN BOOLEAN) RETURN data_type;
+ 
+-- ===============================================================================================================================================
+-- die Proceduren / Funktionen fÃ¼r unser IO
+-- ===============================================================================================================================================
+ 
 
-	FUNCTION PrintOpcode(code : opcode_type) return String;	
+FUNCTION PrintOpcode(code : opcode_type) RETURN STRING; 
 
-	FUNCTION PrintBoolean(booleanvalue : boolean) return Character;	
-	
-	PROCEDURE print_tail (VARIABLE f : OUT text);
-	
-	PROCEDURE write_PC_CMD (VARIABLE l : INOUT line; CONSTANT PC : IN data_type; CONSTANT OP : IN opcode_type; CONSTANT x, y, z : IN reg_addr_type);
-	
-	PROCEDURE print_header (VARIABLE f : OUT text);
-	
-	PROCEDURE write_param (VARIABLE l : INOUT line; CONSTANT param : IN data_type);
-	
-	PROCEDURE write_NoParam (VARIABLE l : INOUT line);
-	
-	PROCEDURE write_regs (VARIABLE l : INOUT line; CONSTANT r0, r1, r2, r3 : IN data_type );
-	
-	PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN );
-	
-	Procedure readIOinput (Variable f: IN Text; l : inout line; x: out data_type);
-	
-	Procedure writeIOoutput (Variable f: OUT Text; l : inout line; constant x: in data_type); 
-	
-	PROCEDURE print_dump (CONSTANT memory: IN mem_type; VARIABLE dump_file: OUT text);
+FUNCTION PrintBoolean(booleanvalue : BOOLEAN) RETURN CHARACTER; 
+ 
+PROCEDURE print_tail (VARIABLE f : OUT text);
+ 
+PROCEDURE write_PC_CMD (VARIABLE l : INOUT line; CONSTANT PC : IN data_type; CONSTANT OP : IN opcode_type; CONSTANT x, y, z : IN reg_addr_type);
+ 
+PROCEDURE print_header (VARIABLE f : OUT text);
+ 
+PROCEDURE write_param (VARIABLE l : INOUT line; CONSTANT param : IN data_type);
+ 
+PROCEDURE write_NoParam (VARIABLE l : INOUT line);
+ 
+PROCEDURE write_regs (VARIABLE l : INOUT line; CONSTANT r0, r1, r2, r3 : IN data_type );
+ 
+PROCEDURE write_flags (VARIABLE l : INOUT line; CONSTANT Zero, Carry, Negative, Overflow : IN BOOLEAN );
+ 
+PROCEDURE readIOinput (VARIABLE f : IN Text; l : INOUT line; x : OUT data_type);
+ 
+PROCEDURE writeIOoutput (VARIABLE f : OUT Text; l : INOUT line; CONSTANT x : IN data_type);
+ 
+PROCEDURE print_dump (CONSTANT memory : IN mem_type; VARIABLE dump_file : OUT text);
+
+--===============================================================================================================================================
+-- Assembler
+--===============================================================================================================================================
+ 
+PROCEDURE InputDecode (VARIABLE l : IN line; VARIABLE output_line : OUT line);
+PROCEDURE read_register (VARIABLE l : IN line; CONSTANT i_in : IN INTEGER; VARIABLE i_out: OUT INTEGER; VARIABLE reg: OUT String);
+PROCEDURE read_param (VARIABLE l : IN line; CONSTANT i_in : IN INTEGER; VARIABLE param: OUT String);
 
 END def_package_all;
