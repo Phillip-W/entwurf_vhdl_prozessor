@@ -95,11 +95,11 @@ PACKAGE def_package_all IS
 
 	FUNCTION "XOR" (CONSTANT A, B : data_type) RETURN data_type;
  
-	PROCEDURE rea (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type);
+	PROCEDURE rea (VARIABLE X : INOUT data_type; CONSTANT Y : IN data_type);
 
-	PROCEDURE reo (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type);
+	PROCEDURE reo (VARIABLE X : INOUT data_type; CONSTANT Y : IN data_type);
 
-PROCEDURE rex (CONSTANT Y : IN data_type; VARIABLE X : INOUT data_type);
+PROCEDURE rex (VARIABLE X : INOUT data_type; CONSTANT Y : IN data_type);
 
 FUNCTION CheckZeroFlag (CONSTANT Reg : data_type) RETURN BOOLEAN;
 
