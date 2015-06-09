@@ -80,13 +80,13 @@ BEGIN
 				write_NoParam(l);
 
 				-- Shift / Rotate
-			when code_sll => XSLL(Reg(y),Reg(x),Carry,Overflow);
-			when code_srl => XSRL(Reg(y),Reg(x),Carry);
-			when code_sra => XSRA(Reg(y),Reg(x),Carry);
-			when code_rol => Carry := False; ROLC(Reg(y),Reg(x),Carry,Carry);
-			when code_rolc => Carry := True; ROLC(Reg(y),Reg(x),Carry,Carry);
-			when code_ror => Carry := False; ROLC(Reg(y),Reg(x),Carry,Carry);
-			when code_rorc => Carry := True; ROLC(Reg(y),Reg(x),Carry,Carry);
+			when code_sll => XSLL(Reg(y),Reg(x),Carry,Overflow);  ---sll(3.3.14)
+			when code_srl => XSRL(Reg(y),Reg(x),Carry); ---srl(3.3.15)
+			when code_sra => XSRA(Reg(y),Reg(x),Carry); ---sra(3.3.16)
+			when code_rol => Carry := False; ROLC(Reg(y),Reg(x),Carry,Carry); ---rol(3.3.17)
+			when code_rolc => Carry := True; ROLC(Reg(y),Reg(x),Carry,Carry); ---rolc(3.3.18)
+			when code_ror => Carry := False; RORC(Reg(y),Reg(x),Carry,Carry); ---ror(3.3.19)
+			when code_rorc => Carry := True; RORC(Reg(y),Reg(x),Carry,Carry); ---rorc(3.3.20)
 
 				-- Memory Access
 			WHEN code_ldc => Reg(x) := Memory(PC); -- ldc (3.3.21)
