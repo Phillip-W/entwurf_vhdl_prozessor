@@ -150,7 +150,93 @@ BEGIN
 	R := ZR;
 	Z := CheckZeroFlag(R);
 END SUBC;
+ ------Rotation and shift-----
  
+procedure XSLL(constant O1 : in data_type; R: out data_type; C: out boolean;  O: OUT BOOLEAN) is
+variable CO, RO : std_logic_vector(data_width-1 downto 0);
+begin
+   CO := std_logic_vector(to_unsigned(O1,data_width));
+   if CO(CO'left) = '1' then
+      C:= True;
+   else
+      C:= FALSE;
+   end if;
+   if (CO(CO'left)='1') xor (CO(CO'left-1)='1') then
+      O:= True;
+   else
+      O:= False;
+   end if;
+   RO := CO(CO'left-1 downto 0) & '0';
+   R := to_integer(unsigned(RO));
+end XSLL;
+
+procedure XSRL(constant O1: in data_type; R: out data_type; C: out boolean) is
+variable CO, RO : std_logic_vector( data_width-1 downto 0);
+begin
+   CO := std_logic_vector(to_unsigned(O1,data_width));
+   if CO(CO'right) = '1' then
+       C:= True;
+   else
+       C:= False;
+   end if;
+   RO := '0' & CO(CO'left downto 1);
+   R := to_integer(unsigned(RO));
+end XSRL;
+
+Procedure XSRA(constant O1: in data_type; R: out data_type; C: out boolean) is
+variable CO, RO : std_logic_vector( data_width-1 downto 0);
+begin
+   CO := std_logic_vector(to_unsigned(O1,data_width));
+   if CO(CO'right) = '1' then
+       C:= True;
+   else
+       C:= False;
+   end if;
+   RO := CO(CO'left) & CO(CO'left downto 1);
+   R := to_integer(unsigned(RO));
+end XSRA;
+
+procedure ROLC(constant O1: in data_type;  R: out data_type; CI : in boolean ;C: out boolean) is
+variable CO, RO, RI : std_logic_vector( data_width-1 downto 0);
+begin
+   CO := std_logic_vector(to_unsigned(O1,data_width));
+   RO(data_width-1) := CO(CO'right);
+   RO(data_width-2 downto 0) := CO(CO'left downto 1);
+   if CI then
+      if CO(Co'left) = '1' then
+         C:= True;
+      else
+         C:= FALSE;
+      end if;
+    RI := CO(CO'right-1 downto 0) & '1' ;
+    R := to_integer(unsigned(RI));
+    else
+    R := to_integer(unsigned(RO));
+    C := CI;
+    end if;
+end ROLC;
+
+procedure RORC(constant O1: in data_type;  R: out data_type; CI : in boolean ;C: out boolean) is
+variable CO, RO, RI : std_logic_vector( data_width-1 downto 0);
+begin
+   CO := std_logic_vector(to_unsigned(O1,data_width));
+   RO(0) := CO(CO'left);
+   RO(Data_width-1 downto 1) := CO(CO'right downto 1);
+   if CI then
+      if CO(CO'right) = '1' then
+          C:= True;
+      else
+          C:= FALSE;
+      end if;
+   RI := '1' & CO(CO'right downto 1) & '1';
+   R := to_integer(unsigned(RI));
+   else
+   R := to_integer(unsigned(RO));
+   C := CI;
+   end if;
+end RORC; 
+
+---------------------------------------------------------------
  
 PROCEDURE ReadIn (Reg : OUT data_type) IS
 VARIABLE il : line;
