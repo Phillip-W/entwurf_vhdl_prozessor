@@ -107,15 +107,16 @@ PROCEDURE SUB (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; Z, N : OUT B
 
 PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O, N : OUT BOOLEAN);
 
--- Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+procedure XSLL(constant O1 : in data_type; R: out data_type; C: out boolean;  O: OUT BOOLEAN);
  
--- Procedure XSRA(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
+procedure XSRL(constant O1: in data_type; R: out data_type; C: out boolean);
  
--- procedure ROLC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
--- variable N,O: out boolean);
+Procedure XSRA(constant O1: in data_type; R: out data_type; C: out boolean);
  
--- procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
--- variable N,O: out boolean);
+procedure ROLC(constant O1: in data_type;  R: out data_type; CI : in boolean ;C: out boolean);
+
+procedure RORC(constant O1: in data_type;  R: out data_type; CI : in boolean ;C: out boolean);
+
 PROCEDURE ReadIn (Reg : OUT data_type);
 PROCEDURE WriteOut(CONSTANT Reg : IN data_type);
  
