@@ -83,10 +83,10 @@ BEGIN
 			when code_sll => XSLL(Reg(y),Reg(x),Carry,Overflow);
 			when code_srl => XSRL(Reg(y),Reg(x),Carry);
 			when code_sra => XSRA(Reg(y),Reg(x),Carry);
-			when code_rol => ROLC(Reg(y),Reg(x),False,Carry);
-			when code_rolc => ROLC(Reg(y),Reg(x),True,Carry);
-			when code_ror => RORC(Reg(y),Reg(x),False,Carry);
-			when code_rorc => RORC(Reg(y),Reg(x),True,Carry);
+			when code_rol => Carry := False; ROLC(Reg(y),Reg(x),Carry,Carry);
+			when code_rolc => Carry := True; ROLC(Reg(y),Reg(x),Carry,Carry);
+			when code_ror => Carry := False; ROLC(Reg(y),Reg(x),Carry,Carry);
+			when code_rorc => Carry := True; ROLC(Reg(y),Reg(x),Carry,Carry);
 
 				-- Memory Access
 			WHEN code_ldc => Reg(x) := Memory(PC); -- ldc (3.3.21)
