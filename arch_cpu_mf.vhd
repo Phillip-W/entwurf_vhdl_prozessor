@@ -111,17 +111,36 @@ BEGIN
  				write_NoParam(l);
 
 				-- Shift / Rotate
-				-- when code_sll => XSLL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-				-- when code_srl => XSRL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-				-- when code_sra => XSRA(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-				-- when code_rol => Carry := FALSE;
-				-- ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-				-- when code_rolc => Carry := TRUE;
-				-- ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-				-- when code_ror => Carry := FALSE;
-				-- RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
-				-- when code_rorc => Carry := TRUE;
-				-- RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+				when code_sll => XSLL(Reg(y),Reg(x), Carry, Overflow);
+					Zero := CheckZeroFlag(Reg(x)); 
+					Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+				when code_srl => XSRL(Reg(y),Reg(x),Carry);
+					Zero := CheckZeroFlag(Reg(x)); 
+					Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1');
+					Overflow:=FALSE;
+				when code_sra => XSRA(Reg(y),Reg(x),Carry);
+					Zero := CheckZeroFlag(Reg(x)); 
+					Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1');
+					Overflow:=FALSE;
+				when code_rol => 
+					Carry := false;
+					ROLC(Reg(y),Reg(x),Carry);
+					Zero := CheckZeroFlag(Reg(x)); 
+					Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1');
+					Overflow:=FALSE;
+				when code_rolc => ROLC(Reg(y),Reg(x),Carry);
+					Zero := CheckZeroFlag(Reg(x)); 
+					Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1');
+					Overflow:=FALSE;
+				when code_ror => Carry := FALSE;
+					RORC(Reg(y),Reg(x),Carry);
+					Zero := CheckZeroFlag(Reg(x)); 
+					Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1');
+					Overflow:=FALSE;
+				when code_rorc => RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+					Zero := CheckZeroFlag(Reg(x)); 
+					Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1');
+					Overflow:=FALSE;
 
 				-- Memory Access
 			WHEN code_ldc => Reg(x) := Memory(PC); -- ldc (3.3.21)
