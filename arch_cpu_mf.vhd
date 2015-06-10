@@ -2,12 +2,12 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE work.def_package_all.ALL; -- unsere Datentypen, etc.
 USE work.mem_package_all.ALL; -- unser Speicherinhalt / abzuarbeitendes Programm
-USE std.textio.ALL; -- fÃ¼r unser IO
+USE std.textio.ALL; -- fuer unser IO
+
 ARCHITECTURE behav OF CPU IS
 BEGIN
 	PROCESS
 	FILE TraceFile : Text IS OUT "Trace.txt";
-	FILE DumpFile : Text IS OUT "Dump.txt";
 	VARIABLE l : line;
 	VARIABLE Memory : mem_type;
 	VARIABLE Reg : reg_type := (0 => 0, 1 => 0, OTHERS => 0);
@@ -17,9 +17,12 @@ BEGIN
 	VARIABLE PC : addr_type := 0; -- 2.1.3.1; 2.1.3.2 unser Prozesscounter
 	VARIABLE Zero, Carry, Negative, Overflow : BOOLEAN := FALSE;
 	VARIABLE param : data_type;
+	Variable OPC: data_type:= 0;
+	Variable Parm: BOOLEAN:=FALSE;		-- gibt an, ob Parameter erwartet werden
 
 	BEGIN
-		init_memory(Memoryfile, Memory); -- Speicher mit init_memory initialisieren
+	  
+		init_memory(Parm, OPC, Memoryfile, Memory); -- Speicher mit init_memory initialisieren
 		print_header(TraceFile);
 		print_tail(TraceFile);
 		LOOP
@@ -34,15 +37,15 @@ BEGIN
 
 		PC := INC(PC);
 
-		CASE OP IS -- Anweisungen differenzieren und ausfÃ¼hren
+		CASE OP IS -- Anweisungen differenzieren und ausfuehren
 
 			-- Miscellaneous
 			WHEN code_nop => NULL; -- keine Operation (3.3.1.1)
 				write_NoParam(l);
 			WHEN code_stop => write_NoParam(l); -- stop Simulation (3.3.1.2)
-				write_regs (l, Reg(x), Reg(y), Reg(z), Reg(a));
-				write_flags(l, Zero, Carry, Negative, Overflow);
-				writeline(TraceFile, l);
+				write_regs (l, Reg(0), Reg(1), Reg(2), Reg(3));
+ 				write_flags(l, Zero, Carry, Negative, Overflow);
+ 				writeline(TraceFile, l);
 				print_tail(TraceFile);
 				print_dump(Memory, DumpFile);
 				WAIT;
@@ -51,7 +54,7 @@ BEGIN
 				--
 
 				-- ===============================================================================================================================================
-				-- die OPCode Operationen hier einfÃ¼gen (s.h. Vorlesung ?? Seite 49ff. - Statements for Arithmetic and Logic Ops)
+				-- die OPCode Operationen hier einfuegen (s.h. Vorlesung ?? Seite 49ff. - Statements for Arithmetic and Logic Ops)
 				-- ===============================================================================================================================================
 
 				-- Arithmetic
@@ -65,40 +68,60 @@ BEGIN
 				write_NoParam(l);
 				-- Logical
 			WHEN code_not => Reg(x) := "NOT"(Reg(y)); -- Verneinung (3.3.1.7)
-				write_NoParam(l);
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+ 				write_NoParam(l);
 			WHEN code_and => Reg(x) := (Reg(y)) AND (Reg(z)); -- UND-Operation (3.3.1.8)
-			write_NoParam(l);
-			WHEN code_or => Reg(x) := (Reg(y)) OR (Reg(z)); -- OR-Operation (3.3.1.9)
-			write_NoParam(l);
+			  Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+ 				write_NoParam(l);
+ 			WHEN code_or => Reg(x) := (Reg(y)) OR (Reg(z)); -- OR-Operation (3.3.1.9)
+			  Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+ 				write_NoParam(l);
 			WHEN code_xor => Reg(x) := (Reg(y)) XOR (Reg(z)); -- xor (3.3.1.10)
-			write_NoParam(l);
-			WHEN code_rea => REA(Reg(x), Reg(y)); -- rea (3.3.11)
-				write_NoParam(l);
-			WHEN code_reo => REO(Reg(x), Reg(y)); -- reo (3.3.12)
-				write_NoParam(l);
-			WHEN code_rex => REX(Reg(x), Reg(y)); -- rex (3.3.13)
-				write_NoParam(l);
+			  Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+ 				write_NoParam(l);
+ 			WHEN code_rea => REA(Reg(x), Reg(y)); -- rea (3.3.11)
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+ 				write_NoParam(l);
+ 			WHEN code_reo => REO(Reg(x), Reg(y)); -- reo (3.3.12)
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+ 				write_NoParam(l);
+ 			WHEN code_rex => REX(Reg(x), Reg(y)); -- rex (3.3.13)
+				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+ 				write_NoParam(l);
 
 				-- Shift / Rotate
-			when code_sll => XSLL(Reg(y),Reg(x),Carry,Overflow);  ---sll(3.3.14)
-			when code_srl => XSRL(Reg(y),Reg(x),Carry); ---srl(3.3.15)
-			when code_sra => XSRA(Reg(y),Reg(x),Carry); ---sra(3.3.16)
-			when code_rol => Carry := False; ROLC(Reg(y),Reg(x),Carry,Carry); ---rol(3.3.17)
-			when code_rolc => Carry := True; ROLC(Reg(y),Reg(x),Carry,Carry); ---rolc(3.3.18)
-			when code_ror => Carry := False; RORC(Reg(y),Reg(x),Carry,Carry); ---ror(3.3.19)
-			when code_rorc => Carry := True; RORC(Reg(y),Reg(x),Carry,Carry); ---rorc(3.3.20)
+				-- when code_sll => XSLL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+				-- when code_srl => XSRL(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+				-- when code_sra => XSRA(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+				-- when code_rol => Carry := FALSE;
+				-- ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+				-- when code_rolc => Carry := TRUE;
+				-- ROLC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+				-- when code_ror => Carry := FALSE;
+				-- RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+				-- when code_rorc => Carry := TRUE;
+				-- RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
 
 				-- Memory Access
 			WHEN code_ldc => Reg(x) := Memory(PC); -- ldc (3.3.21)
-				write_param(l, Memory(PC));
+				Zero := CheckZeroFlag(Reg(x)); 
+				Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+				Overflow:=FALSE;
+				write_param(l, Memory(PC));PC := INC(PC);
 			WHEN code_ldd => Reg(x) := Memory(Memory(PC)); -- ldc (3.3.22)
-				write_param(l, Memory(PC));
+				Zero := CheckZeroFlag(Reg(x)); 
+				Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+				Overflow:=FALSE;
+				write_param(l, Memory(PC));PC := INC(PC);
 			WHEN code_ldr => Reg(x) := Memory(Reg(Y)); -- ldc (3.3.23)
+				Zero := CheckZeroFlag(Reg(x)); 
+				Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+				Overflow:=FALSE;
 				write_NoParam(l);
 			WHEN code_std => Memory(Memory(PC)) := Reg(x); -- ldc (3.3.24)
-				write_param(l, Memory(PC));
+				write_param(l, Memory(PC));PC := INC(PC);
 			WHEN code_str => Memory(Reg(Y)) := Reg(x); -- ldc (3.3.25)
-				write_NoParam(l);
+ 				write_NoParam(l);
 
 				-- I/O
 			WHEN code_in => ReadIn(Reg(x));
@@ -107,34 +130,37 @@ BEGIN
 				write_NoParam(l);
 				-- Jump
 			WHEN code_jmp => PC := jmp(Memory(PC));
-				write_param(l, Memory(PC));
+				write_param(l, PC);
 			WHEN code_jz => PC := jz(Memory(PC), PC, zero);
-				write_param(l, Memory(PC));
+				write_param(l, PC);
 			WHEN code_jc => PC := jc(Memory(PC), PC, carry);
-				write_param(l, Memory(PC));
-			WHEN code_jn => PC := jc(Memory(PC), PC, negative);
-				write_param(l, Memory(PC));
-			WHEN code_jo => PC := jc(Memory(PC), PC, overflow);
-				write_param(l, Memory(PC));
-			WHEN code_jnz => PC := jc(Memory(PC), PC, zero);
-				write_param(l, Memory(PC));
-			WHEN code_jnc => PC := jc(Memory(PC), PC, carry);
-				write_param(l, Memory(PC));
-			WHEN code_jnn => PC := jc(Memory(PC), PC, negative);
-				write_param(l, Memory(PC));
-			WHEN code_jno => PC := jc(Memory(PC), PC, overflow);
-				write_param(l, Memory(PC));
+				write_param(l, PC);
+			WHEN code_jn => PC := jn(Memory(PC), PC, negative);
+				write_param(l, PC);
+			WHEN code_jo => PC := jo(Memory(PC), PC, overflow);
+				write_param(l, PC);
+			WHEN code_jnz => PC := jnz(Memory(PC), PC, zero);
+				write_param(l, PC);
+			WHEN code_jnc => PC := jnc(Memory(PC), PC, carry);
+				write_param(l, PC);
+			WHEN code_jnn => PC := jnn(Memory(PC), PC, negative);
+				write_param(l, PC);
+			WHEN code_jno => PC := jno(Memory(PC), PC, overflow);
+				write_param(l, PC);
  
 
-			WHEN OTHERS => -- ungÃ¼ltig oder bisher nicht implementiert
+			WHEN OTHERS => -- ungueltig oder bisher nicht implementiert
 				ASSERT FALSE
-				REPORT "ungÃ¼ltig"
+				REPORT "ungueltltiger OP-Code"
 					SEVERITY error;
 		END CASE;
-		write_regs (l, Reg(x), Reg(y), Reg(z), Reg(a));
+		
+
+	  write_regs (l, Reg(0), Reg(1), Reg(2), Reg(3));
 		write_flags(l, Zero, Carry, Negative, Overflow);
 		writeline(TraceFile, l);
  
 	END LOOP;
 END PROCESS;
 END behav;
+
