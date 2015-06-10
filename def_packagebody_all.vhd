@@ -178,7 +178,7 @@ BEGIN
   END SUBC;
  ------Rotation and shift-----
  
-procedure XSLL(constant O1 : in data_type; R: out data_type; C: out boolean;  O: OUT BOOLEAN) is
+procedure XSLL(constant O1 : in data_type; R: out data_type; C: out boolean; O: out Boolean) is
 variable CO, RO : std_logic_vector(data_width-1 downto 0);
 begin
    CO := std_logic_vector(to_unsigned(O1,data_width));
@@ -222,8 +222,9 @@ begin
    R := to_integer(unsigned(RO));
 end XSRA;
 
-procedure ROLC(constant O1: in data_type;  R: out data_type; CI : in boolean ;C: out boolean) is
+procedure ROLC(constant O1: in data_type;  R: out data_type; CI : inout boolean) is
 variable CO, RO, RI : std_logic_vector( data_width-1 downto 0);
+variable C : Boolean;
 begin
    CO := std_logic_vector(to_unsigned(O1,data_width));
    RO(data_width-1) := CO(CO'right);
@@ -238,12 +239,13 @@ begin
     R := to_integer(unsigned(RI));
     else
     R := to_integer(unsigned(RO));
-    C := CI;
     end if;
+    CI := C;
 end ROLC;
 
-procedure RORC(constant O1: in data_type;  R: out data_type; CI : in boolean ;C: out boolean) is
+procedure RORC(constant O1: in data_type;  R: out data_type; CI : inout boolean) is
 variable CO, RO, RI : std_logic_vector( data_width-1 downto 0);
+variable C : Boolean;
 begin
    CO := std_logic_vector(to_unsigned(O1,data_width));
    RO(0) := CO(CO'left);
@@ -258,8 +260,8 @@ begin
    R := to_integer(unsigned(RI));
    else
    R := to_integer(unsigned(RO));
-   C := CI;
    end if;
+   CI := C;
 end RORC; 
 
 ---------------------------------------------------------------
