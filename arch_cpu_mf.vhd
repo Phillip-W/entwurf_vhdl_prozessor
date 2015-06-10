@@ -137,7 +137,7 @@ BEGIN
 					Zero := CheckZeroFlag(Reg(x)); 
 					Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1');
 					Overflow:=FALSE;
-				when code_rorc => RORC(Reg(y),Reg(x),Zero,Carry,Negative,Overflow);
+				when code_rorc => RORC(Reg(y),Reg(x),Carry);
 					Zero := CheckZeroFlag(Reg(x)); 
 					Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1');
 					Overflow:=FALSE;
