@@ -230,17 +230,18 @@ begin
    RO(data_width-1) := CO(CO'right);
    RO(data_width-2 downto 0) := CO(CO'left downto 1);
    if CI then
-      if CO(Co'left) = '1' then
+      if CO(CO'left) = '1' then
          C:= True;
+         CI := C;
       else
          C:= FALSE;
+         CI := C;
       end if;
     RI := CO(CO'right-1 downto 0) & '1' ;
     R := to_integer(unsigned(RI));
     else
     R := to_integer(unsigned(RO));
     end if;
-    CI := C;
 end ROLC;
 
 procedure RORC(constant O1: in data_type;  R: out data_type; CI : inout boolean) is
@@ -253,15 +254,16 @@ begin
    if CI then
       if CO(CO'right) = '1' then
           C:= True;
+          CI := C;
       else
           C:= FALSE;
+          CI := C;
       end if;
    RI := '1' & CO(CO'right downto 1) & '1';
    R := to_integer(unsigned(RI));
    else
    R := to_integer(unsigned(RO));
    end if;
-   CI := C;
 end RORC; 
 
 ---------------------------------------------------------------
