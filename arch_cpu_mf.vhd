@@ -58,35 +58,56 @@ BEGIN
 				-- ===============================================================================================================================================
 
 				-- Arithmetic
-			WHEN code_add => ADD(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow);
+			WHEN code_add => ADD(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow, Negative);
 				write_NoParam(l);
-			WHEN code_addc => ADDC(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow);
+			WHEN code_addc => ADDC(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow, Negative);
 				write_NoParam(l);
-			WHEN code_sub => SUB(Reg(y), Reg(z), Reg(x), Zero, Negative);
+			WHEN code_sub => SUB(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow, Negative);
 				write_NoParam(l);
 			WHEN code_subc => SUBC(Reg(y), Reg(z), Reg(x), Carry, Zero, Overflow, Negative);
 				write_NoParam(l);
 				-- Logical
 			WHEN code_not => Reg(x) := "NOT"(Reg(y)); -- Verneinung (3.3.1.7)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); 
+				Carry:=FALSE; 
+				Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+				Overflow:=FALSE;
  				write_NoParam(l);
 			WHEN code_and => Reg(x) := (Reg(y)) AND (Reg(z)); -- UND-Operation (3.3.1.8)
-			  Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+			  Zero := CheckZeroFlag(Reg(x)); 
+			  Carry:=FALSE; 
+			  Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+			  Overflow:=FALSE;
  				write_NoParam(l);
  			WHEN code_or => Reg(x) := (Reg(y)) OR (Reg(z)); -- OR-Operation (3.3.1.9)
-			  Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+			  Zero := CheckZeroFlag(Reg(x)); 
+			  Carry:=FALSE; 
+			  Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+			  Overflow:=FALSE;
  				write_NoParam(l);
 			WHEN code_xor => Reg(x) := (Reg(y)) XOR (Reg(z)); -- xor (3.3.1.10)
-			  Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+			  Zero := CheckZeroFlag(Reg(x)); 
+			  Carry:=FALSE; 
+			  Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+			  Overflow:=FALSE;
  				write_NoParam(l);
  			WHEN code_rea => REA(Reg(x), Reg(y)); -- rea (3.3.11)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); 
+				Carry:=FALSE; 
+				Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+				Overflow:=FALSE;
  				write_NoParam(l);
  			WHEN code_reo => REO(Reg(x), Reg(y)); -- reo (3.3.12)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); 
+				Carry:=FALSE; 
+				Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+				Overflow:=FALSE;
  				write_NoParam(l);
  			WHEN code_rex => REX(Reg(x), Reg(y)); -- rex (3.3.13)
-				Zero := CheckZeroFlag(Reg(x)); Carry:=FALSE; Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); Overflow:=FALSE;
+				Zero := CheckZeroFlag(Reg(x)); 
+				Carry:=FALSE; 
+				Negative:=(to_unsigned(Reg(x), data_width)(data_width-1)='1'); 
+				Overflow:=FALSE;
  				write_NoParam(l);
 
 				-- Shift / Rotate
