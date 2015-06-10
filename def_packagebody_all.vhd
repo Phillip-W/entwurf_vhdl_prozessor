@@ -90,20 +90,23 @@ BEGIN
   	END IF;
   END CheckZeroFlag;
 
-  PROCEDURE ADD (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O : OUT BOOLEAN) IS
+  PROCEDURE ADD (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN) IS
     VARIABLE ZR : NATURAL;
   BEGIN
 	 ZR := O1 + O2;
-	 IF (ZR >= (2 ** data_width)) THEN
+	 IF (ZR / (2 ** (data_width+1))) >= 1 THEN
+	   N := true;
+	 ELSIF (ZR / (2 ** data_width)) >= 1 THEN
 	   O := true;
 	   ZR := ZR - 2 ** data_width;
 	   C := true;
 	 END IF;
+	 N := false;
 	 R := ZR;
 	 Z := CheckZeroFlag(R);
   END ADD;
 
-  PROCEDURE ADDC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O : OUT BOOLEAN) IS
+  PROCEDURE ADDC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN) IS
     VARIABLE ZR : NATURAL;
   BEGIN
 	 ZR := 0;
@@ -111,7 +114,9 @@ BEGIN
 	   ZR := 2 ** data_width;
 	 END IF;
 	 ZR := O1 + O2 + ZR;
-	 IF (ZR >= (2 ** data_width)) THEN
+	 IF (ZR / (2 ** (data_width+1))) >= 1 THEN
+	   N := true;
+	 ELSIF (ZR / (2 ** data_width)) >= 1 THEN
 	   O := true;
 	   ZR := ZR - 2 ** data_width;
 	   C := true;
@@ -122,19 +127,30 @@ BEGIN
 	 Z := CheckZeroFlag(R);
   END ADDC;
  
-  PROCEDURE SUB (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; Z, N : OUT BOOLEAN) IS
+  PROCEDURE SUB (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN) IS
     VARIABLE ZR : INTEGER;
   BEGIN
 	 ZR := O1 - O2;
 	 IF (ZR < 0) THEN
 	   N := true;
-	   ZR := ZR * ( - 1);
+	   IF (ZR <= ( - 1) * (2 ** data_width)) THEN
+	     ZR := ZR + 2 ** data_width;
+	     C := true;
+	     O := true;
+	   ELSE
+	     C := false;
+	     O := false;
+	     ZR := ZR * ( - 1);
+	   END IF;
+	 ELSE
+	   O := false;
+	   C := false;
 	 END IF;
 	 R := ZR;
 	 Z := CheckZeroFlag(R);
   END SUB;
  
-  PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O, N : OUT BOOLEAN) IS
+  PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN) IS
     VARIABLE ZR : INTEGER;
   BEGIN
 	 ZR := 0;
@@ -147,11 +163,15 @@ BEGIN
 	   IF (ZR <= ( - 1) * (2 ** data_width)) THEN
 	     ZR := ZR + 2 ** data_width;
 	     C := true;
+	     O := true;
 	   ELSE
-		  C := false;
+	     C := false;
+	     O := false;
+	     ZR := ZR * ( - 1);
 	   END IF;
 	 ELSE
 	   C := false;
+	   O := false;
 	 END IF;
 	 R := ZR;
 	 Z := CheckZeroFlag(R);
@@ -391,7 +411,7 @@ END PrintBoolean;
 PROCEDURE print_tail (VARIABLE f : OUT text) IS
 VARIABLE l : line;
 BEGIN
-	write(l, STRING'("------------------------------------------------------"));
+	write(l, STRING'("----------------------------------------------------------"));
 	writeline(f, l);
 END print_tail;
  
@@ -416,15 +436,15 @@ BEGIN
 	write(l, STRING'(" | "));
 	write(l, STRING'("XYZ"), left, 3);
 	write(l, STRING'(" | "));
-	write(l, STRING'("P"), left, 3);
+	write(l, STRING'("P"), left, 4);
 	write(l, STRING'(" | "));
-	write(l, STRING'("R0"), left, 3);
+	write(l, STRING'("R0"), left, 4);
 	write(l, STRING'(" | "));
-	write(l, STRING'("R1"), left, 3);
+	write(l, STRING'("R1"), left, 4);
 	write(l, STRING'(" | "));
-	write(l, STRING'("R2"), left, 3);
+	write(l, STRING'("R2"), left, 4);
 	write(l, STRING'(" | "));
-	write(l, STRING'("R3"), left, 3);
+	write(l, STRING'("R3"), left, 4);
 	write(l, STRING'(" | "));
 	write(l, STRING'("ZCNO"), left, 4);
 	writeline(f, l);
@@ -605,7 +625,7 @@ BEGIN
 		OP := code_jc * (2 ** reg_addr_width) ** 3;
 		RegCounter:= 0; Par:= TRUE;
 	ELSIF l(1 TO i) = "JN" THEN
-		OP := code_ldc * (2 ** reg_addr_width) ** 3;
+		OP := code_jn * (2 ** reg_addr_width) ** 3;
 		RegCounter:= 0; Par:= TRUE;
 	ELSIF l(1 TO i) = "JO" THEN
 		OP := code_jo * (2 ** reg_addr_width) ** 3;
@@ -656,4 +676,3 @@ Begin
 END to_int;
 
 END def_package_all;
-

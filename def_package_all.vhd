@@ -100,13 +100,13 @@ PACKAGE def_package_all IS
 
   FUNCTION CheckZeroFlag (CONSTANT Reg : data_type) RETURN BOOLEAN;
 
-  PROCEDURE ADD (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O : OUT BOOLEAN);
+  PROCEDURE ADD (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN);
 
-  PROCEDURE ADDC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O : OUT BOOLEAN);
+  PROCEDURE ADDC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN);
 
-  PROCEDURE SUB (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; Z, N : OUT BOOLEAN);
+  PROCEDURE SUB (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN);
 
-  PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C : INOUT BOOLEAN; Z, O, N : OUT BOOLEAN);
+  PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN);
 
 -- Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
  
