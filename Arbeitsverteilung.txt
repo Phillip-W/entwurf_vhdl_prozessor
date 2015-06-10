@@ -1,0 +1,10 @@
+Flo Maurer
+  - Grundgerüst
+  
+Phillip Wichmann
+  - jmp Befehle
+  - write Dump file
+Patrick Ulrich
+  -
+Lei Zhang
+-
