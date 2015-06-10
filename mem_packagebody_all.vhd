@@ -1,29 +1,26 @@
 package body mem_package_all is
-	procedure init_memory(variable Memoryfile : in text; variable Memory : out mem_type ) is
 
-        	variable ml : line;
-        	variable success : boolean ;
-        	variable v : data_type ;
-        	variable i : addr_type := 0;
-		variable dml: line;
-		
-        begin
-            outest:LOOP --- read line by line
-               exit when endfile (Memoryfile);
-               readline (Memoryfile , ml);
-               inputDecode(ml, dml);
+procedure init_memory( Par: inout Boolean;  OP: inout data_type; variable Memoryfile : in text; variable Memory : inout mem_type ) is
 
-               success := TRUE ;
+ 	variable ml : line;
+ 	variable v : data_type ;
+  variable i : addr_type := 0;
+-- variable dml: line;	
+begin
+  outest:LOOP --- read line by line
+    exit when endfile (Memoryfile);
+    readline (Memoryfile , ml);
 		-- read values in each line
-		while success LOOP
-			read(dml, v, success);
-			if success then
-				Memory(i):=v;
-				exit outest when
-					i=2**addr_width-1;
-				i:= i+1;
-			end if;
-		end LOOP;
-             end LOOP outest;
-        end init_memory;
+		exit outest when
+		i=2**addr_width-1;
+		inputDecode(ml, Par, OP, Memory, i);
+		Memory(i):=OP;
+		if Par then
+			i:=i+2;
+		else i:=i+1;
+    end if;
+  end LOOP outest;
+end init_memory;
+
 end mem_package_all;
+
