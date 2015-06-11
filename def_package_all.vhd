@@ -98,6 +98,8 @@ PACKAGE def_package_all IS
 
   PROCEDURE rex (VARIABLE X : INOUT data_type; CONSTANT Y : IN data_type);
 
+  FUNCTION CheckOverflowFlag(CONSTANT Reg : data_type) RETURN BOOLEAN;
+
   FUNCTION CheckZeroFlag (CONSTANT Reg : data_type) RETURN BOOLEAN;
 
   PROCEDURE ADD (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN);
@@ -108,16 +110,15 @@ PACKAGE def_package_all IS
 
   PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN);
 
-  procedure XSLL(constant O1 : in data_type; R: out data_type; C: out boolean; O: out Boolean);
-  
-  procedure XSRL(constant O1: in data_type; R: out data_type; C: out boolean);
-
-  Procedure XSRA(constant O1: in data_type; R: out data_type; C: out boolean);
+-- Procedure XSLL(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
  
-  procedure ROLC(constant O1: in data_type;  R: out data_type; CI : inout boolean);
+-- Procedure XSRA(constant A: in data_type; variable R: out data_type; variable Z,CO,N,O: out boolean);
  
-  procedure RORC(constant O1: in data_type;  R: out data_type; CI : inout boolean);
-  
+-- procedure ROLC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
+-- variable N,O: out boolean);
+ 
+-- procedure RORC(constant A: in data_type; variable R: out data_type; variable Z: out boolean; variable C: inout boolean;
+-- variable N,O: out boolean);
   PROCEDURE ReadIn (Reg : OUT data_type);
   PROCEDURE WriteOut(CONSTANT Reg : IN data_type);
  
@@ -171,4 +172,3 @@ PACKAGE def_package_all IS
 -- PROCEDURE read_param (VARIABLE l : IN line; CONSTANT i_in : IN INTEGER; VARIABLE param: OUT String);
 
 END def_package_all;
-
