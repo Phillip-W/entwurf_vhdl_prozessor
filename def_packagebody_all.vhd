@@ -81,6 +81,19 @@ BEGIN
     X := to_integer(unsigned(A));
   END rex;
 
+
+  FUNCTION CheckOverflowFlag(CONSTANT Reg : data_type) RETURN BOOLEAN IS
+  BEGIN
+  IF ((Reg<0) and (Reg > -(2**(data_width - 1)))) THEN
+	RETURN true;
+  ELSIF ((Reg>0) and (Reg > (2**(data_width - 1)))) THEN
+	RETURN true;
+  ELSE 
+	RETURN false;
+  END IF;
+
+  END CheckOverflowFlag;
+
   FUNCTION CheckZeroFlag (CONSTANT Reg : data_type) RETURN BOOLEAN IS
   BEGIN
   	IF (Reg = 0) THEN 
@@ -94,36 +107,27 @@ BEGIN
     VARIABLE ZR : NATURAL;
   BEGIN
 	 ZR := O1 + O2;
-	 IF (ZR / (2 ** (data_width+1))) >= 1 THEN
-	   N := true;
-	 ELSIF (ZR / (2 ** data_width)) >= 1 THEN
-	   O := true;
-	   ZR := ZR - 2 ** data_width;
-	   C := true;
+	 IF (ZR >= (2 ** data_width))  THEN
+	   C := true; 
+  	   ZR := ZR - 2 ** data_width;
+	 ELSE	  
+	   C := false;
 	 END IF;
 	 N := false;
 	 R := ZR;
+	 
+ 	 O := CHeckOverflowFlag(R);
 	 Z := CheckZeroFlag(R);
   END ADD;
 
   PROCEDURE ADDC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN) IS
     VARIABLE ZR : NATURAL;
   BEGIN
-	 ZR := 0;
-	 IF C THEN
-	   ZR := 2 ** data_width;
-	 END IF;
-	 ZR := O1 + O2 + ZR;
-	 IF (ZR / (2 ** (data_width+1))) >= 1 THEN
-	   N := true;
-	 ELSIF (ZR / (2 ** data_width)) >= 1 THEN
-	   O := true;
-	   ZR := ZR - 2 ** data_width;
-	   C := true;
-	 ELSE
-	   C := false;
-	 END IF;
+	 ZR := O1 + O2;
 	 R := ZR;
+	 
+	 N := false;
+	 O := CHeckOverflowFlag(R);
 	 Z := CheckZeroFlag(R);
   END ADDC;
  
@@ -133,47 +137,30 @@ BEGIN
 	 ZR := O1 - O2;
 	 IF (ZR < 0) THEN
 	   N := true;
-	   IF (ZR <= ( - 1) * (2 ** data_width)) THEN
-	     ZR := ZR + 2 ** data_width;
-	     C := true;
-	     O := true;
-	   ELSE
-	     C := false;
-	     O := false;
-	     ZR := ZR * ( - 1);
-	   END IF;
 	 ELSE
-	   O := false;
-	   C := false;
+	   N := false;
 	 END IF;
+
 	 R := ZR;
+
+	 C := false;
+	 O := CHeckOverflowFlag(R);
 	 Z := CheckZeroFlag(R);
   END SUB;
  
   PROCEDURE SUBC (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN) IS
     VARIABLE ZR : INTEGER;
   BEGIN
-	 ZR := 0;
-	 IF (C) THEN
-	   ZR := 2 ** data_width;
+	 ZR := O1 - O2;
+	 IF (C) OR (ZR<0) THEN
+	   N:= true;
 	 END IF;
-	 ZR := O1 - O2 - ZR;
-	 IF (ZR < 0) THEN
-	   N := true;
-	   IF (ZR <= ( - 1) * (2 ** data_width)) THEN
-	     ZR := ZR + 2 ** data_width;
-	     C := true;
-	     O := true;
-	   ELSE
-	     C := false;
-	     O := false;
-	     ZR := ZR * ( - 1);
-	   END IF;
-	 ELSE
-	   C := false;
-	   O := false;
+	  
+	 IF NOT(ZR <= 2**data_width) THEN
+	   C:= false;
 	 END IF;
-	 R := ZR;
+
+ 	 O := CHeckOverflowFlag(R);
 	 Z := CheckZeroFlag(R);
   END SUBC;
  ------Rotation and shift-----

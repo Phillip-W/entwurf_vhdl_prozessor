@@ -98,6 +98,8 @@ PACKAGE def_package_all IS
 
   PROCEDURE rex (VARIABLE X : INOUT data_type; CONSTANT Y : IN data_type);
 
+  FUNCTION CheckOverflowFlag(CONSTANT Reg : data_type) RETURN BOOLEAN;
+
   FUNCTION CheckZeroFlag (CONSTANT Reg : data_type) RETURN BOOLEAN;
 
   PROCEDURE ADD (CONSTANT O1, O2 : IN data_type; R : INOUT data_type; C, Z, O, N : INOUT BOOLEAN);
