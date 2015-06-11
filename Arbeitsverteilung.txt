@@ -1,10 +1,22 @@
 Flo Maurer
-  - Grundgerüst
+  - Grundgerüst (Anweisung decodieren, großteil der Constant und subtype Deklarationen), entety)
+  - funktionierendes init_memory
+  - InputDecode funktionsfähig (nicht alle CMD_Fallunterscheidungen) & to_int
+  - logical und Memory Befehle
+  - trace File (print_tail, write_PC_CMD (ohne Knvertierung), print_header, write_param, write_NoParam, write_regs, write_Flags)
   
 Phillip Wichmann
-  - jmp Befehle
+  - jmp Befehle und wait
   - write Dump file
+  - Versuch InputDecode
+  - Tests jmp und memory
+  
 Patrick Ulrich
-  -
+  - I/O Befehle (write_IOinput, writeIOoutput)
+  - Fertigstellung Fallunterscheidung (Input_Decode)
+  - Arithmetic Befehle
+  - print_OPcode
+  - printBoolean
+  
 Lei Zhang
--
+  - Shift und Rotate Befehle
